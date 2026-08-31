@@ -1,0 +1,33 @@
+{
+	"name": "slides",
+	"type": "module",
+	"devDependencies": {
+		"@catppuccin/tailwindcss": "^1.0.0",
+		"@sveltejs/kit": "^2.70.0",
+		"@sveltejs/vite-plugin-svelte": "^7.2.0",
+		"@types/node": "^26.4.0",
+		"@types/reveal.js": "^5.2.2",
+		"@typescript/native": "npm:typescript@7",
+		"bun-types": "^1.4.0",
+		"prettier": "^3.9.5",
+		"prettier-plugin-svelte": "^4.1.1",
+		"prettier-plugin-tailwindcss": "^0.8.1",
+		"svelte": "^5.56.6",
+		"svelte-adapter-bun": "^1.0.1",
+		"svelte-check": "^4.7.3",
+		"tslib": "^2.8.1",
+		"typescript": "~6",
+		"vite": "^8.1.5"
+	},
+	"dependencies": {
+		"@animotion/core": "*",
+		"@animotion/motion": "*",
+		"@fontsource/atkinson-hyperlegible": "^5.2.8",
+		"@fontsource/monaspace-neon": "^5.2.5",
+		"@shikijs/magic-move": "^4.3.1",
+		"@tailwindcss/vite": "^4.3.3",
+		"reveal.js": "^6.0.1",
+		"shiki": "^4.3.1",
+		"tailwindcss": "^4.3.3"
+	}
+}
