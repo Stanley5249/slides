@@ -1,29 +1,15 @@
 <script lang="ts">
 	import { MermaidZoom } from '$lib';
 
-	const diagram = [
-		'flowchart TD',
-		'Start((Start)) --> Rendering[Rendering]',
-		'Rendering -->|SVGs ready| Ready[Ready]',
-		'Rendering -->|Render error| Failed[Failed]',
-		'Failed -->|Source changes| Rendering',
-		'Ready -->|Open preview| Inspecting[Inspecting]',
-		'Inspecting -->|Left drag| Panning[Panning]',
-		'Panning -->|Pointer up or cancel| Inspecting',
-		'Inspecting -->|Close, Escape, or backdrop| Ready',
-		'Ready -->|Source changes| Rendering'
-	].join('\n');
+	const diagram = `flowchart LR
+		Coffee --> Code
+		Code --> Bug
+		Bug --> Coffee
+		Code --> Ship`;
 </script>
 
-<div class="mx-auto w-[76rem] max-w-[90vw]">
-	<h2 class="text-mauve text-5xl font-bold">Mermaid Zoom State Machine</h2>
-	<p class="text-subtext0 mt-3 text-2xl">
-		Rendering, inspection, and panning are explicit reactive states.
-	</p>
+<p class="text-6xl font-bold drop-shadow-sm">🧜 Mermaid Diagrams</p>
 
-	<MermaidZoom code={diagram} label="Open the Mermaid interaction demo" class="mt-8" />
+<MermaidZoom code={diagram} label="Open the diagram" class="mx-auto mt-16 w-256 max-w-[80vw]" />
 
-	<p class="text-overlay1 mt-4 text-xl">
-		Source changes return to rendering; Mermaid-ready relayouts the slide.
-	</p>
-</div>
+<p class="mt-8 text-3xl">Click the diagram to zoom.</p>
