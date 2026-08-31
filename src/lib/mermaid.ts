@@ -2,27 +2,41 @@ import type { MermaidConfig } from 'mermaid';
 
 type MermaidApi = (typeof import('mermaid'))['default'];
 
-const config = {
-	startOnLoad: false,
-	securityLevel: 'strict',
-	theme: 'base',
-	themeVariables: {
-		background: '#24273a',
-		primaryColor: '#363a4f',
-		primaryBorderColor: '#8aadf4',
-		primaryTextColor: '#cad3f5',
-		lineColor: '#b8c0e0',
-		secondaryColor: '#494d64',
-		tertiaryColor: '#1e2030'
-	}
-} satisfies MermaidConfig;
+function token(name: string) {
+	return getComputedStyle(document.documentElement)
+		.getPropertyValue(`--catppuccin-color-${name}`)
+		.trim();
+}
+
+function createConfig(): MermaidConfig {
+	return {
+		startOnLoad: false,
+		securityLevel: 'strict',
+		theme: 'base',
+		themeVariables: {
+			background: token('base'),
+			primaryColor: token('surface0'),
+			primaryBorderColor: token('blue'),
+			primaryTextColor: token('text'),
+			lineColor: token('subtext1'),
+			secondaryColor: token('surface1'),
+			tertiaryColor: token('mantle'),
+			clusterBkg: token('mantle'),
+			clusterBorder: token('surface1'),
+			titleColor: token('text'),
+			edgeLabelBackground: token('base'),
+			errorBkgColor: token('surface0'),
+			errorTextColor: token('red')
+		}
+	};
+}
 
 let mermaidPromise: Promise<MermaidApi> | undefined;
 let renderQueue = Promise.resolve();
 
 async function getMermaid() {
 	mermaidPromise ??= import('mermaid').then(({ default: mermaid }) => {
-		mermaid.initialize(config);
+		mermaid.initialize(createConfig());
 		return mermaid;
 	});
 
