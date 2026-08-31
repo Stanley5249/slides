@@ -4,6 +4,9 @@
 
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import Minus from 'lucide-svelte/icons/minus';
+	import Plus from 'lucide-svelte/icons/plus';
+	import X from 'lucide-svelte/icons/x';
 
 	type Props = {
 		code: string;
@@ -72,6 +75,11 @@
 
 	function close() {
 		dialog.close();
+	}
+
+	function handleDialogClick(event: MouseEvent) {
+		event.stopPropagation();
+		if (event.target === dialog) close();
 	}
 
 	function setScale(nextScale: number, clientX?: number, clientY?: number) {
@@ -143,7 +151,7 @@
 <dialog
 	bind:this={dialog}
 	class="viewer"
-	onclick={(event) => event.stopPropagation()}
+	onclick={handleDialogClick}
 	onkeydown={(event) => event.stopPropagation()}
 	onclose={resetView}
 >
@@ -164,17 +172,36 @@
 		</div>
 	</div>
 
-	<button type="button" class="close" onclick={close} aria-label="Close diagram">×</button>
+	<button type="button" class="close" onclick={close} aria-label="Close diagram" title="Close">
+		<X size={22} strokeWidth={2.25} />
+	</button>
 
-	<div class="controls">
-		<button type="button" onclick={() => setScale(scale - scaleStep)} aria-label="Zoom out"
-			>−</button
+	<div class="controls" aria-label="Diagram zoom controls">
+		<button
+			type="button"
+			onclick={() => setScale(scale - scaleStep)}
+			aria-label="Zoom out"
+			title="Zoom out"
 		>
-		<button type="button" class="percentage" onclick={resetView} aria-label="Reset zoom">
+			<Minus size={21} strokeWidth={2.25} />
+		</button>
+		<button
+			type="button"
+			class="percentage"
+			onclick={resetView}
+			aria-label="Reset zoom"
+			title="Reset zoom"
+		>
 			{Math.round(scale * 100)}%
 		</button>
-		<button type="button" onclick={() => setScale(scale + scaleStep)} aria-label="Zoom in">+</button
+		<button
+			type="button"
+			onclick={() => setScale(scale + scaleStep)}
+			aria-label="Zoom in"
+			title="Zoom in"
 		>
+			<Plus size={21} strokeWidth={2.25} />
+		</button>
 	</div>
 </dialog>
 
@@ -229,22 +256,27 @@
 	}
 
 	.viewer {
-		width: 92vw;
-		max-width: none;
-		height: 88vh;
-		max-height: none;
+		position: fixed;
+		inset: 0;
+		width: min(92vw, 96rem);
+		max-width: calc(100vw - 2rem);
+		height: min(88vh, 64rem);
+		max-height: calc(100vh - 2rem);
+		margin: auto;
 		padding: 0;
 		overflow: hidden;
 		color: var(--catppuccin-color-text);
-		background: var(--catppuccin-color-base);
+		background: color-mix(in srgb, var(--catppuccin-color-base) 88%, transparent);
 		border: 1px solid var(--catppuccin-color-surface1);
 		border-radius: 1rem;
 		box-shadow: 0 1.5rem 5rem rgb(0 0 0 / 45%);
+		transform: none;
+		backdrop-filter: blur(16px);
 	}
 
 	.viewer::backdrop {
-		background: rgb(10 10 20 / 75%);
-		backdrop-filter: blur(5px);
+		background: rgb(10 10 20 / 68%);
+		backdrop-filter: blur(6px);
 	}
 
 	.viewport {
@@ -265,31 +297,36 @@
 		inset: 0;
 		display: grid;
 		place-items: center;
+		padding: 4rem;
 		transform-origin: center;
 		will-change: transform;
 	}
 
+	.full-diagram {
+		display: grid;
+		place-items: center;
+	}
+
 	.full-diagram :global(svg) {
 		display: block;
-		width: min(78vw, 75rem);
-		max-width: none;
-		height: min(68vh, 50rem);
+		width: min(76vw, 72rem) !important;
+		max-width: none !important;
+		height: auto !important;
+		max-height: calc(78vh - 7rem);
 	}
 
 	.close {
 		position: absolute;
 		top: 0.75rem;
 		right: 0.9rem;
+		z-index: 2;
 		display: grid;
 		width: 2.5rem;
 		height: 2.5rem;
 		place-items: center;
 		padding: 0;
-		font: inherit;
-		font-size: 2rem;
-		line-height: 1;
 		color: var(--catppuccin-color-text);
-		background: var(--catppuccin-color-mantle);
+		background: color-mix(in srgb, var(--catppuccin-color-mantle) 82%, transparent);
 		border: 1px solid var(--catppuccin-color-surface1);
 		border-radius: 999px;
 		cursor: pointer;
@@ -299,17 +336,22 @@
 		position: absolute;
 		bottom: 1rem;
 		left: 50%;
+		z-index: 2;
 		display: flex;
+		align-items: stretch;
 		overflow: hidden;
-		background: var(--catppuccin-color-mantle);
+		background: color-mix(in srgb, var(--catppuccin-color-mantle) 86%, transparent);
 		border: 1px solid var(--catppuccin-color-surface1);
 		border-radius: 0.6rem;
 		box-shadow: 0 0.5rem 1.5rem rgb(0 0 0 / 25%);
 		transform: translateX(-50%);
+		backdrop-filter: blur(12px);
 	}
 
 	.controls button {
+		display: grid;
 		min-width: 2.5rem;
+		place-items: center;
 		padding: 0.45rem 0.7rem;
 		font: inherit;
 		font-size: 1rem;
@@ -327,5 +369,18 @@
 		min-width: 4.5rem;
 		border-right: 1px solid var(--catppuccin-color-surface1);
 		border-left: 1px solid var(--catppuccin-color-surface1);
+	}
+
+	@media (max-width: 640px) {
+		.viewer {
+			width: calc(100vw - 1rem);
+			height: calc(100vh - 1rem);
+			max-width: none;
+			max-height: none;
+		}
+
+		.canvas {
+			padding: 3rem 1rem 4.5rem;
+		}
 	}
 </style>

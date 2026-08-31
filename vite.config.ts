@@ -9,9 +9,6 @@ export default defineConfig({
 		tailwindcss(),
 		sveltekit({
 			adapter: adapter(),
-			compilerOptions: {
-				runes: true
-			},
 			preprocess: vitePreprocess()
 		})
 	]

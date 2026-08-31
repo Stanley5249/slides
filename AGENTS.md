@@ -18,6 +18,7 @@
 ## Preferred libraries
 
 - Prefer Bits UI for accessible interactive primitives before creating custom controls.
+- Use `lucide-svelte` for interface icons instead of hand-drawn SVGs, Unicode symbols, or text glyphs.
 - Prefer TanStack Table for tabular interactions, Plotly.js for charts, and Papa Parse for CSV fixtures before creating equivalents.
 - Add those libraries only in the validation phase that needs them.
 - Use `svelte-adapter-bun` for the standalone Bun server because it supports this SvelteKit 2 template. Do not install it alongside `@sveltejs/adapter-bun`.

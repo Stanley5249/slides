@@ -33,6 +33,6 @@ Write the diagram with standard Mermaid syntax inside a JavaScript template stri
 - Use the mouse wheel to zoom from 50% to 400% around the pointer.
 - Drag with the left mouse button to pan.
 - Use the `−`, percentage, and `+` controls to zoom or reset the view.
-- Press Escape or use the `×` button to close the viewer.
+- Press Escape, click the translucent background, or use the close button to exit the viewer.
 
-The component stops pointer and keyboard events at the open dialog so Reveal.js does not change slides while the diagram is being inspected. Mermaid rendering uses strict security mode and is loaded only in the browser.
+Mermaid renders the diagram as SVG, so it remains sharp while zooming. The component stops pointer and keyboard events at the open dialog so Reveal.js does not change slides while the diagram is being inspected. Mermaid rendering uses strict security mode and is loaded only in the browser.
