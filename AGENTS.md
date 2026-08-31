@@ -7,6 +7,8 @@
 - Use `bun add` and `bun remove` to change dependencies.
 - Keep the project free of a Node runtime requirement. Compatibility type packages may remain when SvelteKit tooling requires them.
 - Do not add a `scripts` field to `package.json`. Define project commands in the root `justfile` and run JavaScript tool files with `bun --bun run`.
+- To drive a CDP target, prefer Bunx and the `chrome-devtools` CLI over playwright-cli: `bunx chrome-devtools`. Start it once with `--no-usage-statistics --no-performance-crux`.
+- For visual or interaction changes, take a targeted screenshot with Chrome DevTools after the relevant interaction.
 
 ## Presentation architecture
 
