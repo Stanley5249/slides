@@ -13,7 +13,7 @@
 <MermaidZoom
 	code={diagram}
 	label="Open the long diagram"
-	class="mx-auto mt-16 w-256 max-w-[80vw]"
+	class="mx-auto mt-16 w-5xl max-w-[80vw]"
 />
 
 <p class="mt-8 text-3xl">Twenty three steps, fitted to the window on open.</p>

@@ -10,6 +10,6 @@
 
 <p class="text-6xl font-bold drop-shadow-sm">🧜 Mermaid Diagrams</p>
 
-<MermaidZoom code={diagram} label="Open the diagram" class="mx-auto mt-16 w-256 max-w-[80vw]" />
+<MermaidZoom code={diagram} label="Open the diagram" class="mx-auto mt-16 w-5xl max-w-[80vw]" />
 
 <p class="mt-8 text-3xl">Click the diagram to zoom.</p>
