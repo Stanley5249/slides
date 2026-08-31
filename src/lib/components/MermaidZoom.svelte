@@ -6,6 +6,8 @@
 	import { browser } from '$app/environment';
 	import { getPresentation } from '@animotion/core';
 	import { tick } from 'svelte';
+	import Check from 'lucide-svelte/icons/check';
+	import Copy from 'lucide-svelte/icons/copy';
 	import Minus from 'lucide-svelte/icons/minus';
 	import Plus from 'lucide-svelte/icons/plus';
 	import RotateCcw from 'lucide-svelte/icons/rotate-ccw';
@@ -51,6 +53,7 @@
 	let viewerSvg = $state<string>();
 	let camera = $state(createCamera());
 	let drag = $state<DragState | null>(null);
+	let copied = $state(false);
 	// Plain lets, not $state: the render effect writes to them, so a signal here would loop.
 	let viewerRender: Promise<string> | undefined;
 	let renderRequest = 0;
@@ -124,9 +127,16 @@
 		camera.scale = Math.min(maxFitScale, Math.max(minScale, fit));
 	}
 
+	async function copyError() {
+		if (renderState.kind !== 'failed') return;
+		await navigator.clipboard.writeText(renderState.message);
+		copied = true;
+	}
+
 	function open() {
-		if (renderState.kind !== 'ready' || !dialog) return;
+		if (renderState.kind === 'rendering' || !dialog) return;
 		dialog.showModal();
+		if (renderState.kind === 'failed') return;
 
 		// The viewer copy is rendered lazily: most previews are never opened.
 		viewerRender ??= renderMermaid(code, `mermaid-zoom-${instanceId}-${renderRequest}-viewer`);
@@ -150,6 +160,7 @@
 	function handleDialogClose() {
 		camera = createCamera();
 		drag = null;
+		copied = false;
 	}
 
 	function setScale(nextScale: number, clientX?: number, clientY?: number) {
@@ -243,10 +254,13 @@
 	onclick={open}
 	aria-label={label}
 	aria-busy={renderState.kind === 'rendering'}
-	disabled={renderState.kind !== 'ready'}
+	disabled={renderState.kind === 'rendering'}
 >
 	{#if renderState.kind === 'failed'}
-		<span class="error">{renderState.message}</span>
+		<span class="error">
+			<span class="error-title">Mermaid could not render this diagram</span>
+			<span class="error-hint">Click to see the message</span>
+		</span>
 	{:else if renderState.kind === 'ready'}
 		<span class="diagram preview-diagram">{@html renderState.svg}</span>
 	{:else}
@@ -259,72 +273,95 @@
 	class="viewer"
 	onclose={handleDialogClose}
 	onkeydown={(event) => event.stopPropagation()}
+	onclick={(event) => {
+		// Only fires in the error view: the viewport covers the dialog when a diagram is shown, and
+		// handles its own blank-area tap.
+		if (event.target === dialog) close();
+	}}
 >
-	<!-- Deliberate: the viewport is a real keyboard-operable pan/zoom surface, not decorative. -->
-	<!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions -->
-	<div
-		bind:this={viewport}
-		class:dragging={drag !== null}
-		class="viewport"
-		role="application"
-		tabindex="0"
-		aria-label="Zoomed Mermaid diagram. Arrow keys pan, plus and minus zoom, zero resets."
-		onwheel={handleWheel}
-		onkeydown={handleKeydown}
-		onpointerdown={startDrag}
-		onpointermove={moveDrag}
-		onpointerup={stopDrag}
-		onlostpointercapture={(event) => stopDrag(event, false)}
-	>
-		<div
-			bind:this={canvas}
-			class="canvas"
-			style:transform={`translate3d(${camera.x}px, ${camera.y}px, 0) scale(${camera.scale})`}
-		>
-			{#if renderState.kind === 'failed'}
-				<span class="error">{renderState.message}</span>
-			{:else if viewerSvg}
-				<span bind:this={plate} class="diagram full-diagram">{@html viewerSvg}</span>
-			{:else}
-				<span class="loading">Rendering diagram…</span>
-			{/if}
+	{#if renderState.kind === 'failed'}
+		<div class="error-panel">
+			<div class="error-head">
+				<span>Mermaid error</span>
+				<button type="button" onclick={copyError} title="Copy the message">
+					{#if copied}
+						<Check size={16} strokeWidth={2.25} />
+						Copied
+					{:else}
+						<Copy size={16} strokeWidth={2.25} />
+						Copy
+					{/if}
+				</button>
+			</div>
+			<pre class="error-body">{renderState.message}</pre>
 		</div>
-	</div>
+	{:else}
+		<!-- Deliberate: the viewport is a real keyboard-operable pan/zoom surface, not decorative. -->
+		<!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions -->
+		<div
+			bind:this={viewport}
+			class:dragging={drag !== null}
+			class="viewport"
+			role="application"
+			tabindex="0"
+			aria-label="Zoomed Mermaid diagram. Arrow keys pan, plus and minus zoom, zero resets."
+			onwheel={handleWheel}
+			onkeydown={handleKeydown}
+			onpointerdown={startDrag}
+			onpointermove={moveDrag}
+			onpointerup={stopDrag}
+			onlostpointercapture={(event) => stopDrag(event, false)}
+		>
+			<div
+				bind:this={canvas}
+				class="canvas"
+				style:transform={`translate3d(${camera.x}px, ${camera.y}px, 0) scale(${camera.scale})`}
+			>
+				{#if viewerSvg}
+					<span bind:this={plate} class="diagram full-diagram">{@html viewerSvg}</span>
+				{:else}
+					<span class="loading">Rendering diagram…</span>
+				{/if}
+			</div>
+		</div>
+	{/if}
 
 	<button type="button" class="close" onclick={close} aria-label="Close diagram" title="Close">
 		<X size={22} strokeWidth={2.25} />
 	</button>
 
-	<div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
-		<button
-			type="button"
-			onclick={() => setScale(camera.scale - scaleStep)}
-			disabled={camera.scale <= minScale}
-			aria-label="Zoom out"
-			title="Zoom out"
-		>
-			<Minus size={21} strokeWidth={2.25} />
-		</button>
-		<button
-			type="button"
-			class="percentage"
-			onclick={resetView}
-			aria-label="Reset zoom"
-			title="Reset zoom"
-		>
-			<RotateCcw size={16} strokeWidth={2.25} />
-			{Math.round(camera.scale * 100)}%
-		</button>
-		<button
-			type="button"
-			onclick={() => setScale(camera.scale + scaleStep)}
-			disabled={camera.scale >= maxScale}
-			aria-label="Zoom in"
-			title="Zoom in"
-		>
-			<Plus size={21} strokeWidth={2.25} />
-		</button>
-	</div>
+	{#if renderState.kind !== 'failed'}
+		<div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
+			<button
+				type="button"
+				onclick={() => setScale(camera.scale - scaleStep)}
+				disabled={camera.scale <= minScale}
+				aria-label="Zoom out"
+				title="Zoom out"
+			>
+				<Minus size={21} strokeWidth={2.25} />
+			</button>
+			<button
+				type="button"
+				class="percentage"
+				onclick={resetView}
+				aria-label="Reset zoom"
+				title="Reset zoom"
+			>
+				<RotateCcw size={16} strokeWidth={2.25} />
+				{Math.round(camera.scale * 100)}%
+			</button>
+			<button
+				type="button"
+				onclick={() => setScale(camera.scale + scaleStep)}
+				disabled={camera.scale >= maxScale}
+				aria-label="Zoom in"
+				title="Zoom in"
+			>
+				<Plus size={21} strokeWidth={2.25} />
+			</button>
+		</div>
+	{/if}
 </dialog>
 
 <style>
@@ -393,7 +430,84 @@
 	}
 
 	.error {
+		gap: 0.4rem;
 		color: var(--catppuccin-color-red);
+	}
+
+	.error-title {
+		font-weight: 600;
+	}
+
+	.error-hint {
+		color: var(--catppuccin-color-subtext0);
+		font-size: 0.85rem;
+	}
+
+	.error-panel {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		display: flex;
+		flex-direction: column;
+		width: min(64rem, calc(100dvw - 2 * var(--canvas-side)));
+		max-height: calc(100dvh - 8rem);
+		overflow: hidden;
+		background: var(--catppuccin-color-base);
+		border: 1px solid var(--catppuccin-color-surface1);
+		border-radius: 0.75rem;
+		box-shadow: 0 1.25rem 3.5rem color-mix(in srgb, var(--catppuccin-color-crust) 78%, transparent);
+		transform: translate(-50%, -50%);
+	}
+
+	.error-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 0.75rem 0.75rem 0.75rem 1.25rem;
+		color: var(--catppuccin-color-red);
+		font-weight: 600;
+		font-size: 1.1rem;
+		background: var(--catppuccin-color-mantle);
+		border-bottom: 1px solid var(--catppuccin-color-surface1);
+	}
+
+	.error-head button {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.4rem 0.8rem;
+		color: var(--catppuccin-color-text);
+		font: inherit;
+		font-weight: 500;
+		font-size: 0.9rem;
+		background: var(--catppuccin-color-surface0);
+		border: 1px solid var(--catppuccin-color-surface1);
+		border-radius: 0.5rem;
+		cursor: pointer;
+	}
+
+	.error-head button:hover {
+		background: var(--catppuccin-color-surface1);
+	}
+
+	.error-head button:focus-visible {
+		outline: 3px solid var(--catppuccin-color-sapphire);
+		outline-offset: 3px;
+	}
+
+	.error-body {
+		margin: 0;
+		padding: 1.25rem;
+		overflow: auto;
+		color: var(--catppuccin-color-text);
+		font-size: 0.95rem;
+		font-family: 'Monaspace Neon', ui-monospace, monospace;
+		line-height: 1.5;
+		white-space: pre-wrap;
+		/* The whole point of this window: the message must be selectable and copyable. */
+		user-select: text;
+		tab-size: 2;
 	}
 
 	.viewer {
