@@ -53,12 +53,11 @@ function enqueue<T>(work: () => Promise<T>) {
 	return job;
 }
 
-export async function renderMermaidPair(source: string, id: string) {
+export async function renderMermaid(source: string, id: string) {
 	return enqueue(async () => {
 		const mermaid = await getMermaid();
-		const preview = await mermaid.render(`${id}-preview`, source);
-		const viewer = await mermaid.render(`${id}-viewer`, source);
+		const { svg } = await mermaid.render(id, source);
 
-		return { previewSvg: preview.svg, viewerSvg: viewer.svg };
+		return svg;
 	});
 }

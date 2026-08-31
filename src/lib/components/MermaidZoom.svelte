@@ -8,8 +8,9 @@
 	import { tick } from 'svelte';
 	import Minus from 'lucide-svelte/icons/minus';
 	import Plus from 'lucide-svelte/icons/plus';
+	import RotateCcw from 'lucide-svelte/icons/rotate-ccw';
 	import X from 'lucide-svelte/icons/x';
-	import { renderMermaidPair } from '$lib/mermaid';
+	import { renderMermaid } from '$lib/mermaid';
 
 	type Props = {
 		code: string;
@@ -18,15 +19,7 @@
 	};
 
 	type RenderState =
-		| { kind: 'rendering' }
-		| { kind: 'ready'; previewSvg: string; viewerSvg: string }
-		| { kind: 'failed'; message: string };
-
-	type Camera = {
-		scale: number;
-		x: number;
-		y: number;
-	};
+		{ kind: 'rendering' } | { kind: 'ready'; svg: string } | { kind: 'failed'; message: string };
 
 	type DragState = {
 		pointerId: number;
@@ -38,25 +31,31 @@
 		moved: boolean;
 	};
 
-	type ViewerState =
-		| { kind: 'closed'; camera: Camera }
-		| { kind: 'open'; camera: Camera }
-		| { kind: 'dragging'; camera: Camera; drag: DragState };
-
 	let { code, label = 'Open Mermaid diagram', class: className = '' }: Props = $props();
 
-	const minScale = 0.5;
+	// Low enough that a tall diagram can actually be fitted whole.
+	const minScale = 0.1;
 	const maxScale = 4;
+	// Ceiling for the automatic fit only, so a small diagram opens comfortably instead of enormous.
+	const maxFitScale = 2;
 	const scaleStep = 0.25;
+	const panStep = 48;
 	const instanceId = ++componentId;
 
 	let dialog: HTMLDialogElement | undefined;
-	let viewport: HTMLDivElement | undefined;
+	// Conditionally rendered, so these bindings are reassigned and need signals.
+	let viewport = $state<HTMLDivElement>();
+	let canvas = $state<HTMLDivElement>();
+	let plate = $state<HTMLElement>();
 	let renderState = $state<RenderState>({ kind: 'rendering' });
-	let viewerState = $state<ViewerState>({ kind: 'closed', camera: createCamera() });
+	let viewerSvg = $state<string>();
+	let camera = $state(createCamera());
+	let drag = $state<DragState | null>(null);
+	// Plain lets, not $state: the render effect writes to them, so a signal here would loop.
+	let viewerRender: Promise<string> | undefined;
 	let renderRequest = 0;
 
-	function createCamera(): Camera {
+	function createCamera() {
 		return { scale: 1, x: 0, y: 0 };
 	}
 
@@ -67,24 +66,20 @@
 		const source = code;
 		let cancelled = false;
 		if (dialog?.open) dialog.close();
-		viewerState = { kind: 'closed', camera: createCamera() };
+		viewerSvg = undefined;
+		viewerRender = undefined;
 		renderState = { kind: 'rendering' };
 
 		void (async () => {
 			try {
-				const diagrams = await renderMermaidPair(source, `mermaid-zoom-${instanceId}-${request}`);
-				if (cancelled || request !== renderRequest) return;
-
-				renderState = { kind: 'ready', ...diagrams };
-				await layoutPresentation();
+				const svg = await renderMermaid(source, `mermaid-zoom-${instanceId}-${request}-preview`);
+				if (cancelled) return;
+				renderState = { kind: 'ready', svg };
 			} catch (error) {
-				if (cancelled || request !== renderRequest) return;
-				renderState = {
-					kind: 'failed',
-					message: error instanceof Error ? error.message : 'Could not render this diagram.'
-				};
-				await layoutPresentation();
+				if (cancelled) return;
+				renderState = { kind: 'failed', message: describe(error) };
 			}
+			await layoutPresentation(() => !cancelled);
 		})();
 
 		return () => {
@@ -92,20 +87,60 @@
 		};
 	});
 
-	async function layoutPresentation() {
-		await tick();
-		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-		getPresentation().slides?.layout();
+	function describe(error: unknown) {
+		return error instanceof Error ? error.message : 'Could not render this diagram.';
 	}
 
-	function resetView() {
-		viewerState.camera = createCamera();
+	async function layoutPresentation(isAlive: () => boolean) {
+		await tick();
+		await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+		if (isAlive()) getPresentation().slides?.layout();
+	}
+
+	// The default view: whichever edge runs out first decides the scale, capped by maxFitScale.
+	async function resetView() {
+		camera = createCamera();
+		await tick();
+		if (!viewport || !canvas || !plate) return;
+
+		// Mermaid ships the SVG with width="100%", which has no definite basis inside a shrink-to-fit
+		// plate and collapses every diagram to the same arbitrary width. Pin it to the viewBox instead,
+		// so the plate lays out at the diagram's real size and the camera is the only thing scaling.
+		const svg = plate.querySelector('svg');
+		const viewBox = svg?.getAttribute('viewBox')?.split(/\s+/).map(Number);
+		if (svg && viewBox?.length === 4) {
+			svg.style.width = `${viewBox[2]}px`;
+			svg.style.maxWidth = 'none';
+		}
+		await tick();
+
+		const padding = getComputedStyle(canvas);
+		const availableWidth =
+			viewport.clientWidth - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight);
+		const availableHeight =
+			viewport.clientHeight - parseFloat(padding.paddingTop) - parseFloat(padding.paddingBottom);
+		// offsetWidth/Height are layout sizes, unaffected by the camera transform.
+		const fit = Math.min(availableWidth / plate.offsetWidth, availableHeight / plate.offsetHeight);
+		camera.scale = Math.min(maxFitScale, Math.max(minScale, fit));
 	}
 
 	function open() {
 		if (renderState.kind !== 'ready' || !dialog) return;
-		viewerState = { kind: 'open', camera: createCamera() };
 		dialog.showModal();
+
+		// The viewer copy is rendered lazily: most previews are never opened.
+		viewerRender ??= renderMermaid(code, `mermaid-zoom-${instanceId}-${renderRequest}-viewer`);
+		const pending = viewerRender;
+		void pending.then(
+			(svg) => {
+				if (viewerRender !== pending) return;
+				viewerSvg = svg;
+				void resetView();
+			},
+			(error) => {
+				if (viewerRender === pending) renderState = { kind: 'failed', message: describe(error) };
+			}
+		);
 	}
 
 	function close() {
@@ -113,86 +148,91 @@
 	}
 
 	function handleDialogClose() {
-		viewerState = { kind: 'closed', camera: createCamera() };
-	}
-
-	function handleDialogClick(event: MouseEvent) {
-		event.stopPropagation();
+		camera = createCamera();
+		drag = null;
 	}
 
 	function setScale(nextScale: number, clientX?: number, clientY?: number) {
-		const camera = viewerState.camera;
 		const previousScale = camera.scale;
 		const boundedScale = Math.min(maxScale, Math.max(minScale, nextScale));
 		if (boundedScale === previousScale) return;
-
-		let x = camera.x;
-		let y = camera.y;
 
 		if (clientX !== undefined && clientY !== undefined && viewport) {
 			const bounds = viewport.getBoundingClientRect();
 			const pointerX = clientX - (bounds.left + bounds.width / 2);
 			const pointerY = clientY - (bounds.top + bounds.height / 2);
 			const ratio = boundedScale / previousScale;
-			x = pointerX - (pointerX - camera.x) * ratio;
-			y = pointerY - (pointerY - camera.y) * ratio;
+			camera.x = pointerX - (pointerX - camera.x) * ratio;
+			camera.y = pointerY - (pointerY - camera.y) * ratio;
 		}
 
-		viewerState.camera = { scale: boundedScale, x, y };
+		camera.scale = boundedScale;
 	}
 
 	function handleWheel(event: WheelEvent) {
 		event.preventDefault();
 		event.stopPropagation();
 		const factor = Math.exp(-event.deltaY * 0.0015);
-		setScale(viewerState.camera.scale * factor, event.clientX, event.clientY);
+		setScale(camera.scale * factor, event.clientX, event.clientY);
+	}
+
+	const panKeys: Record<string, [number, number]> = {
+		ArrowLeft: [panStep, 0],
+		ArrowRight: [-panStep, 0],
+		ArrowUp: [0, panStep],
+		ArrowDown: [0, -panStep]
+	};
+
+	function handleKeydown(event: KeyboardEvent) {
+		// Reveal listens on document, so the deck must not navigate while the viewer is open.
+		event.stopPropagation();
+
+		const pan = panKeys[event.key];
+		if (pan) {
+			event.preventDefault();
+			camera.x += pan[0];
+			camera.y += pan[1];
+		} else if (event.key === '+' || event.key === '=') {
+			setScale(camera.scale + scaleStep);
+		} else if (event.key === '-') {
+			setScale(camera.scale - scaleStep);
+		} else if (event.key === '0') {
+			resetView();
+		}
 	}
 
 	function startDrag(event: PointerEvent) {
-		if (event.button !== 0 || !viewport) return;
+		if (event.button !== 0 || drag || !viewport) return;
 		event.preventDefault();
 		event.stopPropagation();
-		const camera = viewerState.camera;
-		viewerState = {
-			kind: 'dragging',
-			camera,
-			drag: {
-				pointerId: event.pointerId,
-				offsetX: event.clientX - camera.x,
-				offsetY: event.clientY - camera.y,
-				startX: event.clientX,
-				startY: event.clientY,
-				fromBackground:
-					!(event.target instanceof Element) || !event.target.closest('.full-diagram'),
-				moved: false
-			}
+		drag = {
+			pointerId: event.pointerId,
+			offsetX: event.clientX - camera.x,
+			offsetY: event.clientY - camera.y,
+			startX: event.clientX,
+			startY: event.clientY,
+			fromBackground: !(event.target instanceof Element) || !event.target.closest('.full-diagram'),
+			moved: false
 		};
 		viewport.setPointerCapture(event.pointerId);
 	}
 
 	function moveDrag(event: PointerEvent) {
-		if (viewerState.kind !== 'dragging' || event.pointerId !== viewerState.drag.pointerId) return;
+		if (drag?.pointerId !== event.pointerId) return;
 
-		if (
-			Math.abs(event.clientX - viewerState.drag.startX) > 3 ||
-			Math.abs(event.clientY - viewerState.drag.startY) > 3
-		) {
-			viewerState.drag.moved = true;
+		if (Math.abs(event.clientX - drag.startX) > 3 || Math.abs(event.clientY - drag.startY) > 3) {
+			drag.moved = true;
 		}
 
-		viewerState.camera = {
-			...viewerState.camera,
-			x: event.clientX - viewerState.drag.offsetX,
-			y: event.clientY - viewerState.drag.offsetY
-		};
+		camera.x = event.clientX - drag.offsetX;
+		camera.y = event.clientY - drag.offsetY;
 	}
 
 	function stopDrag(event: PointerEvent, dismissOnTap = true) {
-		if (viewerState.kind !== 'dragging' || event.pointerId !== viewerState.drag.pointerId) return;
+		if (drag?.pointerId !== event.pointerId) return;
 
-		const { camera, drag } = viewerState;
 		const dismiss = dismissOnTap && drag.fromBackground && !drag.moved;
-		viewerState = { kind: 'open', camera };
+		drag = null;
 		if (dismiss) close();
 	}
 </script>
@@ -200,10 +240,7 @@
 <button
 	type="button"
 	class={`preview ${className}`}
-	onclick={(event) => {
-		event.stopPropagation();
-		open();
-	}}
+	onclick={open}
 	aria-label={label}
 	aria-busy={renderState.kind === 'rendering'}
 	disabled={renderState.kind !== 'ready'}
@@ -211,7 +248,7 @@
 	{#if renderState.kind === 'failed'}
 		<span class="error">{renderState.message}</span>
 	{:else if renderState.kind === 'ready'}
-		<span class="diagram preview-diagram">{@html renderState.previewSvg}</span>
+		<span class="diagram preview-diagram">{@html renderState.svg}</span>
 	{:else}
 		<span class="loading">Rendering diagram…</span>
 	{/if}
@@ -220,30 +257,34 @@
 <dialog
 	bind:this={dialog}
 	class="viewer"
-	onclick={handleDialogClick}
-	onkeydown={(event) => event.stopPropagation()}
 	onclose={handleDialogClose}
+	onkeydown={(event) => event.stopPropagation()}
 >
+	<!-- Deliberate: the viewport is a real keyboard-operable pan/zoom surface, not decorative. -->
+	<!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions -->
 	<div
 		bind:this={viewport}
-		class:dragging={viewerState.kind === 'dragging'}
+		class:dragging={drag !== null}
 		class="viewport"
 		role="application"
-		aria-label="Zoomed Mermaid diagram. Use the mouse wheel to zoom and drag to pan."
+		tabindex="0"
+		aria-label="Zoomed Mermaid diagram. Arrow keys pan, plus and minus zoom, zero resets."
 		onwheel={handleWheel}
+		onkeydown={handleKeydown}
 		onpointerdown={startDrag}
 		onpointermove={moveDrag}
 		onpointerup={stopDrag}
-		onpointercancel={(event) => stopDrag(event, false)}
+		onlostpointercapture={(event) => stopDrag(event, false)}
 	>
 		<div
+			bind:this={canvas}
 			class="canvas"
-			style:transform={`translate3d(${viewerState.camera.x}px, ${viewerState.camera.y}px, 0) scale(${viewerState.camera.scale})`}
+			style:transform={`translate3d(${camera.x}px, ${camera.y}px, 0) scale(${camera.scale})`}
 		>
-			{#if renderState.kind === 'ready'}
-				<span class="diagram full-diagram">{@html renderState.viewerSvg}</span>
-			{:else if renderState.kind === 'failed'}
+			{#if renderState.kind === 'failed'}
 				<span class="error">{renderState.message}</span>
+			{:else if viewerSvg}
+				<span bind:this={plate} class="diagram full-diagram">{@html viewerSvg}</span>
 			{:else}
 				<span class="loading">Rendering diagram…</span>
 			{/if}
@@ -254,10 +295,11 @@
 		<X size={22} strokeWidth={2.25} />
 	</button>
 
-	<div class="zoom-controls" role="toolbar" aria-label="Diagram zoom controls">
+	<div class="zoom-controls" role="group" aria-label="Diagram zoom controls">
 		<button
 			type="button"
-			onclick={() => setScale(viewerState.camera.scale - scaleStep)}
+			onclick={() => setScale(camera.scale - scaleStep)}
+			disabled={camera.scale <= minScale}
 			aria-label="Zoom out"
 			title="Zoom out"
 		>
@@ -270,11 +312,13 @@
 			aria-label="Reset zoom"
 			title="Reset zoom"
 		>
-			{Math.round(viewerState.camera.scale * 100)}%
+			<RotateCcw size={16} strokeWidth={2.25} />
+			{Math.round(camera.scale * 100)}%
 		</button>
 		<button
 			type="button"
-			onclick={() => setScale(viewerState.camera.scale + scaleStep)}
+			onclick={() => setScale(camera.scale + scaleStep)}
+			disabled={camera.scale >= maxScale}
 			aria-label="Zoom in"
 			title="Zoom in"
 		>
@@ -284,6 +328,7 @@
 </dialog>
 
 <style>
+	/* Plate rule: every diagram surface is base with a surface1 hairline, one step above its ground. */
 	.preview {
 		display: block;
 		width: 100%;
@@ -291,9 +336,10 @@
 		padding: 1rem;
 		overflow: hidden;
 		color: var(--catppuccin-color-text);
-		background: var(--catppuccin-color-mantle);
+		background: var(--catppuccin-color-base);
 		border: 1px solid var(--catppuccin-color-surface1);
 		border-radius: 0.75rem;
+		box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--catppuccin-color-crust) 56%, transparent);
 		cursor: zoom-in;
 	}
 
@@ -312,24 +358,29 @@
 		outline-offset: 3px;
 	}
 
+	.viewport:focus-visible {
+		outline: 3px solid var(--catppuccin-color-sapphire);
+		outline-offset: -3px;
+	}
+
 	.diagram {
 		display: block;
 		line-height: 0;
 	}
 
-	.preview-diagram :global(svg) {
-		display: block;
-		width: 100%;
-		max-height: 24rem;
-		margin: auto;
-	}
-
 	.preview-diagram {
 		display: grid;
 		min-height: 6rem;
-		place-items: center;
-		background: var(--catppuccin-color-base);
-		box-shadow: 0 0.5rem 1.5rem color-mix(in srgb, var(--catppuccin-color-crust) 56%, transparent);
+		/* Stretch horizontally: a centred grid item shrink-wraps, which collapses a wide diagram. */
+		place-items: center stretch;
+	}
+
+	.preview-diagram :global(svg) {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-height: 24rem;
+		margin: auto;
 	}
 
 	.loading,
@@ -346,11 +397,16 @@
 	}
 
 	.viewer {
+		--canvas-side: 3rem;
+		--toolbar-inset: clamp(1.5rem, 8vh, 10rem);
+		/* Toolbar height plus breathing room, so the canvas never runs under the controls. */
+		--toolbar-space: calc(var(--toolbar-inset) + 4rem);
+
 		position: fixed;
 		inset: 0;
-		width: 100vw;
+		width: 100dvw;
 		max-width: none;
-		height: 100vh;
+		height: 100dvh;
 		max-height: none;
 		margin: 0;
 		padding: 0;
@@ -382,26 +438,35 @@
 	.canvas {
 		position: absolute;
 		inset: 0;
-		display: grid;
-		place-items: center;
-		padding: 4.5rem 3rem 6rem;
+		/* Vertically symmetric on purpose: the grid centres the plate in the content box while the
+		   camera scales about the canvas centre, so the two must be the same point. */
+		padding: var(--toolbar-space) var(--canvas-side);
 		transform-origin: center;
 		will-change: transform;
 	}
 
+	/* Centred with a transform, not with grid or flex: those start-align an item larger than their
+	   area, which pushed a tall diagram off the bottom as soon as the camera scaled it. */
+	.canvas > :global(*) {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
 	.full-diagram {
-		display: grid;
-		place-items: center;
 		background: var(--catppuccin-color-base);
+		border: 1px solid var(--catppuccin-color-surface1);
+		border-radius: 0.75rem;
 		box-shadow: 0 1.25rem 3.5rem color-mix(in srgb, var(--catppuccin-color-crust) 78%, transparent);
 	}
 
+	/* No fitting here: Mermaid's inline max-width is the diagram's natural size, so 100% means 100%
+	   and the camera is the only thing that scales. Oversized diagrams overflow and are panned. */
 	.full-diagram :global(svg) {
 		display: block;
-		width: min(82vw, 80rem) !important;
-		max-width: none !important;
-		height: auto !important;
-		max-height: calc(100vh - 11rem);
+		width: 100%;
+		height: auto;
 	}
 
 	.close {
@@ -427,12 +492,11 @@
 
 	.zoom-controls {
 		position: absolute;
-		bottom: clamp(1.5rem, 8vh, 10rem);
+		bottom: var(--toolbar-inset);
 		left: 50%;
 		z-index: 2;
 		display: flex;
 		align-items: stretch;
-		overflow: hidden;
 		background: color-mix(in srgb, var(--catppuccin-color-mantle) 92%, transparent);
 		border: 1px solid var(--catppuccin-color-surface1);
 		border-radius: 0.6rem;
@@ -454,24 +518,34 @@
 		cursor: pointer;
 	}
 
-	.zoom-controls button:hover {
+	/* No overflow clipping on the bar: it would cut the focus ring off. */
+	.zoom-controls button:first-child {
+		border-radius: 0.5rem 0 0 0.5rem;
+	}
+
+	.zoom-controls button:last-child {
+		border-radius: 0 0.5rem 0.5rem 0;
+	}
+
+	.zoom-controls button:hover:not(:disabled) {
 		background: var(--catppuccin-color-surface0);
 	}
 
+	.zoom-controls button:disabled {
+		color: var(--catppuccin-color-overlay0);
+		cursor: default;
+	}
+
 	.zoom-controls .percentage {
-		min-width: 4.5rem;
-		border-right: 1px solid var(--catppuccin-color-surface1);
-		border-left: 1px solid var(--catppuccin-color-surface1);
+		grid-auto-flow: column;
+		gap: 0.4rem;
+		min-width: 5.5rem;
+		font-variant-numeric: tabular-nums;
 	}
 
 	@media (max-width: 640px) {
-		.canvas {
-			padding: 3.5rem 1rem 5rem;
-		}
-
-		.full-diagram :global(svg) {
-			width: 92vw !important;
-			max-height: calc(100vh - 9rem);
+		.viewer {
+			--canvas-side: 1rem;
 		}
 	}
 </style>
