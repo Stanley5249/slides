@@ -12,6 +12,7 @@
 	import Plus from 'lucide-svelte/icons/plus';
 	import RotateCcw from 'lucide-svelte/icons/rotate-ccw';
 	import X from 'lucide-svelte/icons/x';
+	import { dismissable } from '$lib/dismissable';
 	import { renderMermaid } from '$lib/mermaid';
 
 	type Props = {
@@ -27,10 +28,6 @@
 		pointerId: number;
 		offsetX: number;
 		offsetY: number;
-		startX: number;
-		startY: number;
-		fromBackground: boolean;
-		moved: boolean;
 	};
 
 	let { code, label = 'Open Mermaid diagram', class: className = '' }: Props = $props();
@@ -219,11 +216,7 @@
 		drag = {
 			pointerId: event.pointerId,
 			offsetX: event.clientX - camera.x,
-			offsetY: event.clientY - camera.y,
-			startX: event.clientX,
-			startY: event.clientY,
-			fromBackground: !(event.target instanceof Element) || !event.target.closest('.full-diagram'),
-			moved: false
+			offsetY: event.clientY - camera.y
 		};
 		viewport.setPointerCapture(event.pointerId);
 	}
@@ -231,20 +224,13 @@
 	function moveDrag(event: PointerEvent) {
 		if (drag?.pointerId !== event.pointerId) return;
 
-		if (Math.abs(event.clientX - drag.startX) > 3 || Math.abs(event.clientY - drag.startY) > 3) {
-			drag.moved = true;
-		}
-
 		camera.x = event.clientX - drag.offsetX;
 		camera.y = event.clientY - drag.offsetY;
 	}
 
-	function stopDrag(event: PointerEvent, dismissOnTap = true) {
+	function stopDrag(event: PointerEvent) {
 		if (drag?.pointerId !== event.pointerId) return;
-
-		const dismiss = dismissOnTap && drag.fromBackground && !drag.moved;
 		drag = null;
-		if (dismiss) close();
 	}
 </script>
 
@@ -273,11 +259,7 @@
 	class="viewer"
 	onclose={handleDialogClose}
 	onkeydown={(event) => event.stopPropagation()}
-	onclick={(event) => {
-		// Only fires in the error view: the viewport covers the dialog when a diagram is shown, and
-		// handles its own blank-area tap.
-		if (event.target === dialog) close();
-	}}
+	{@attach dismissable('.viewport, .canvas')}
 >
 	{#if renderState.kind === 'failed'}
 		<div class="error-panel">
@@ -310,7 +292,7 @@
 			onpointerdown={startDrag}
 			onpointermove={moveDrag}
 			onpointerup={stopDrag}
-			onlostpointercapture={(event) => stopDrag(event, false)}
+			onlostpointercapture={stopDrag}
 		>
 			<div
 				bind:this={canvas}
