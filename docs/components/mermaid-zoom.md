@@ -29,10 +29,14 @@ Write the diagram with standard Mermaid syntax inside a JavaScript template stri
 ## Interactions
 
 - Hover over the preview to see the zoom-in cursor.
-- Click the preview to open the modal viewer.
+- Click the preview to open the modal viewer. The viewer opens fitted to the window, up to 200%.
+- If the source does not parse, the preview says so and clicking it opens the full Mermaid message in a
+  monospace window with a copy button, instead of the viewer.
 - Use the mouse wheel to zoom from 50% to 400% around the pointer.
 - Drag with the left mouse button to pan.
-- Use the `−`, percentage, and `+` controls to zoom or reset the view.
+- Use the `−`, percentage, and `+` controls to zoom or reset the view. `−` and `+` are disabled at the 50% and 400%
+  limits.
+- With the viewer focused, arrow keys pan, `+` and `-` zoom, and `0` resets.
 - Press Escape, click the translucent background, or use the close button to exit the viewer. The SVG is
   shown on a Macchiato canvas, independent from the floating zoom controls.
 
@@ -40,9 +44,10 @@ Mermaid renders the diagram as SVG, so it remains sharp while zooming. The compo
 
 ## State model
 
-`MermaidZoom` keeps its render state and viewer state separate. Mermaid is initialized once and SVG rendering is
-serialized; each ready state contains two separately identified SVGs with the same source and theme—one for the
-preview and one for the viewer. This avoids global Mermaid configuration races and duplicate SVG IDs in the DOM.
+`MermaidZoom` models rendering as a discriminated union and the viewer as a camera plus an optional drag. Mermaid is
+initialized once from the live Catppuccin custom properties, and SVG rendering is serialized. The preview SVG renders
+with the component; the viewer SVG renders on first open under its own ID, so the two copies never share Mermaid IDs
+in the DOM.
 
 ```mermaid
 flowchart TD
@@ -57,9 +62,10 @@ flowchart TD
   Ready -->|Source changes| Rendering
 ```
 
-When rendering reaches `ready`, the component waits for Svelte to paint the SVG, then calls Animotion's Reveal
-instance `layout()` so a freshly loaded centered slide is measured again. The preview and viewer both use the same
-Catppuccin Macchiato surface and Mermaid palette.
+The diagram describes behaviour, not the type. Only `Rendering`, `Ready`, and `Failed` are a union in the code:
+`Inspecting` is the dialog being open and `Panning` is a non-null drag. Making those variants too would have copied
+the camera into states nothing could tell apart.
 
-`Ready → Inspecting` is a preview click. `Inspecting → Panning → Inspecting` is a left-button drag, wheel and
-toolbar input update the inspecting camera, and close, Escape, or a blank-stage click return to `Ready`.
+When rendering reaches `ready`, the component waits for Svelte to paint the SVG, then calls Animotion's Reveal
+instance `layout()` so a freshly loaded centered slide is measured again. Preview and viewer share one surface rule:
+a `base` plate with a `surface1` hairline, one step above its ground.
