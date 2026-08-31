@@ -21,3 +21,7 @@ Check and build the presentation:
 ```sh
 just ci
 ```
+
+## Components
+
+Reusable presentation components live in `src/lib/components` and are exported from `$lib`. See the [component reference](docs/components/README.md) for usage and API details.
