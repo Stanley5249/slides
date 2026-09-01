@@ -19,7 +19,7 @@
 
 	type RenderState =
 		| { kind: 'rendering' }
-		| { kind: 'ready'; svg: string; width: number }
+		| { kind: 'ready'; svg: string; width: string }
 		| { kind: 'failed'; message: string };
 
 	let { code, label = 'Open Mermaid diagram', class: className = '' }: Props = $props();
@@ -61,9 +61,11 @@
 
 	// Mermaid ships the SVG with width="100%", which has no definite basis inside a shrink-to-fit
 	// parent and collapses every diagram to the same arbitrary width. The viewBox carries the real
-	// size, so the wrapper is pinned to it and the SVG fills the wrapper.
+	// size, so the wrapper is pinned to it and the SVG fills the wrapper. If the viewBox ever stops
+	// matching, max-content keeps a definite basis and fails visibly wide instead of collapsing again.
 	function naturalWidth(svg: string) {
-		return Number(svg.match(/viewBox="\S+ \S+ (\S+) /)?.[1]) || 0;
+		const viewBoxWidth = Number(svg.match(/viewBox="\S+ \S+ (\S+) /)?.[1]);
+		return viewBoxWidth > 0 ? `${viewBoxWidth}px` : 'max-content';
 	}
 
 	async function copyError() {
@@ -78,7 +80,7 @@
 {#if renderState.kind === 'ready'}
 	{@const { svg, width } = renderState}
 	{#snippet plate(source: string)}
-		<span class="diagram" style:width={width ? `${width}px` : undefined}>{@html source}</span>
+		<span class="diagram" style:width>{@html source}</span>
 	{/snippet}
 	<Zoom {label} class={className}>
 		{@render plate(svg)}
