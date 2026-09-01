@@ -32,6 +32,10 @@
 	const maxFitScale = 2;
 	const scaleStep = 0.25;
 	const panStep = 48;
+	// The content drags with the canvas, since that is what a viewer expects to grab. Controls and
+	// text are exempt: a press there keeps its own click, or starts a selection, both of which a
+	// drag would preventDefault away. The stylesheet mirrors this list to keep the cursor honest.
+	const exempt = 'button, a, input, textarea, text, tspan, foreignObject';
 
 	let dialog: HTMLDialogElement | undefined;
 	// Conditionally rendered, so these bindings are reassigned and need signals.
@@ -127,11 +131,8 @@
 	}
 
 	function startDrag(event: PointerEvent) {
-		// The content drags with the canvas, since that is what a viewer expects to grab. Only
-		// interactive content is exempt, so a control in the plate keeps its own clicks.
 		if (event.button !== 0 || drag || !viewport) return;
-		if (event.target instanceof Element && event.target.closest('button, a, input, textarea'))
-			return;
+		if (event.target instanceof Element && event.target.closest(exempt)) return;
 		event.preventDefault();
 		event.stopPropagation();
 		drag = {
@@ -323,6 +324,16 @@
 	.viewport.dragging {
 		cursor: grabbing;
 		user-select: none;
+	}
+
+	/* Mirrors the exempt list in startDrag, so the grab cursor never promises a pan that will not
+	   happen. Controls carry their own cursor; text gets the caret that says it can be selected. */
+	.viewport :global(:is(button, a, input, textarea)) {
+		cursor: auto;
+	}
+
+	.viewport :global(:is(text, tspan, foreignObject)) {
+		cursor: text;
 	}
 
 	.canvas {

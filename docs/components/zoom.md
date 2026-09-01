@@ -38,10 +38,12 @@ Pass a `zoomed` snippet when the enlarged copy should differ from the preview:
 - Hover the preview to see the zoom-in cursor. Click anywhere on it to open the viewer.
 - The viewer opens fitted to the window, up to 200%.
 - Use the mouse wheel to zoom from 10% to 400% around the pointer.
-- Drag with the left mouse button to pan, from the content as well as from blank canvas. A press that
-  lands on a button, link, or field is left alone, so controls inside the plate keep working.
+- Drag with the left mouse button to pan, from the content as well as from blank canvas. A press on a
+  control or on text is left alone, so buttons keep their clicks and labels stay selectable. The cursor
+  follows the same rule, so grab only appears where a press really pans.
 - Use the `−`, percentage, and `+` controls to zoom or reset the view.
-- With the viewer focused, arrow keys pan, `+` and `-` zoom, and `0` resets.
+- With the viewer focused, arrow keys move the content the way a drag would, `+` and `-` zoom, and `0`
+  resets.
 - Press Escape, click the translucent background, or use the close button to exit.
 
 The component stops pointer and keyboard events at the open dialog so Reveal.js does not change slides while

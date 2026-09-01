@@ -134,6 +134,13 @@
 		max-height: inherit;
 	}
 
+	/* Explicit, because the plate suppresses selection while a drag is live and a label is the one
+	   thing in a diagram worth copying. */
+	.diagram :global(foreignObject),
+	.diagram :global(text) {
+		user-select: text;
+	}
+
 	.loading {
 		display: grid;
 		min-height: 8rem;
