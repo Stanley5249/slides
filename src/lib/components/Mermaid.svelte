@@ -77,11 +77,18 @@
 
 {#if renderState.kind === 'ready'}
 	{@const { svg, width } = renderState}
+	{#snippet plate(source: string)}
+		<span class="diagram" style:width={width ? `${width}px` : undefined}>{@html source}</span>
+	{/snippet}
 	<Zoom {label} class={className}>
-		<!-- ponytail: one render, injected twice, so both copies carry the same internal marker ids.
-		     Browsers resolve url(#id) to the first match and the copies are identical, so they look
-		     the same. Render a second time under its own ID if that ever stops holding. -->
-		<span class="diagram" style:width={width ? `${width}px` : undefined}>{@html svg}</span>
+		{@render plate(svg)}
+		{#snippet zoomed()}
+			<!-- One render, two copies, so the second gets its own ID namespace. Mermaid prefixes every
+			     internal ID with the diagram ID, references included, so one replace covers the markers
+			     and the scoped style block. Snippet bodies only run when rendered, so an unopened
+			     preview pays nothing for this. -->
+			{@render plate(svg.replaceAll(`mermaid-${instanceId}`, `mermaid-${instanceId}-zoom`))}
+		{/snippet}
 	</Zoom>
 {:else if renderState.kind === 'failed'}
 	<div class={`error ${className}`}>
