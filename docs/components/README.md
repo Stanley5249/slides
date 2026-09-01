@@ -4,7 +4,8 @@ Reusable presentation components live in `src/lib/components` and are exported f
 
 ## Components
 
-- [MermaidZoom](mermaid-zoom.md): render a Mermaid diagram with a modal pan-and-zoom viewer.
+- [Mermaid](mermaid.md): render a Mermaid diagram, zoomable, with the parse error shown in place.
+- [Zoom](zoom.md): show any content as a preview that opens in a modal pan-and-zoom viewer.
 
 ## Adding a component
 
