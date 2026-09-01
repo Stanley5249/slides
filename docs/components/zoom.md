@@ -1,7 +1,7 @@
 # Zoom
 
-`Zoom` shows any content as a preview on the slide and opens it in a modal pan-and-zoom viewer. It never
-inspects what it is given, so a diagram, an image, or a plain block all work the same way.
+`Zoom` shows any content as a preview and opens it in a modal pan-and-zoom viewer. It never inspects what
+it is given, so a diagram, an image, or a plain block all work the same way.
 
 ## Usage
 
@@ -35,45 +35,11 @@ Pass a `zoomed` snippet when the enlarged copy should differ from the preview:
 
 ## Interactions
 
-- Hover the preview to see the zoom-in cursor. Click anywhere on it to open the viewer.
-- The viewer opens fitted to the window, up to 200%.
-- Use the mouse wheel to zoom from 10% to 400% around the pointer. A trackpad pinch zooms at its own
-  rate, since it reports a far smaller delta than a wheel notch.
-- Drag with the left mouse button to pan, from the content as well as from blank canvas. A press on a
-  control or on text is left alone, so buttons keep their clicks and labels stay selectable. The cursor
-  follows the same rule, so grab only appears where a press really pans.
-- Use the `−`, percentage, and `+` controls to zoom or reset the view.
-- With the viewer focused, arrow keys move the content the way a drag would, `Ctrl` with up or down
-  zooms, `+` and `-` zoom, and `0` resets. Steps are interpolated over 120ms, while a wheel or a drag
-  applies immediately.
-- Press Escape, click the translucent background, or use the close button to exit.
+- Click the preview to open the viewer, fitted to the window up to 200%.
+- Wheel or pinch to zoom between 10% and 400% around the pointer.
+- Drag to pan. A press on a control or on text selects instead, and the cursor follows the same rule.
+- Arrow keys move the content, `Ctrl` with up or down zooms, `+` and `-` zoom, `0` resets.
+- Escape, the backdrop, or the close button exits.
 
-The component stops pointer and keyboard events at the open dialog so Reveal.js does not change slides while
-the content is being inspected.
-
-## Content contract
-
-The trigger is a transparent button layered over the preview rather than a wrapper around it, so preview
-content may contain its own buttons and links without nesting interactive elements.
-
-The enlarged copy is mounted only while the dialog is open, so a preview nobody opens costs nothing.
-
-The camera is the only thing that scales in the viewer, so the plate measures the content at its natural
-layout size. Content that fits itself to the preview box should express that cap through two inherited
-custom properties, which the plate sets to `none`:
-
-```css
-.thing {
-	max-width: var(--zoom-max-width, 100%);
-	max-height: var(--zoom-max-height, 24rem);
-}
-```
-
-Custom properties rather than a descendant rule in `Zoom`, because they inherit instead of competing on
-specificity with the content component's own scoped styles.
-
-## Accessibility
-
-The trigger carries `label` as its accessible name. The viewport is a focusable `application` region with a
-label naming its keys, since it is a real pan-and-zoom surface rather than decoration. `user-select` is
-suppressed only while a drag is in progress, so text inside the plate stays selectable.
+The enlarged copy is mounted only while the dialog is open, and the plate lays content out at its natural
+size, so content that fits itself to the preview box must lift that cap in its zoomed copy.

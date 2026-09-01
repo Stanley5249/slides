@@ -22,7 +22,6 @@
 
 	let { label = 'Open zoomed view', class: className = '', children, zoomed }: Props = $props();
 
-	// The zoomed copy is the preview copy unless the caller wants a different one.
 	const full = $derived(zoomed ?? children);
 
 	// Low enough that a tall subject can actually be fitted whole.
@@ -32,12 +31,9 @@
 	const maxFitScale = 2;
 	const scaleStep = 0.25;
 	const panStep = 48;
-	// The content drags with the canvas, since that is what a viewer expects to grab. Controls and
-	// text are exempt: a press there keeps its own click, or starts a selection, both of which a
-	// drag would preventDefault away. The stylesheet mirrors this list to keep the cursor honest.
+	// A drag preventDefaults clicks and selections away. Mirrored by the cursor rules in the style.
 	const exempt = 'button, a, input, textarea, text, tspan, foreignObject';
-	// A trackpad pinch arrives as a wheel event with ctrlKey set and a delta an order of magnitude
-	// smaller than a wheel notch, so one coefficient for both would make the pinch crawl.
+	// A pinch is a wheel event with ctrlKey and a delta far smaller than a notch.
 	const wheelZoomRate = 0.0015;
 	const pinchZoomRate = 0.01;
 
@@ -49,7 +45,6 @@
 	let open = $state(false);
 	let camera = $state(createCamera());
 	let drag = $state<DragState | null>(null);
-	// Discrete moves animate; a wheel or a drag already arrives as a stream and must not lag it.
 	let smooth = $state(false);
 
 	function createCamera() {
@@ -58,7 +53,7 @@
 
 	// The default view: whichever edge runs out first decides the scale, capped by maxFitScale.
 	async function resetView() {
-		camera = createCamera();
+		// The plate is mounted with the dialog, so it may not be bound yet on the first open.
 		await tick();
 		if (!viewport || !canvas || !plate) return;
 
@@ -67,9 +62,10 @@
 			viewport.clientWidth - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight);
 		const availableHeight =
 			viewport.clientHeight - parseFloat(padding.paddingTop) - parseFloat(padding.paddingBottom);
-		// offsetWidth/Height are layout sizes, unaffected by the camera transform.
+		// offsetWidth/Height are layout sizes, unaffected by the camera transform, so this measures
+		// the same whatever the camera is doing and the reset can be a single write.
 		const fit = Math.min(availableWidth / plate.offsetWidth, availableHeight / plate.offsetHeight);
-		camera.scale = Math.min(maxFitScale, Math.max(minScale, fit));
+		camera = { scale: Math.min(maxFitScale, Math.max(minScale, fit)), x: 0, y: 0 };
 	}
 
 	async function show() {
@@ -77,7 +73,6 @@
 		open = true;
 		dialog.showModal();
 		await tick();
-		// The opening fit is the starting point, not a move, so it must not animate from scale 1.
 		smooth = false;
 		await resetView();
 	}
@@ -129,15 +124,14 @@
 	function handleKeydown(event: KeyboardEvent) {
 		// Reveal listens on document, so the deck must not navigate while the viewer is open.
 		event.stopPropagation();
-		smooth = true;
 
 		const pan = panKeys[event.key];
-		// Ctrl turns the vertical arrows into a zoom, the pairing the rest of the web already uses.
 		if (event.ctrlKey && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
 			event.preventDefault();
 			stepScale(event.key === 'ArrowUp' ? scaleStep : -scaleStep);
 		} else if (pan) {
 			event.preventDefault();
+			smooth = true;
 			camera.x += pan[0];
 			camera.y += pan[1];
 		} else if (event.key === '+' || event.key === '=') {
@@ -145,6 +139,7 @@
 		} else if (event.key === '-') {
 			stepScale(-scaleStep);
 		} else if (event.key === '0') {
+			smooth = true;
 			resetView();
 		}
 	}
@@ -363,20 +358,16 @@
 	.canvas {
 		position: absolute;
 		inset: 0;
-		/* Vertically symmetric on purpose: the plate is centred in the content box while the camera
-		   scales about the canvas centre, so the two must be the same point. */
 		padding: var(--toolbar-space) var(--canvas-side);
 		transform-origin: center;
 	}
 
-	/* Promoted only while panning. Held permanently, the layer keeps the raster it was built with and
-	   the camera stretches that bitmap, which blurs an SVG that would redraw sharp at any scale. */
+	/* Held permanently, the layer keeps one raster and the camera stretches that bitmap, blurring an
+	   SVG that would redraw sharp at any scale. */
 	.viewport.dragging .canvas {
 		will-change: transform;
 	}
 
-	/* Keys and the zoom controls move in steps, so they are interpolated. A wheel or a drag already
-	   arrives as a stream of small changes and would only lag behind one. */
 	.canvas.smooth {
 		transition: transform 120ms ease-out;
 	}
@@ -387,15 +378,9 @@
 		}
 	}
 
-	/* Centred with a transform, not with grid or flex: those start-align an item larger than their
-	   area, which pushed a tall subject off the bottom as soon as the camera scaled it. */
+	/* Centred with a transform: grid and flex start-align an item larger than their area, which drops
+	   a tall subject off the bottom once the camera scales it. */
 	.plate {
-		/* The camera is the only thing that scales here, so content lays out at its natural size.
-		   Content that fits itself to the preview box reads these and gets no cap in the plate.
-		   Custom properties, not a descendant rule: they inherit instead of fighting specificity. */
-		--zoom-max-width: none;
-		--zoom-max-height: none;
-
 		position: absolute;
 		top: 50%;
 		left: 50%;

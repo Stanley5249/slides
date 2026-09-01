@@ -33,7 +33,7 @@
 	$effect(() => {
 		if (!browser) return;
 
-		// Re-runs if the source or the Mermaid theme changes; the flag drops a render that lost.
+		// The flag drops a render whose source changed under it before it finished.
 		let cancelled = false;
 
 		void (async () => {
@@ -59,10 +59,9 @@
 		};
 	});
 
-	// Mermaid ships the SVG with width="100%", which has no definite basis inside a shrink-to-fit
-	// parent and collapses every diagram to the same arbitrary width. The viewBox carries the real
-	// size, so the wrapper is pinned to it and the SVG fills the wrapper. If the viewBox ever stops
-	// matching, max-content keeps a definite basis and fails visibly wide instead of collapsing again.
+	// Mermaid ships the SVG at width="100%", which has no definite basis in a shrink-to-fit parent and
+	// collapses every diagram to the same width. The viewBox carries the real one; max-content is the
+	// fallback because it fails visibly wide rather than invisibly narrow.
 	function naturalWidth(svg: string) {
 		const viewBoxWidth = Number(svg.match(/viewBox="\S+ \S+ (\S+) /)?.[1]);
 		return viewBoxWidth > 0 ? `${viewBoxWidth}px` : 'max-content';
@@ -79,17 +78,15 @@
 
 {#if renderState.kind === 'ready'}
 	{@const { svg, width } = renderState}
-	{#snippet plate(source: string)}
-		<span class="diagram" style:width>{@html source}</span>
+	{#snippet plate(source: string, capped: boolean)}
+		<span class="diagram" class:capped style:width>{@html source}</span>
 	{/snippet}
 	<Zoom {label} class={className}>
-		{@render plate(svg)}
+		{@render plate(svg, true)}
 		{#snippet zoomed()}
-			<!-- One render, two copies, so the second gets its own ID namespace. Mermaid prefixes every
-			     internal ID with the diagram ID, references included, so one replace covers the markers
-			     and the scoped style block. Snippet bodies only run when rendered, so an unopened
-			     preview pays nothing for this. -->
-			{@render plate(svg.replaceAll(`mermaid-${instanceId}`, `mermaid-${instanceId}-zoom`))}
+			<!-- Its own ID namespace: two copies of one string would define the same marker IDs, and
+			     every url(#id) in both would resolve to whichever came first. -->
+			{@render plate(svg.replaceAll(`mermaid-${instanceId}`, `mermaid-${instanceId}-zoom`), false)}
 		{/snippet}
 	</Zoom>
 {:else if renderState.kind === 'failed'}
@@ -118,24 +115,25 @@
 <style>
 	.diagram {
 		display: block;
-		/* Zoom sets both variables to none in its plate, so the same markup is the fitted preview
-		   and the full size original. */
-		max-width: var(--zoom-max-width, 100%);
-		max-height: var(--zoom-max-height, 24rem);
 		margin: auto;
 		line-height: 0;
+	}
+
+	/* The preview fits its box; the zoomed copy lays out at the natural size the camera scales. */
+	.capped {
+		max-width: 100%;
+		max-height: 24rem;
 	}
 
 	.diagram :global(svg) {
 		display: block;
 		width: 100%;
 		height: auto;
-		/* Inherited, so it is 24rem in a preview and none in the Zoom plate. */
+		/* Inherited, so the cap reaches the SVG in a preview and is none in the Zoom plate. */
 		max-height: inherit;
 	}
 
-	/* Explicit, because the plate suppresses selection while a drag is live and a label is the one
-	   thing in a diagram worth copying. */
+	/* Explicit, because the plate suppresses selection while a drag is live. */
 	.diagram :global(foreignObject),
 	.diagram :global(text) {
 		user-select: text;
@@ -186,7 +184,6 @@
 		cursor: pointer;
 	}
 
-	/* The icon swap alone reads as a static relabel, so the check arrives green and grows into place. */
 	.check {
 		display: grid;
 		color: var(--catppuccin-color-green);
@@ -226,7 +223,6 @@
 		line-height: 1.5;
 		text-align: left;
 		white-space: pre-wrap;
-		/* The whole point of this panel: the message must be selectable and copyable. */
 		user-select: text;
 		tab-size: 2;
 	}
