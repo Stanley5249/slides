@@ -36,6 +36,10 @@
 	// text are exempt: a press there keeps its own click, or starts a selection, both of which a
 	// drag would preventDefault away. The stylesheet mirrors this list to keep the cursor honest.
 	const exempt = 'button, a, input, textarea, text, tspan, foreignObject';
+	// A trackpad pinch arrives as a wheel event with ctrlKey set and a delta an order of magnitude
+	// smaller than a wheel notch, so one coefficient for both would make the pinch crawl.
+	const wheelZoomRate = 0.0015;
+	const pinchZoomRate = 0.01;
 
 	let dialog: HTMLDialogElement | undefined;
 	// Conditionally rendered, so these bindings are reassigned and need signals.
@@ -45,6 +49,8 @@
 	let open = $state(false);
 	let camera = $state(createCamera());
 	let drag = $state<DragState | null>(null);
+	// Discrete moves animate; a wheel or a drag already arrives as a stream and must not lag it.
+	let smooth = $state(false);
 
 	function createCamera() {
 		return { scale: 1, x: 0, y: 0 };
@@ -71,6 +77,8 @@
 		open = true;
 		dialog.showModal();
 		await tick();
+		// The opening fit is the starting point, not a move, so it must not animate from scale 1.
+		smooth = false;
 		await resetView();
 	}
 
@@ -97,10 +105,16 @@
 		camera.scale = boundedScale;
 	}
 
+	function stepScale(delta: number) {
+		smooth = true;
+		setScale(camera.scale + delta);
+	}
+
 	function handleWheel(event: WheelEvent) {
 		event.preventDefault();
 		event.stopPropagation();
-		const factor = Math.exp(-event.deltaY * 0.0015);
+		smooth = false;
+		const factor = Math.exp(-event.deltaY * (event.ctrlKey ? pinchZoomRate : wheelZoomRate));
 		setScale(camera.scale * factor, event.clientX, event.clientY);
 	}
 
@@ -115,16 +129,21 @@
 	function handleKeydown(event: KeyboardEvent) {
 		// Reveal listens on document, so the deck must not navigate while the viewer is open.
 		event.stopPropagation();
+		smooth = true;
 
 		const pan = panKeys[event.key];
-		if (pan) {
+		// Ctrl turns the vertical arrows into a zoom, the pairing the rest of the web already uses.
+		if (event.ctrlKey && (event.key === 'ArrowUp' || event.key === 'ArrowDown')) {
+			event.preventDefault();
+			stepScale(event.key === 'ArrowUp' ? scaleStep : -scaleStep);
+		} else if (pan) {
 			event.preventDefault();
 			camera.x += pan[0];
 			camera.y += pan[1];
 		} else if (event.key === '+' || event.key === '=') {
-			setScale(camera.scale + scaleStep);
+			stepScale(scaleStep);
 		} else if (event.key === '-') {
-			setScale(camera.scale - scaleStep);
+			stepScale(-scaleStep);
 		} else if (event.key === '0') {
 			resetView();
 		}
@@ -133,6 +152,7 @@
 	function startDrag(event: PointerEvent) {
 		if (event.button !== 0 || drag || !viewport) return;
 		if (event.target instanceof Element && event.target.closest(exempt)) return;
+		smooth = false;
 		event.preventDefault();
 		event.stopPropagation();
 		drag = {
@@ -178,7 +198,7 @@
 		class="viewport"
 		role="application"
 		tabindex="0"
-		aria-label="Zoomed view. Arrow keys pan, plus and minus zoom, zero resets."
+		aria-label="Zoomed view. Arrow keys pan, control with up or down zooms, plus and minus zoom, zero resets."
 		onwheel={handleWheel}
 		onkeydown={handleKeydown}
 		onpointerdown={startDrag}
@@ -189,6 +209,7 @@
 		<div
 			bind:this={canvas}
 			class="canvas"
+			class:smooth
 			style:transform={`translate3d(${camera.x}px, ${camera.y}px, 0) scale(${camera.scale})`}
 		>
 			<!-- Mounted on open only, so a preview nobody opens costs nothing. -->
@@ -211,7 +232,7 @@
 	<div class="zoom-controls" role="group" aria-label="Zoom controls">
 		<button
 			type="button"
-			onclick={() => setScale(camera.scale - scaleStep)}
+			onclick={() => stepScale(-scaleStep)}
 			disabled={camera.scale <= minScale}
 			aria-label="Zoom out"
 			title="Zoom out"
@@ -221,7 +242,10 @@
 		<button
 			type="button"
 			class="percentage"
-			onclick={resetView}
+			onclick={() => {
+				smooth = true;
+				resetView();
+			}}
 			aria-label="Reset zoom"
 			title="Reset zoom"
 		>
@@ -230,7 +254,7 @@
 		</button>
 		<button
 			type="button"
-			onclick={() => setScale(camera.scale + scaleStep)}
+			onclick={() => stepScale(scaleStep)}
 			disabled={camera.scale >= maxScale}
 			aria-label="Zoom in"
 			title="Zoom in"
@@ -349,6 +373,18 @@
 	   the camera stretches that bitmap, which blurs an SVG that would redraw sharp at any scale. */
 	.viewport.dragging .canvas {
 		will-change: transform;
+	}
+
+	/* Keys and the zoom controls move in steps, so they are interpolated. A wheel or a drag already
+	   arrives as a stream of small changes and would only lag behind one. */
+	.canvas.smooth {
+		transition: transform 120ms ease-out;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.canvas.smooth {
+			transition: none;
+		}
 	}
 
 	/* Centred with a transform, not with grid or flex: those start-align an item larger than their
