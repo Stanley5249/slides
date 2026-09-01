@@ -35,10 +35,7 @@ let mermaidPromise: Promise<MermaidApi> | undefined;
 let renderQueue = Promise.resolve();
 
 async function getMermaid() {
-	mermaidPromise ??= import('mermaid').then(({ default: mermaid }) => {
-		mermaid.initialize(createConfig());
-		return mermaid;
-	});
+	mermaidPromise ??= import('mermaid').then(({ default: mermaid }) => mermaid);
 
 	return mermaidPromise;
 }
@@ -56,6 +53,9 @@ function enqueue<T>(work: () => Promise<T>) {
 export async function renderMermaid(source: string, id: string) {
 	return enqueue(async () => {
 		const mermaid = await getMermaid();
+		// Initialized per render, not once: the config is read from the live Catppuccin custom
+		// properties, so a theme swap has to reach the next diagram.
+		mermaid.initialize(createConfig());
 		const { svg } = await mermaid.render(id, source);
 
 		return svg;

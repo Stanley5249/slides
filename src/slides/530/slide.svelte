@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MermaidZoom } from '$lib';
+	import { Mermaid } from '$lib';
 
 	const stages = Array.from(
 		{ length: 15 },
@@ -10,10 +10,6 @@
 
 <p class="text-6xl font-bold drop-shadow-sm">🧜 Very Wide</p>
 
-<MermaidZoom
-	code={diagram}
-	label="Open the wide diagram"
-	class="mx-auto mt-16 w-256 max-w-[80vw]"
-/>
+<Mermaid code={diagram} label="Open the wide diagram" class="mx-auto mt-16 w-256 max-w-[80vw]" />
 
 <p class="mt-8 text-3xl">Sixteen stages across, drag to follow the chain.</p>

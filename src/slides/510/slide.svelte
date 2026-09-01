@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MermaidZoom } from '$lib';
+	import { Mermaid } from '$lib';
 
 	const diagram = `flowchart TB
 		subgraph Author
@@ -21,7 +21,7 @@
 
 <p class="text-6xl font-bold drop-shadow-sm">🧜 Big and Complex</p>
 
-<MermaidZoom
+<Mermaid
 	code={diagram}
 	label="Open the pipeline diagram"
 	class="mx-auto mt-16 w-5xl max-w-[80vw]"
