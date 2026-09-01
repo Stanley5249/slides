@@ -30,3 +30,15 @@
 - Use `just` recipes for standard commands.
 - Run `just lint`, `just check`, and `just build` before committing.
 - Keep commits small, conventional, and independently reviewable.
+
+## Branches
+
+- Template and component work goes on `feat/<topic>` or `fix/<topic>`, branched from `main`.
+- Deck content goes on `deck/<group>/<date>-<venue>-<topic>`, branched from `main`, where the group is the
+  client or org, the date is the talk date as `YYYY-MM-DD`, and the venue and topic are lowercase and
+  hyphenated. For example, `deck/tenstorrent/2026-09-02-itri-vllm-tracy`.
+- The date sorts the group chronologically under plain listing, and the venue keeps a recurring talk from
+  colliding with its earlier outings.
+- Never put a version or a status in a branch name. No `-v2`, no `-final`, no `-wip`.
+- Switching branches is a shell concern, not a project one. Use a fuzzy `git switch` helper from your
+  own profile rather than a recipe here, since a recipe is unavailable on any branch that predates it.
