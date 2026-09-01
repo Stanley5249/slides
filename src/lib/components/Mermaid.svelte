@@ -94,7 +94,7 @@
 				title="Copy the message"
 			>
 				{#if copied}
-					<Check size={18} strokeWidth={2.25} />
+					<span class="check"><Check size={18} strokeWidth={2.25} /></span>
 				{:else}
 					<Copy size={18} strokeWidth={2.25} />
 				{/if}
@@ -168,6 +168,26 @@
 		border: 1px solid var(--catppuccin-color-surface1);
 		border-radius: 0.5rem;
 		cursor: pointer;
+	}
+
+	/* The icon swap alone reads as a static relabel, so the check arrives green and grows into place. */
+	.check {
+		display: grid;
+		color: var(--catppuccin-color-green);
+		animation: pop 120ms ease-out;
+	}
+
+	@keyframes pop {
+		from {
+			transform: scale(0.8);
+			opacity: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.check {
+			animation: none;
+		}
 	}
 
 	.error-head button:hover {
