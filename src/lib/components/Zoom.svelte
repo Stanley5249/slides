@@ -332,6 +332,11 @@
 		   scales about the canvas centre, so the two must be the same point. */
 		padding: var(--toolbar-space) var(--canvas-side);
 		transform-origin: center;
+	}
+
+	/* Promoted only while panning. Held permanently, the layer keeps the raster it was built with and
+	   the camera stretches that bitmap, which blurs an SVG that would redraw sharp at any scale. */
+	.viewport.dragging .canvas {
 		will-change: transform;
 	}
 
