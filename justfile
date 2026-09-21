@@ -23,11 +23,11 @@ prod: build
 
 # Format every source file
 fmt:
-    bun --bun run node_modules/prettier/bin/prettier.cjs --write .
+    bun --bun run node_modules/oxfmt/bin/oxfmt
 
 # Verify formatting, this justfile included
 fmt-check:
-    bun --bun run node_modules/prettier/bin/prettier.cjs --check .
+    bun --bun run node_modules/oxfmt/bin/oxfmt --check
     just --fmt --check
 
 # Check types and Svelte diagnostics

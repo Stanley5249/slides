@@ -1,8 +1,0 @@
-node_modules
-.svelte-kit
-build
-package
-
-# Local scratch: research notes and per-machine agent settings.
-draft
-.claude
