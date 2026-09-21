@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Mermaid } from '$lib';
+  import { Mermaid } from "$lib";
 
-	const diagram = `flowchart LR
+  const diagram = `flowchart LR
 		Coffee --> Code
 		Code --> Bug
 		Bug --> Coffee
@@ -10,6 +10,10 @@
 
 <p class="text-6xl font-bold drop-shadow-sm">🧜 Mermaid Diagrams</p>
 
-<Mermaid code={diagram} label="Open the diagram" class="mx-auto mt-16 w-5xl max-w-[80vw]" />
+<Mermaid
+  code={diagram}
+  label="Open the diagram"
+  class="mx-auto mt-16 w-5xl max-w-[80vw]"
+/>
 
 <p class="mt-8 text-3xl">Click the diagram to zoom.</p>

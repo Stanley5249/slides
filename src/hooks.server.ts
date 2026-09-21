@@ -1,5 +1,5 @@
-import type { Handle } from '@sveltejs/kit';
-import { flavor } from '$lib/theme';
+import type { Handle } from "@sveltejs/kit";
+import { flavor } from "$lib/theme";
 
 /**
  * Writes the flavour onto `<html>` as the page is served.
@@ -13,4 +13,6 @@ import { flavor } from '$lib/theme';
  * place a flavour is named, so the stylesheet, the code blocks and the diagrams cannot drift apart.
  */
 export const handle: Handle = async ({ event, resolve }) =>
-	resolve(event, { transformPageChunk: ({ html }) => html.replace('%deck.flavor%', flavor) });
+  resolve(event, {
+    transformPageChunk: ({ html }) => html.replace("%deck.flavor%", flavor),
+  });

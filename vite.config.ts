@@ -1,15 +1,15 @@
-import { defineConfig } from 'vite';
-import tailwindcss from '@tailwindcss/vite';
-import { sveltekit } from '@sveltejs/kit/vite';
-import adapter from 'svelte-adapter-bun';
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { defineConfig } from "vite";
+import tailwindcss from "@tailwindcss/vite";
+import { sveltekit } from "@sveltejs/kit/vite";
+import adapter from "svelte-adapter-bun";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 
 export default defineConfig({
-	plugins: [
-		tailwindcss(),
-		sveltekit({
-			adapter: adapter(),
-			preprocess: vitePreprocess()
-		})
-	]
+  plugins: [
+    tailwindcss(),
+    sveltekit({
+      adapter: adapter(),
+      preprocess: vitePreprocess(),
+    }),
+  ],
 });

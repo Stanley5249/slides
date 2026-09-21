@@ -1,11 +1,14 @@
 # Component reference
 
-Reusable presentation components live in `src/lib/components` and are exported from `src/lib/index.ts`. Slide-specific content stays in `src/slides`.
+Reusable presentation components live in `src/lib/components` and are exported
+from `src/lib/index.ts`. Slide-specific content stays in `src/slides`.
 
 ## Components
 
-- [Mermaid](mermaid.md): render a Mermaid diagram, zoomable, with the parse error shown in place.
-- [Zoom](zoom.md): show any content as a preview that opens in a modal pan-and-zoom viewer.
+- [Mermaid](mermaid.md): render a Mermaid diagram, zoomable, with the parse
+  error shown in place.
+- [Zoom](zoom.md): show any content as a preview that opens in a modal
+  pan-and-zoom viewer.
 
 ## Adding a component
 
@@ -13,5 +16,6 @@ For each component:
 
 1. Add the Svelte file under `src/lib/components`.
 2. Export it from `src/lib/index.ts`.
-3. Add a reference page here with its purpose, API, example, interactions, and accessibility behavior.
+3. Add a reference page here with its purpose, API, example, interactions, and
+   accessibility behavior.
 4. Add it to the component list above.
