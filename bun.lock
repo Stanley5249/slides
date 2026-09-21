@@ -8,6 +8,7 @@
         "@animotion/core": "*",
         "@animotion/motion": "*",
         "@fontsource/atkinson-hyperlegible": "^5.2.8",
+        "@fontsource/fredoka": "^5.3.0",
         "@fontsource/monaspace-neon": "^5.2.5",
         "@shikijs/magic-move": "^4.3.1",
         "@tailwindcss/vite": "^4.3.3",
@@ -51,6 +52,8 @@
     "@chevrotain/types": ["@chevrotain/types@11.1.2", "", {}, "sha512-U+HFai5+zmJCkK86QsaJtoITlboZHBqrVketcO2ROv865xfCMSFpELQoz1GkX5GzME8pTa+3kbKrZHQtI0gdbw=="],
 
     "@fontsource/atkinson-hyperlegible": ["@fontsource/atkinson-hyperlegible@5.3.0", "", {}, "sha512-Sp8Ve8+rQmENY2Lv02VH7sLpntzTTvnncnJMTbRE7DX6TLxGraN4ykZfzaUWIoCFmaomwkvNiqmlPkrKBuDoSA=="],
+
+    "@fontsource/fredoka": ["@fontsource/fredoka@5.3.0", "", {}, "sha512-s2IhjQ50wDnKkkaKmjhtL0rxQg6ITsVusiipM3m7zUwVZZbbCKsscNDkngwp28xVzfIt7neWrkgU1qKqyTycQg=="],
 
     "@fontsource/monaspace-neon": ["@fontsource/monaspace-neon@5.3.0", "", {}, "sha512-a4B4L4nmW+mW42gDb6JUugy2fA3DC0QKi2yRMXKzuNsN+wHhUvrqgYndIBMds+Evq/cWaMJgd06x14dHuBNxwA=="],
 
