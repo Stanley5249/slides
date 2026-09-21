@@ -1,10 +1,11 @@
-.DS_Store
+# Dependencies
 node_modules
-/build
+
+# Build output
 /.svelte-kit
-/package
+/build
+
+# Environment
 .env
 .env.*
 !.env.example
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
