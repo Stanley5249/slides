@@ -2,14 +2,13 @@
 
 ## Runtime and package management
 
-- Use Bun for every package and project command: `bun`, `bunx`, and
-  `bun --bun run`.
+- Use Bun for every package and project command: `bun`, `bunx`, and `bun run`.
 - Do not run `node`, `npm`, `npx`, or `yarn`.
 - Use `bun add` and `bun remove` to change dependencies.
 - Keep the project free of a Node runtime requirement. Compatibility type
   packages may remain when SvelteKit tooling requires them.
 - Do not add a `scripts` field to `package.json`. Define project commands in the
-  root `justfile` and run project binaries with `bun --bun run <binary>`.
+  root `justfile` and run project binaries with `bun run <binary>`.
 - To drive a CDP target, prefer Bunx and the `chrome-devtools` CLI over
   playwright-cli: `bunx chrome-devtools`. Start it once with
   `--no-usage-statistics --no-performance-crux`.

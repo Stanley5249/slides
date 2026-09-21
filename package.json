@@ -7,7 +7,6 @@
     "@sveltejs/vite-plugin-svelte": "^7.2.0",
     "@types/node": "^26.4.0",
     "@types/reveal.js": "^5.2.2",
-    "@typescript/native": "npm:typescript@7",
     "bun-types": "^1.4.0",
     "oxfmt": "^0.70.0",
     "svelte": "^5.56.6",
