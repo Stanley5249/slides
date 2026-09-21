@@ -28,7 +28,7 @@
 ## Workflow
 
 - Use `just` recipes for standard commands.
-- Run `just lint`, `just check`, and `just build` before committing.
+- Run `just ci` before committing. It composes `fmt-check`, `check`, and `build`.
 - Keep commits small, conventional, and independently reviewable.
 
 ## Branches
