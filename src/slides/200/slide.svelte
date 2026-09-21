@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Code, Transition, Action } from '@animotion/core';
 	import { tween } from '@animotion/motion';
+	import { codeTheme } from '$lib/theme';
 
 	let text: HTMLParagraphElement;
 	let code: ReturnType<typeof Code>;
@@ -31,7 +32,7 @@
 	<Code
 		bind:this={code}
 		lang="ts"
-		theme="poimandres"
+		theme={codeTheme}
 		code={``}
 		options={{ duration: 600, stagger: 0.3, containerStyle: false }}
 	/>

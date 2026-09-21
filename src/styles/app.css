@@ -10,9 +10,12 @@
 /* tailwind */
 @import 'tailwindcss/theme';
 @import 'tailwindcss/utilities';
+/* Every flavour ships in this file. The name only picks the one a page without a flavour class
+   would fall back to, and src/lib/theme.ts sees to it that no page is ever without one. */
 @import '@catppuccin/tailwindcss/macchiato.css';
 
 /* custom styles */
+@import './theme.css' layer(presentation);
 @import './overrides.css' layer(overrides);
 
 @layer reset {
@@ -29,13 +32,13 @@
 @layer presentation {
 	/* defaults */
 	:root {
-		--r-background-color: var(--catppuccin-color-base);
+		--r-background-color: var(--deck-canvas);
 		--r-main-font: 'Atkinson Hyperlegible';
 		--r-main-font-size: 42px;
-		--r-main-color: var(--catppuccin-color-text);
+		--r-main-color: var(--deck-ink);
 		--r-heading-font: 'Atkinson Hyperlegible';
 		--r-code-font: 'Monaspace Neon';
-		--r-link-color: var(--catppuccin-color-sky);
+		--r-link-color: var(--deck-accent);
 		--ease: linear(
 			0 0%,
 			0.0036 9.62%,

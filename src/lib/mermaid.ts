@@ -2,10 +2,9 @@ import type { MermaidConfig } from 'mermaid';
 
 type MermaidApi = (typeof import('mermaid'))['default'];
 
+// The flavour is pinned on `<html>`, which is the element these properties are declared against.
 function token(name: string) {
-	return getComputedStyle(document.documentElement)
-		.getPropertyValue(`--catppuccin-color-${name}`)
-		.trim();
+	return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }
 
 function createConfig(): MermaidConfig {
@@ -14,19 +13,22 @@ function createConfig(): MermaidConfig {
 		securityLevel: 'strict',
 		theme: 'base',
 		themeVariables: {
-			background: token('base'),
-			primaryColor: token('surface0'),
-			primaryBorderColor: token('blue'),
-			primaryTextColor: token('text'),
-			lineColor: token('subtext1'),
-			secondaryColor: token('surface1'),
-			tertiaryColor: token('mantle'),
-			clusterBkg: token('mantle'),
-			clusterBorder: token('surface1'),
-			titleColor: token('text'),
-			edgeLabelBackground: token('base'),
-			errorBkgColor: token('surface0'),
-			errorTextColor: token('red')
+			// A diagram is drawn in the deck's own roles, so it reads as part of the slide rather than
+			// as a picture pasted onto it.
+			fontFamily: `${token('--r-main-font')}, sans-serif`,
+			background: token('--deck-canvas'),
+			primaryColor: token('--deck-panel'),
+			primaryBorderColor: token('--deck-rule-strong'),
+			primaryTextColor: token('--deck-ink'),
+			lineColor: token('--deck-mark'),
+			secondaryColor: token('--deck-hover'),
+			tertiaryColor: token('--deck-panel'),
+			clusterBkg: token('--deck-canvas'),
+			clusterBorder: token('--deck-rule'),
+			titleColor: token('--deck-ink'),
+			edgeLabelBackground: token('--deck-canvas'),
+			errorBkgColor: token('--deck-hover'),
+			errorTextColor: token('--deck-bad')
 		}
 	};
 }
