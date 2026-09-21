@@ -9,7 +9,7 @@
 - Keep the project free of a Node runtime requirement. Compatibility type
   packages may remain when SvelteKit tooling requires them.
 - Do not add a `scripts` field to `package.json`. Define project commands in the
-  root `justfile` and run JavaScript tool files with `bun --bun run`.
+  root `justfile` and run project binaries with `bun --bun run <binary>`.
 - To drive a CDP target, prefer Bunx and the `chrome-devtools` CLI over
   playwright-cli: `bunx chrome-devtools`. Start it once with
   `--no-usage-statistics --no-performance-crux`.

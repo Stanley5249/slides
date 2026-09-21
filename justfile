@@ -11,11 +11,11 @@ install:
 
 # Run the development server
 dev:
-    bun --bun run node_modules/vite/bin/vite.js dev
+    bun --bun run vite dev
 
 # Build the presentation
 build:
-    bun --bun run node_modules/vite/bin/vite.js build
+    bun --bun run vite build
 
 # Serve the built presentation
 prod: build
@@ -23,17 +23,17 @@ prod: build
 
 # Format every source file
 fmt:
-    bun --bun run node_modules/oxfmt/bin/oxfmt
+    bun --bun run oxfmt
 
 # Verify formatting, this justfile included
 fmt-check:
-    bun --bun run node_modules/oxfmt/bin/oxfmt --check
+    bun --bun run oxfmt --check
     just --fmt --check
 
 # Check types and Svelte diagnostics
 check:
-    bun --bun run node_modules/@sveltejs/kit/svelte-kit.js sync
-    bun --bun run node_modules/svelte-check/bin/svelte-check --tsconfig ./tsconfig.json --tsgo
+    bun --bun run svelte-kit sync
+    bun --bun run svelte-check --tsconfig ./tsconfig.json --tsgo
 
 # Run the tests
 test:
