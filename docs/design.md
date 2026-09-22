@@ -97,10 +97,10 @@ scale that is enough.
 ## Layout
 
 Every slide is the same shape: a title, then one block that takes the rest of
-the page. The title reserves two lines whether or not it needs them, so it sits
-on the same baseline on every slide and the deck does not jump as it advances,
-and the block below fills whatever it leaves, so a table or a diagram uses the
-page instead of floating in the top half of it.
+the page. The title takes the height it needs and stays at the top. The block
+below is centered in what is left, so a short title and a long one leave the
+content looking equally placed, and a table or a diagram uses the page instead
+of floating in the top half of it.
 
 ```
 +----------------------------------------------------+

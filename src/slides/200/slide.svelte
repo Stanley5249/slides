@@ -8,13 +8,13 @@
 
   <ul>
     <li>
-      The title reserves two lines whether it needs them or not, so it sits on
-      the same baseline on every slide and the deck does not jump as it
-      advances.
+      The title takes the height it needs and stays at the top. The block below
+      is centered in what is left, so a short title and a long one leave the
+      content looking equally placed.
     </li>
     <li>
-      The block below it fills whatever the title leaves, so a table or a
-      diagram uses the page instead of floating in the top half of it.
+      That block is the whole rest of the slide, so a table or a diagram uses
+      the page instead of floating in the top half of it.
     </li>
     <li>
       Sizes are pixels on a fixed stage, which Reveal scales to whatever it is

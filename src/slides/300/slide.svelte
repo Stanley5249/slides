@@ -11,8 +11,7 @@
 
   <p>
     Prose stops at 62 characters a line, because a line the eye has to track
-    across a wall is longer than the same line on a desk. A title stops at 26,
-    and reserves two lines either way.
+    across a wall is longer than the same line on a desk. A title stops at 26.
   </p>
 
   <p>
