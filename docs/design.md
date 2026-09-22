@@ -53,10 +53,18 @@ present in text or structure instead of carrying meaning alone.
 
 ### Implementation
 
-Latte uses darker palette steps for text-bearing accents. Dark flavors can use
-lighter palette colors against their dark canvas. When a mapping changes, verify
-text contrast against the canvas and non-text contrast against the surface where
-the mark appears.
+Every role takes a palette color by its bare name. The Tailwind package also
+exposes a 50 to 950 scale around each accent, but only the bare name is
+Catppuccin and the deck does not use the rest, so a deck is the flavor rather
+than something derived from it.
+
+Latte pays for that in contrast. Its accents are drawn as marks on a light
+surface, not as text on one: against its base, mauve reaches 4.79 and red 4.80,
+blue 4.34, and green, yellow and peach sit between 2.3 and 3.0. Every accent in
+the three dark flavors clears 4.5:1. Ink, marks and rules carry the reading in
+all four, so an accent is never the only thing saying what a slide says. Check a
+latte deck on the projector before a talk and take a dark flavor if the room
+defeats it.
 
 A component that reports status sets `data-tone`. The deck maps that attribute
 to the appropriate semantic role.

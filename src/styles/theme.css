@@ -1,9 +1,17 @@
 /* Catppuccin names colors by appearance. Components use these semantic roles
    because a role must keep its meaning when the deck flavor changes.
 
-   Latte provides the defaults. Dark flavors override roles that need another
-   palette step. When a mapping changes, verify text against its surface at
-   4.5:1 and non-text marks at 3:1. */
+   Every value is a palette color, never a generated tint or shade, so the deck
+   is the flavor rather than something derived from it. The Tailwind package
+   exposes a 50 to 950 scale around each accent; only the bare name is
+   Catppuccin, and the deck does not reach for the rest.
+
+   That choice costs contrast in latte, whose accents are drawn as marks on a
+   light surface rather than as text on one. Against its base, mauve reaches
+   4.79 and red 4.80, blue 4.34, and green, yellow and peach sit between 2.3
+   and 3.0. Ink, marks and rules still carry the reading, so check a latte deck
+   on the projector before a talk and take a dark flavor if the room defeats
+   it. The dark flavors clear 4.5:1 on every accent. */
 
 :root {
   /* Surfaces. The canvas is the slide; the panel is the one step up a dialog
@@ -23,32 +31,30 @@
   --deck-rule: var(--catppuccin-color-surface1);
   --deck-rule-strong: var(--catppuccin-color-overlay2);
 
-  /* Accents. Latte takes the darkest step that clears 4.5:1, so an accent can
-     carry a word and not only a shape. */
-  --deck-heading: var(--catppuccin-color-mauve-700);
-  --deck-accent: var(--catppuccin-color-blue-700);
-  --deck-ok: var(--catppuccin-color-green-900);
-  --deck-warn: var(--catppuccin-color-yellow-950);
+  /* Accents, straight from the palette. The style guide's own mapping where it
+     has one: blue for links, green for success, yellow for warnings, red for
+     errors. */
+  --deck-heading: var(--catppuccin-color-mauve);
+  --deck-accent: var(--catppuccin-color-blue);
+  --deck-ok: var(--catppuccin-color-green);
+  --deck-warn: var(--catppuccin-color-yellow);
   --deck-bad: var(--catppuccin-color-red);
 
   /* Identifiers. A role of its own: an identifier is neither a link nor a
      heading, and the accent already means the state the viewer is on. */
-  --deck-code: var(--catppuccin-color-peach-900);
+  --deck-code: var(--catppuccin-color-peach);
 
   /* The focus ring is the accent until a deck says otherwise. */
   --deck-focus: var(--deck-accent);
 }
 
-/* Dark flavors use their standard accents and quieter ink steps because the
-   canvas provides more contrast than latte. */
+/* The dark flavors need two quieter ink steps and a heading that is not mauve,
+   because lavender carries a title better against a dark canvas. Every other
+   role above already holds. */
 :root:is(.frappe, .macchiato, .mocha) {
   --deck-ink-quiet: var(--catppuccin-color-subtext0);
   --deck-mark: var(--catppuccin-color-overlay1);
 
   --deck-heading: var(--catppuccin-color-lavender);
-  --deck-accent: var(--catppuccin-color-sky);
-  --deck-ok: var(--catppuccin-color-green);
-  --deck-warn: var(--catppuccin-color-yellow);
-  --deck-bad: var(--catppuccin-color-red);
-  --deck-code: var(--catppuccin-color-peach);
+  --deck-accent: var(--catppuccin-color-blue);
 }
