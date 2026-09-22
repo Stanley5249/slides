@@ -1,75 +1,90 @@
-<script lang="ts" module>
-  import { defineProps } from "@animotion/core";
-
-  // `<Slides />` spreads this onto the section it wraps a file-based slide in,
-  // which is how such a slide reaches Animotion's own `in` event. The first
-  // step answers the keypress that arrived here, so the slide is never a still
-  // picture waiting for a second press.
-  let arrive: (() => void) | undefined;
-  export const props = defineProps({ in: () => arrive?.() });
-</script>
-
 <script lang="ts">
-  import { Action, Code } from "@animotion/core";
+  import { Action, Code, Transition } from "@animotion/core";
   import { tween } from "@animotion/motion";
   import { codeTheme } from "$lib/theme";
 
   let code: ReturnType<typeof Code>;
-  const dot = tween({ x: 60 });
-
-  async function there() {
-    await code.update`
-      async function move() {
-        await dot.to({ x: 500 })
-      }
-    `;
-    await code.selectLines`2`;
-    await dot.to({ x: 500 });
-  }
-
-  async function back() {
-    await code.update`
-      async function move() {
-        await dot.to({ x: 500 })
-        await dot.to({ x: 60 })
-      }
-    `;
-    await code.selectLines`3`;
-    await dot.to({ x: 60 });
-  }
-
-  arrive = () => void there();
+  let circle = tween({ x: 0, y: 80, r: 80, fill: "#00ffff" });
 </script>
 
-<h2>Animation should explain one change at a time</h2>
+<h2>Animotion</h2>
 
-<div class="cols even">
+<Transition
+  do={async () => {
+    await code.update`
+					async function animate() {
+						// ...
+					}
+				`;
+    await circle.to({ x: 0, fill: "#00ffff" });
+  }}
+  class="mt-16"
+>
   <Code
     bind:this={code}
     lang="ts"
     theme={codeTheme}
-    code={`async function move() {
-  // ...
-}`}
+    code=""
     options={{ duration: 600, stagger: 0.3, containerStyle: false }}
   />
+</Transition>
 
-  <svg viewBox="0 0 560 200" width="100%" height="200" aria-hidden="true">
-    <circle cx={dot.x} cy="100" r="56" style:fill="var(--deck-accent)" />
+<Transition
+  do={async () => {
+    await code.update`
+					async function animate() {
+						// ...
+					}
+				`;
+    await circle.to({ x: 0, fill: "#00ffff" });
+  }}
+  class="mt-16"
+>
+  <svg width="560" height={circle.r * 2} viewBox="-80 0 560 {circle.r * 2}">
+    <circle cx={circle.x} cy={circle.y} r={circle.r} fill={circle.fill} />
     <text
-      x={dot.x}
-      y="100"
-      font-size="24"
+      x={circle.x}
+      y={circle.y}
+      font-size={circle.r * 0.4}
       font-family="Monaspace Neon"
       text-anchor="middle"
       dominant-baseline="middle"
-      style:fill="var(--deck-canvas)"
     >
-      {dot.x.toFixed(0)}
+      {circle.x.toFixed(0)}
     </text>
   </svg>
-</div>
+</Transition>
 
-<!-- One step, and the way back out of it: Reveal fires `out` when the deck
-     steps backward, so the slide restores what arriving set up. -->
-<Action do={back} undo={there} />
+<Action
+  actions={[
+    async () => {
+      await code.update`
+						async function animate() {
+							await circle.to({ x: 400, fill: '#ffff00' })
+						}
+					`;
+      await code.selectLines`2`;
+      await circle.to({ x: 400, fill: "#ffff00" });
+    },
+    async () => {
+      await code.update`
+						async function animate() {
+							await circle.to({ x: 400, fill: '#ffff00' })
+							await circle.to({ x: 0, fill: '#00ffff' })
+						}
+					`;
+      await code.selectLines`3`;
+      await circle.to({ x: 0, fill: "#00ffff" });
+    },
+    async () => {
+      await code.selectLines`*`;
+      await code.update`
+						async function animate() {
+							await circle.to({ x: 400, fill: '#ffff00' })
+							await circle.to({ x: 0, fill: '#00ffff' })
+						}
+					`;
+      await circle.to({ x: 0, fill: "#00ffff" });
+    },
+  ]}
+/>
