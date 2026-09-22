@@ -21,9 +21,10 @@ build:
 prod: build
     bun run build/index.js
 
-# Format every source file
+# Format every source file, this justfile included
 fmt:
     bun run oxfmt
+    just --fmt
 
 # Verify formatting, this justfile included
 fmt-check:
