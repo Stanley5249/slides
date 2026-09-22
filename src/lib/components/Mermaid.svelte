@@ -156,12 +156,6 @@
     max-height: inherit;
   }
 
-  /* Explicit, because the plate suppresses selection while a drag is live. */
-  .diagram :global(foreignObject),
-  .diagram :global(text) {
-    user-select: text;
-  }
-
   .loading {
     display: grid;
     min-height: 8rem;

@@ -36,8 +36,6 @@
   const maxFitScale = 2;
   const scaleStep = 0.25;
   const panStep = 48;
-  // A drag preventDefaults clicks and selections away. Mirrored by the cursor rules in the style.
-  const exempt = "button, a, input, textarea, text, tspan, foreignObject";
   // A pinch is a wheel event with ctrlKey and a delta far smaller than a notch.
   const wheelZoomRate = 0.0015;
   const pinchZoomRate = 0.01;
@@ -167,7 +165,6 @@
 
   function startDrag(event: PointerEvent) {
     if (event.button !== 0 || drag || !viewport) return;
-    if (event.target instanceof Element && event.target.closest(exempt)) return;
     smooth = false;
     event.preventDefault();
     event.stopPropagation();
@@ -356,22 +353,11 @@
     overflow: hidden;
     cursor: grab;
     touch-action: none;
-  }
-
-  /* Only while dragging: otherwise text in the plate could not be selected or copied. */
-  .viewport.dragging {
-    cursor: grabbing;
     user-select: none;
   }
 
-  /* Mirrors the exempt list in startDrag, so the grab cursor never promises a pan that will not
-     happen. Controls carry their own cursor; text gets the caret that says it can be selected. */
-  .viewport :global(:is(button, a, input, textarea)) {
-    cursor: auto;
-  }
-
-  .viewport :global(:is(text, tspan, foreignObject)) {
-    cursor: text;
+  .viewport.dragging {
+    cursor: grabbing;
   }
 
   .canvas {
