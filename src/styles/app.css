@@ -1,4 +1,7 @@
-@layer reset, presentation, overrides;
+/* Tailwind's own layers are declared here so Catppuccin's `@layer base` cannot
+   outrank the presentation defaults below. overrides.css is deliberately
+   unlayered: see its header. */
+@layer theme, base, components, reset, presentation, utilities;
 
 /* fonts */
 /* Two weights of the display face, and no more: it sets titles and nothing else. */
@@ -19,7 +22,7 @@
 
 /* custom styles */
 @import "./theme.css" layer(presentation);
-@import "./overrides.css" layer(overrides);
+@import "./overrides.css";
 
 @layer reset {
   /* reset */
@@ -37,7 +40,9 @@
   :root {
     --r-background-color: var(--deck-canvas);
     --r-main-font: "Atkinson Hyperlegible";
-    --r-main-font-size: 42px;
+    /* The scale in overrides.css sets every size that matters. This is the
+       fallback for anything it does not reach. */
+    --r-main-font-size: 22px;
     --r-main-color: var(--deck-ink);
     --r-heading-font: "Fredoka";
     --r-code-font: "Monaspace Neon";
