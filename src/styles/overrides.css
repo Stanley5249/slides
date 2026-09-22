@@ -149,11 +149,13 @@
 /* Identifiers are the nouns of a technical talk, so they carry a weight and a
    color of their own. Still no pill and no plate: the mark is on the word.
 
-   0.5 is the body face's x-height over its em. Matching the two faces there
-   rather than guessing a size keeps them the same height on the line, and a
-   change of either face is a change of one number. */
+   0.475 matches the two faces at the cap height rather than the x-height.
+   Monaspace is 0.51 x over em and 0.73 cap over em; Atkinson is 0.50 and 0.68.
+   Equal x-heights therefore leave its capitals, digits and ascenders reading
+   larger, and 0.68 * 0.51 / 0.73 is the aspect value that levels the caps.
+   A change of either face is a change of one number. */
 .reveal .slides code {
-  font-size-adjust: 0.5;
+  font-size-adjust: 0.475;
   font-family: var(--r-code-font), ui-monospace, monospace;
   font-variant-ligatures: none;
   word-break: break-word;
