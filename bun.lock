@@ -5,18 +5,15 @@
     "": {
       "name": "animotion",
       "dependencies": {
-        "@animotion/core": "*",
-        "@animotion/motion": "*",
+        "@animotion/core": "1.5.3",
+        "@animotion/motion": "2.0.3",
         "@fontsource/atkinson-hyperlegible": "^5.2.8",
         "@fontsource/fredoka": "^5.3.0",
         "@fontsource/monaspace-neon": "^5.2.5",
-        "@shikijs/magic-move": "^4.3.1",
-        "@tailwindcss/vite": "^4.3.3",
+        "@tailwindcss/vite": "4.3.3",
         "lucide-svelte": "^1.0.1",
         "mermaid": "^11.17.2",
-        "reveal.js": "^6.0.1",
-        "shiki": "^4.3.1",
-        "tailwindcss": "^4.3.3",
+        "tailwindcss": "4.3.3",
       },
       "devDependencies": {
         "@catppuccin/tailwindcss": "1.0.0",
