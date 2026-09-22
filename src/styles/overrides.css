@@ -48,6 +48,13 @@
   display: none;
 }
 
+/* The title stays at the top of the slide. Its block is centered in whatever
+   room is left, so a short title and a long one leave the content looking
+   equally placed. */
+.reveal-viewport .reveal .slides > section > :nth-child(2) {
+  align-self: center;
+}
+
 /* The title slide is the only one with nothing to fill. */
 .reveal-viewport .reveal .slides > section:first-child {
   grid-template-rows: none;
@@ -83,10 +90,7 @@
   letter-spacing: -0.015em;
 }
 
-/* Two lines are reserved whether or not the title needs them, so the content
-   below starts at the same height on every slide in the deck. */
 .reveal-viewport .reveal .slides h2 {
-  min-height: 2.2em;
   max-width: 26ch;
 }
 
