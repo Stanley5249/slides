@@ -20,31 +20,31 @@
 </script>
 
 <Slide>
-  <h2>Diagrams are drawn in the deck's own colors</h2>
+  <h2>A diagram should look native to the deck</h2>
 
   <div class="cols narrow-first">
     <div class="row">
       <p>
-        Mermaid is themed from the role tokens, read live from the document, so
-        a diagram belongs to the slide rather than to its library.
+        The diagram uses the same color roles as the surrounding slide. Mermaid
+        reads those roles from the document when it renders.
       </p>
-      <p>Click it to open the viewer.</p>
+      <p>Select the diagram to inspect it in the viewer.</p>
     </div>
 
     <figure>
       <Mermaid code={workflow} label="Open the workflow diagram" />
-      <figcaption>The loop this template is built around.</figcaption>
+      <figcaption>Write, check, fix, and present.</figcaption>
     </figure>
   </div>
 </Slide>
 
 <Slide>
-  <h2>A diagram wider than the wall</h2>
+  <h2>Wide diagrams need a closer view</h2>
 
   <div class="row">
     <p>
-      The preview fits the column. The viewer opens it at a scale that fits the
-      window, and drags from there.
+      The slide keeps the full diagram visible as a preview. The viewer opens a
+      fitted version that the audience can inspect by dragging.
     </p>
 
     <figure>
@@ -55,17 +55,17 @@
 </Slide>
 
 <Slide>
-  <h2>A failure is never quiet</h2>
+  <h2>Rendering errors should be impossible to miss</h2>
 
   <div class="cols">
     <Mermaid code={broken} label="Open the broken diagram" />
 
     <div class="row">
       <p>
-        A diagram that did not render must not be mistaken for one that did, so
-        the error takes a panel and the message in full.
+        A failed diagram displays its full error instead of leaving an empty
+        space that could pass unnoticed.
       </p>
-      <p>It is the one place chrome earns its keep.</p>
+      <p>The visible panel makes the problem clear before the talk begins.</p>
     </div>
   </div>
 </Slide>

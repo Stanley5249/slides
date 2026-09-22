@@ -4,12 +4,12 @@
   let items = $state([1, 2, 3, 4]);
 </script>
 
-<h2>A list that moves when it changes</h2>
+<h2>Motion belongs to the presenter’s next point</h2>
 
 <div class="row">
   <p>
-    Reordering inside a view transition animates each element to its new place.
-    The template implements none of that, and neither does the slide.
+    When the list changes, a view transition carries each item to its new
+    position. The movement makes the new order easy to follow.
   </p>
 
   <div class="strip">
@@ -21,9 +21,8 @@
   </div>
 
   <p>
-    Motion that answers a keypress is welcome, because it shows what changed.
-    Motion that plays by itself is not, because the room is listening to a
-    person.
+    Each step begins with a keypress. The presenter controls the pace, and the
+    animation only explains what changed.
   </p>
 </div>
 

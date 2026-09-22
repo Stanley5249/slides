@@ -4,15 +4,17 @@
 </script>
 
 <Slide>
-  <h2>A screenshot is evidence</h2>
+  <h2>Use screenshots as evidence, not decoration</h2>
 
   <div class="cols narrow-first">
     <div class="row">
       <p>
-        <code>Shot</code> takes a source, the words a screen reader is given, and
-        a caption. The picture opens in the viewer a diagram opens in.
+        <code>Shot</code> pairs the image with alternative text and an optional caption.
+        Select the image to inspect it in the same viewer as a diagram.
       </p>
-      <p>No plate and no border. A picture is already a rectangle.</p>
+      <p>
+        The screenshot needs no extra frame because its content is the focus.
+      </p>
     </div>
 
     <Shot
@@ -24,17 +26,17 @@
 </Slide>
 
 <Slide>
-  <h2>A missing file says so</h2>
+  <h2>Missing evidence should remain visible</h2>
 
   <div class="cols">
     <Shot src="/not-written-yet.png" alt="The screenshot for this slide" />
 
     <div class="row">
       <p>
-        A file that has not been made yet must not leave a hole nobody notices,
-        so the slot draws itself and prints the path it went looking for.
+        When an image is missing, its slot remains visible and reports the path
+        that failed to load.
       </p>
-      <p>The deck still builds. The gap is visible from the back row.</p>
+      <p>The deck still builds, but the unfinished work cannot hide.</p>
     </div>
   </div>
 </Slide>

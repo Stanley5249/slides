@@ -1,32 +1,32 @@
-<h2>Three files decide how a deck looks</h2>
+<h2>Shared decisions make the next slide easier</h2>
 
 <div class="row">
   <table>
     <thead>
       <tr>
         <th>File</th>
-        <th>What it decides</th>
+        <th>Shared responsibility</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td><code>src/lib/theme.ts</code></td>
-        <td>The flavor this deck is presented in. Latte by default.</td>
+        <td>Selects the deck’s Catppuccin flavor.</td>
       </tr>
       <tr>
         <td><code>src/styles/theme.css</code></td>
-        <td>What each color role is for, in that flavor.</td>
+        <td>Maps semantic color roles to that flavor.</td>
       </tr>
       <tr>
         <td><code>src/styles/overrides.css</code></td>
-        <td>The slide surface: frame, type, tables, columns.</td>
+        <td>Defines the stage, type scale, tables, and columns.</td>
       </tr>
     </tbody>
   </table>
 
   <p>
-    The reasoning behind all three is in <code>docs/design.md</code>, and the
-    mechanics are the
-    <a href="https://animotion.pages.dev/docs">Animotion documentation</a>.
+    Change a shared decision once instead of correcting every slide. Before
+    presenting, run <code>just ci</code> and review the deck at projection size.
+    The rationale lives in <code>docs/design.md</code>.
   </p>
 </div>

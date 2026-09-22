@@ -1,14 +1,14 @@
-<h2>Three splits, and no others</h2>
+<h2>A few layouts keep the reading order clear</h2>
 
 <div class="cols narrow-first">
   <div class="row">
     <p>
-      Fractions rather than fixed widths, so a change of stage size does not
-      rewrite the deck.
+      Stacked content and two-column splits cover the useful cases. Their
+      fractional widths adapt when the stage changes size.
     </p>
     <p>
-      There is deliberately no two-by-two grid. A four-cell layout has no
-      reading order, and the fourth cell always ends up padded with something.
+      If four ideas compete in a two-by-two grid, split them across slides so
+      each one has a clear place in the sequence.
     </p>
   </div>
 

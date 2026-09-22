@@ -41,7 +41,7 @@
   arrive = () => void there();
 </script>
 
-<h2>Code and motion, one step at a time</h2>
+<h2>Animation should explain one change at a time</h2>
 
 <div class="cols even">
   <Code

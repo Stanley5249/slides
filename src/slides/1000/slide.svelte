@@ -20,6 +20,8 @@
 </script>
 
 <Notes>
-  A live site, not a screenshot. Click into it to demonstrate, then click the
-  slide edge before reaching for the arrow keys.
+  This is an iframe example, not the conclusion of the presentation. The
+  Animotion homepage is sample content and can be replaced with any live site.
+  Click into the frame to demonstrate it, then click the slide edge before using
+  the arrow keys again.
 </Notes>

@@ -1,6 +1,7 @@
-<h1>A template for technical talks</h1>
+<h1>Build slides for the back row</h1>
 
 <p>
-  Animotion and Reveal for the mechanics, one small design system for everything
-  the room actually sees. Arrow keys move through the deck.
+  A technical talk succeeds when the audience can follow the idea without
+  fighting the slide. This template keeps the structure predictable and the
+  content readable. Use the arrow keys to move through the deck.
 </p>
