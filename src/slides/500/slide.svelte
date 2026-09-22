@@ -59,6 +59,8 @@
     },
     async () => {
       await code.selectLines`*`;
+      await dot.to({ x: 500 });
+      await dot.to({ x: 60 });
     },
   ]}
 />
