@@ -1,17 +1,24 @@
 /* Catppuccin names colors by appearance. Components use these semantic roles
    because a role must keep its meaning when the deck flavor changes.
 
-   Every value is a palette color, never a generated tint or shade, so the deck
-   is the flavor rather than something derived from it. The Tailwind package
-   exposes a 50 to 950 scale around each accent; only the bare name is
-   Catppuccin, and the deck does not reach for the rest.
+   An accent takes the palette color by its bare name wherever that color can
+   carry the reading, and steps down the Tailwind package's scale only as far as
+   contrast demands. Only the bare name is Catppuccin, so every step away from
+   it is a cost, and the file below pays as little as it can.
 
-   That choice costs contrast in latte, whose accents are drawn as marks on a
-   light surface rather than as text on one. Against its base, mauve reaches
-   4.79 and red 4.80, blue 4.34, and green, yellow and peach sit between 2.3
-   and 3.0. Ink, marks and rules still carry the reading, so check a latte deck
-   on the projector before a talk and take a dark flavor if the room defeats
-   it. The dark flavors clear 4.5:1 on every accent. */
+   The bar is 3:1. Every type size on a slide except the 18px label is WCAG
+   large text, where AA asks for 3:1 rather than 4.5:1. The one accent that does
+   appear at label size is a link in a figcaption, which is why blue steps once
+   and the others answer only to the large-text bar.
+
+   The scale is coarse, and the identifier role is the one accent that appears
+   in running prose on every slide, so its exact weight is worth more than the
+   convenience of a step name. Nothing on the scale sits between peach-600 at
+   2.89 and peach-700 at 3.35, so that role mixes instead. The other three
+   found a step that fit.
+
+   Measured against latte's base: mauve 4.79, red 4.80, blue-600 4.70,
+   yellow-800 3.56, green-600 3.21, identifier 3.08. */
 
 :root {
   /* Surfaces. The canvas is the slide; the panel is the one step up a dialog
@@ -31,30 +38,34 @@
   --deck-rule: var(--catppuccin-color-surface1);
   --deck-rule-strong: var(--catppuccin-color-overlay2);
 
-  /* Accents, straight from the palette. The style guide's own mapping where it
-     has one: blue for links, green for success, yellow for warnings, red for
-     errors. */
+  /* Accents. The style guide's own mapping where it has one: blue for links,
+     green for success, yellow for warnings, red for errors. Mauve and red
+     clear the bar unaided; the other three are the first step that does. */
   --deck-heading: var(--catppuccin-color-mauve);
-  --deck-accent: var(--catppuccin-color-blue);
-  --deck-ok: var(--catppuccin-color-green);
-  --deck-warn: var(--catppuccin-color-yellow);
+  --deck-accent: var(--catppuccin-color-blue-600);
+  --deck-ok: var(--catppuccin-color-green-600);
+  --deck-warn: var(--catppuccin-color-yellow-800);
   --deck-bad: var(--catppuccin-color-red);
 
   /* Identifiers. A role of its own: an identifier is neither a link nor a
      heading, and the accent already means the state the viewer is on. */
-  --deck-code: var(--catppuccin-color-peach);
+  --deck-code: color-mix(in oklch, var(--catppuccin-color-peach) 94%, black);
 
   /* The focus ring is the accent until a deck says otherwise. */
   --deck-focus: var(--deck-accent);
 }
 
-/* The dark flavors need two quieter ink steps and a heading that is not mauve,
-   because lavender carries a title better against a dark canvas. Every other
-   role above already holds. */
+/* The dark flavors take every accent at its bare name, because a light color on
+   a dark canvas clears 4.5:1 without help. Only the two ink steps and the
+   heading differ: lavender carries a title against a dark canvas better than
+   mauve does. */
 :root:is(.frappe, .macchiato, .mocha) {
   --deck-ink-quiet: var(--catppuccin-color-subtext0);
   --deck-mark: var(--catppuccin-color-overlay1);
 
   --deck-heading: var(--catppuccin-color-lavender);
   --deck-accent: var(--catppuccin-color-blue);
+  --deck-ok: var(--catppuccin-color-green);
+  --deck-warn: var(--catppuccin-color-yellow);
+  --deck-code: var(--catppuccin-color-peach);
 }
