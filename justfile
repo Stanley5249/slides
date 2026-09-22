@@ -57,5 +57,9 @@ clean:
 clean:
     Remove-Item -Recurse -Force -ErrorAction Ignore build, .svelte-kit
 
+# Install exactly what the lockfile records, and fail if it disagrees
+lock-check:
+    bun install --frozen-lockfile
+
 # The gate a change has to pass
-ci: fmt-check check build
+ci: lock-check fmt-check check build
