@@ -39,9 +39,10 @@
   :root {
     --r-background-color: var(--deck-canvas);
     --r-main-font: "Atkinson Hyperlegible";
-    /* The scale in overrides.css sets every size that matters. This is the
-       fallback for anything it does not reach. */
-    --r-main-font-size: 24px;
+    --r-heading-font: "Fredoka";
+    /* overrides.css sizes headings, captions and chrome. It never sizes a
+       prose element, so this is where the content tier of the scale lands. */
+    --r-main-font-size: var(--deck-text-content);
     --r-main-color: var(--deck-ink);
     --r-code-font: "Monaspace Neon";
     --r-link-color: var(--deck-accent);

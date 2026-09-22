@@ -41,6 +41,23 @@
   --deck-pad: 64px;
 }
 
+/* The four sizes the deck sets type in, for the same reason the gaps are a
+   scale. The content size is read by --r-main-font-size in app.css, which is
+   the only place a prose element gets its size from. */
+:root {
+  --deck-text-title: 76px;
+  --deck-text-heading: 44px;
+  --deck-text-content: 24px;
+  --deck-text-label: 18px;
+}
+
+/* One width for the focus ring and one floor for a content slot, because both
+   are drawn by more than one component and have to agree. */
+:root {
+  --deck-focus-ring: 3px;
+  --deck-slot-min: 8rem;
+}
+
 /* ---------------------------------------------------------------------------
    Frame
    --------------------------------------------------------------------------- */
@@ -102,15 +119,15 @@
 .reveal .slides h2 {
   color: var(--deck-heading);
   font-weight: 600;
-  font-size: 44px;
-  font-family: "Fredoka", var(--r-main-font), sans-serif;
+  font-size: var(--deck-text-heading);
+  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
   line-height: 1.1;
   text-wrap: balance;
 }
 
 .reveal .slides h1 {
   max-width: 18ch;
-  font-size: 76px;
+  font-size: var(--deck-text-title);
   line-height: 1.05;
   letter-spacing: -0.015em;
 }
@@ -284,7 +301,7 @@
   margin-inline: auto;
   max-width: 62ch;
   color: var(--deck-ink-quiet);
-  font-size: 18px;
+  font-size: var(--deck-text-label);
   text-align: center;
 }
 
@@ -387,11 +404,11 @@
 .reveal-viewport .reveal .slide-number,
 .reveal-viewport .reveal .slide-number a {
   right: auto;
-  left: 20px;
-  bottom: 16px;
+  left: var(--deck-gap-tight);
+  bottom: var(--deck-gap-tight);
   padding: 0;
   color: var(--deck-ink-quiet);
-  font-size: 18px;
+  font-size: var(--deck-text-label);
   font-family: var(--r-code-font), ui-monospace, monospace;
   text-decoration: none;
   background: none;
