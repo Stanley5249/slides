@@ -12,10 +12,13 @@
 
    No Reveal theme is loaded, and Animotion's own stylesheet sits in
    `@layer presentation`, so almost nothing upstream contests these rules. What
-   does contest them is `reveal.css` itself, which is unlayered: a layered rule
-   loses to it at any specificity, and its own selectors reach three classes
-   deep. So this file stays unlayered and every selector carries the same three
-   classes, which keeps the whole file on one side of every tie.
+   does contest them is `reveal.css`, which is unlayered: a layered rule loses
+   to it at any specificity. That is why this file is unlayered too.
+
+   Four selectors here reach the same weight as one in `reveal.css`, and a tie
+   is settled by whichever stylesheet the bundler puts last. Those four carry an
+   extra `.reveal-viewport` to win outright, and say so. Everything else needs
+   only `.reveal .slides`.
 
    Sizes are pixels at Reveal's stage, which Reveal scales to the window. The
    chrome at the end of this file is the exception: it sits outside `.slides`
@@ -23,6 +26,15 @@
 
    Colors come from the roles in theme.css. See docs/design.md for both.
    --------------------------------------------------------------------------- */
+
+/* One scale for the space between things, so a gap is chosen from four values
+   rather than invented. Cell padding is not on it: that is table metrics. */
+:root {
+  --deck-gap-tight: 16px;
+  --deck-gap: 28px;
+  --deck-gap-wide: 48px;
+  --deck-pad: 64px;
+}
 
 /* ---------------------------------------------------------------------------
    Frame
@@ -39,35 +51,36 @@
    height, so content fills the page instead of floating in the top half.
 
    `line-height` is set here because `reveal.css` puts `1` on the viewport and
-   nothing resets it, so anything this file does not name would set solid. */
+   nothing resets it, so anything this file does not name would set solid.
+
+   Ties with `.reveal .slides > section` in reveal.css, hence the extra class. */
 .reveal-viewport .reveal .slides > section {
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: min-content 1fr;
-  row-gap: 36px;
+  row-gap: var(--deck-gap);
   height: 100%;
-  padding: 48px 64px 44px;
+  padding: var(--deck-gap-wide) var(--deck-pad);
   line-height: 1.5;
   text-align: left;
 }
 
 /* Animotion steppers are empty control divs that become visible as the deck
    advances. They are markers, not content, so they never take a row. */
-.reveal-viewport .reveal .slides .fragment:empty {
+.reveal .slides .fragment:empty {
   display: none;
 }
 
 /* The title stays at the top of the slide. Everything else is centered in
    whatever room is left, so a short title and a long one leave the content
    looking equally placed. */
-.reveal-viewport .reveal .slides > section > :not(h1, h2) {
+.reveal .slides > section > :not(h1, h2) {
   align-self: center;
 }
 
 /* The title slide is the only one with nothing to fill. */
-.reveal-viewport .reveal .slides > section:first-child {
+.reveal .slides > section:first-child {
   grid-template-rows: none;
   align-content: center;
-  row-gap: 28px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -78,8 +91,8 @@
    at the same measure, which is a correction and not a fifth size.
    --------------------------------------------------------------------------- */
 
-.reveal-viewport .reveal .slides h1,
-.reveal-viewport .reveal .slides h2 {
+.reveal .slides h1,
+.reveal .slides h2 {
   color: var(--deck-heading);
   font-weight: 600;
   font-size: 44px;
@@ -88,23 +101,23 @@
   text-wrap: balance;
 }
 
-.reveal-viewport .reveal .slides h1 {
+.reveal .slides h1 {
   max-width: 18ch;
   font-size: 76px;
   line-height: 1.05;
   letter-spacing: -0.015em;
 }
 
-.reveal-viewport .reveal .slides h2 {
+.reveal .slides h2 {
   max-width: 26ch;
 }
 
-.reveal-viewport .reveal .slides p {
+.reveal .slides p {
   max-width: 62ch;
   text-wrap: pretty;
 }
 
-.reveal-viewport .reveal .slides a {
+.reveal .slides a {
   color: var(--deck-accent);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.15em;
@@ -113,7 +126,7 @@
 /* Identifiers are the nouns of a technical talk. The face and a small optical
    step down are enough at slide scale: no pill, no background, and no color of
    its own, so an identifier reads as well as the sentence holding it. */
-.reveal-viewport .reveal .slides code {
+.reveal .slides code {
   font-size: 0.88em;
   font-family: var(--r-code-font), ui-monospace, monospace;
   font-variant-ligatures: none;
@@ -127,22 +140,22 @@
 /* A middle dot rather than a filled bullet: quieter on a wall. Set as the
    marker rather than drawn with a pseudo-element, so the list stays a list for
    a screen reader and `::marker` can still color it. */
-.reveal-viewport .reveal .slides ul {
+.reveal .slides ul {
   list-style-type: "·  ";
 }
 
-.reveal-viewport .reveal .slides ul,
-.reveal-viewport .reveal .slides ol {
+.reveal .slides ul,
+.reveal .slides ol {
   max-width: 62ch;
   padding-left: 1.2em;
 }
 
-.reveal-viewport .reveal .slides li::marker {
+.reveal .slides li::marker {
   color: var(--deck-ink-quiet);
 }
 
-.reveal-viewport .reveal .slides li + li {
-  margin-top: 16px;
+.reveal .slides li + li {
+  margin-top: var(--deck-gap-tight);
 }
 
 /* ---------------------------------------------------------------------------
@@ -154,59 +167,63 @@
    rules are undoing.
    --------------------------------------------------------------------------- */
 
-.reveal-viewport .reveal .slides table {
+.reveal .slides table {
   width: 100%;
 }
 
-.reveal-viewport .reveal .slides thead th {
+.reveal .slides thead th {
   padding: 6px 18px 10px;
   color: var(--deck-ink-quiet);
   font-weight: 600;
   font-size: 18px;
   font-family: var(--r-main-font), sans-serif;
   letter-spacing: 0.08em;
-  text-align: left;
   text-transform: uppercase;
   border-top: 1.5px solid var(--deck-rule-strong);
   border-bottom: 1px solid var(--deck-rule);
 }
 
-.reveal-viewport .reveal .slides tbody th,
-.reveal-viewport .reveal .slides tbody td {
+/* Alignment is left to Animotion and to the deck, so a cell can still take a
+   Tailwind utility for a column of numbers. */
+.reveal .slides tbody th,
+.reveal .slides tbody td {
   padding: 12px 18px;
   font-weight: inherit;
-  text-align: left;
   vertical-align: baseline;
   border: 0;
 }
 
-.reveal-viewport .reveal .slides tbody tr:last-child th,
-.reveal-viewport .reveal .slides tbody tr:last-child td {
+.reveal .slides tbody tr:last-child th,
+.reveal .slides tbody tr:last-child td {
   border-bottom: 1.5px solid var(--deck-rule-strong);
 }
 
-.reveal-viewport .reveal .slides th:first-child,
-.reveal-viewport .reveal .slides td:first-child {
+.reveal .slides th:first-child,
+.reveal .slides td:first-child {
   padding-left: 0;
 }
 
-.reveal-viewport .reveal .slides th:last-child,
-.reveal-viewport .reveal .slides td:last-child {
+.reveal .slides th:last-child,
+.reveal .slides td:last-child {
   padding-right: 0;
 }
 
 /* A column of numbers is read down, not across, so it is set right-aligned in
    figures of one width. The body face has those figures, so no second face is
-   needed to line them up. */
-.reveal-viewport .reveal .slides .numeric {
+   needed to line them up.
+
+   This is a class rather than Tailwind's `text-right tabular-nums` because
+   Animotion sets `text-align: left` on every cell from `@layer presentation`,
+   which outranks a utility here: the utility is generated, and it loses. */
+.reveal .slides .numeric {
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
 
 /* A table is set in one face. An identifier still marks itself up as code, but
    inside a cell it reads as the cell it is in. */
-.reveal-viewport .reveal .slides th code,
-.reveal-viewport .reveal .slides td code {
+.reveal .slides th code,
+.reveal .slides td code {
   font-size: inherit;
   font-family: inherit;
 }
@@ -221,12 +238,12 @@
 /* The auto inline margins center a figure narrower than its column. Without the
    cap they would also let a wide one size itself to its content and run off the
    slide. */
-.reveal-viewport .reveal .slides figure {
+.reveal .slides figure {
   margin-inline: auto;
   max-width: 100%;
 }
 
-.reveal-viewport .reveal .slides figure img {
+.reveal .slides figure img {
   display: block;
   width: 100%;
   height: auto;
@@ -235,13 +252,13 @@
 /* Mermaid sizes each node box from the label it measured at its own metrics, so
    the label has to be handed back the font the box was laid out with. The
    paragraph rule above would otherwise reach inside the SVG and reflow it. */
-.reveal-viewport .reveal .slides foreignObject p {
+.reveal .slides foreignObject p {
   max-width: none;
   font: inherit;
 }
 
-.reveal-viewport .reveal .slides figcaption {
-  margin-top: 14px;
+.reveal .slides figcaption {
+  margin-top: var(--deck-gap-tight);
   max-width: 62ch;
   color: var(--deck-ink-quiet);
   font-size: 18px;
@@ -256,7 +273,7 @@
    why the size is set here as well.
    --------------------------------------------------------------------------- */
 
-.reveal-viewport .reveal .slides pre {
+.reveal .slides pre {
   margin-inline: 0;
   font-size: 0.88em;
   line-height: 1.5;
@@ -264,7 +281,7 @@
 
 /* Both `pre` and `code` step down, so a hand-written `<pre><code>` would step
    down twice. */
-.reveal-viewport .reveal .slides pre code {
+.reveal .slides pre code {
   font-size: inherit;
 }
 
@@ -278,30 +295,30 @@
    ends up padded.
    --------------------------------------------------------------------------- */
 
-.reveal-viewport .reveal .slides .row {
+.reveal .slides .row {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: var(--deck-gap);
 }
 
-.reveal-viewport .reveal .slides .cols {
+.reveal .slides .cols {
   display: grid;
   grid-template-columns: 2.2fr 1fr;
-  gap: 48px;
+  gap: var(--deck-gap-wide);
   align-items: start;
 }
 
-.reveal-viewport .reveal .slides .cols.even {
+.reveal .slides .cols.even {
   grid-template-columns: 1fr 1fr;
 }
 
-.reveal-viewport .reveal .slides .cols.narrow-first {
+.reveal .slides .cols.narrow-first {
   grid-template-columns: 1fr 2.2fr;
 }
 
 /* A grid item's automatic minimum size is its content width, which lets a wide
    table push its column, and the slide, past the right edge. */
-.reveal-viewport .reveal .slides .cols > * {
+.reveal .slides .cols > * {
   min-width: 0;
 }
 
@@ -310,7 +327,8 @@
 
    A quiet progress rule, slide number and arrows. Reveal keeps everything else,
    including the navigation itself: the arrows here are recolored, never
-   replaced. These sit outside the scaled stage, so their sizes are real pixels.
+   replaced. These sit outside the scaled stage, so their sizes are real pixels,
+   and all three tie with a rule in reveal.css, hence the extra class on each.
    --------------------------------------------------------------------------- */
 
 /* Reveal colors the filled part from `color` and leaves the track a hardcoded
@@ -321,8 +339,7 @@
 }
 
 /* Reveal recolors the arrows once it decides the background is light or dark,
-   at the same weight as the first selector here, so without the second one the
-   winner would be whichever stylesheet the bundler happened to put last. */
+   which is a class further than the first selector here reaches. */
 .reveal-viewport .reveal .controls,
 .reveal-viewport
   .reveal:is(.has-light-background, .has-dark-background)
