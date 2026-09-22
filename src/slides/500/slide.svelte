@@ -7,14 +7,7 @@
   const dot = tween({ x: 60 });
 </script>
 
-<p class="act">The mechanics</p>
-
 <h2>Code and motion, one step at a time</h2>
-
-<p class="lede">
-  Each press advances one step. Nothing on a slide plays by itself, because the
-  room is listening to a person.
-</p>
 
 <div class="cols even">
   <Code
@@ -27,11 +20,11 @@
     options={{ duration: 600, stagger: 0.3, containerStyle: false }}
   />
 
-  <svg viewBox="0 0 560 160" width="100%" height="160" aria-hidden="true">
-    <circle cx={dot.x} cy="80" r="52" style:fill="var(--deck-accent)" />
+  <svg viewBox="0 0 560 200" width="100%" height="200" aria-hidden="true">
+    <circle cx={dot.x} cy="100" r="56" style:fill="var(--deck-accent)" />
     <text
       x={dot.x}
-      y="80"
+      y="100"
       font-size="24"
       font-family="Monaspace Neon"
       text-anchor="middle"

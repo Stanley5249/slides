@@ -32,20 +32,20 @@ stylesheet, the Shiki theme and the Mermaid palette reading from one constant.
 and never for `--catppuccin-color-*` directly, because a Catppuccin token means
 a different thing in latte than it does in mocha.
 
-| Role                                     | What it is for                                        |
-| ---------------------------------------- | ----------------------------------------------------- |
-| `--deck-canvas`                          | The slide itself.                                     |
-| `--deck-panel`                           | The one step up a dialog or an error report may take. |
-| `--deck-veil`                            | What covers the deck behind a modal.                  |
-| `--deck-hover`                           | A pointer resting on something that responds.         |
-| `--deck-ink`                             | Body text, table values, anything read word by word.  |
-| `--deck-ink-quiet`                       | The second weight: ledes, captions, notes, labels.    |
-| `--deck-mark`                            | Bullets, chevrons, diagram lines. Never a word.       |
-| `--deck-rule`, `--deck-rule-strong`      | A hairline, and the rule that structures a table.     |
-| `--deck-heading`                         | Titles.                                               |
-| `--deck-accent`                          | Links, and the one state the viewer is currently on.  |
-| `--deck-focus`                           | The focus ring.                                       |
-| `--deck-ok`, `--deck-warn`, `--deck-bad` | A claim about the data underneath.                    |
+| Role                                     | What it is for                                         |
+| ---------------------------------------- | ------------------------------------------------------ |
+| `--deck-canvas`                          | The slide itself.                                      |
+| `--deck-panel`                           | The one step up a dialog or an error report may take.  |
+| `--deck-veil`                            | What covers the deck behind a modal.                   |
+| `--deck-hover`                           | A pointer resting on something that responds.          |
+| `--deck-ink`                             | Body text, table values, anything read word by word.   |
+| `--deck-ink-quiet`                       | The second weight: captions, table heads, the counter. |
+| `--deck-mark`                            | Bullets, chevrons, diagram lines. Never a word.        |
+| `--deck-rule`, `--deck-rule-strong`      | A hairline, and the rule that structures a table.      |
+| `--deck-heading`                         | Titles.                                                |
+| `--deck-accent`                          | Links, and the one state the viewer is currently on.   |
+| `--deck-focus`                           | The focus ring.                                        |
+| `--deck-ok`, `--deck-warn`, `--deck-bad` | A claim about the data underneath.                     |
 
 Text clears 4.5:1 against the canvas; marks, rules and focus rings clear 3:1.
 Latte is the binding case: its accents are too pale at full strength, so the
@@ -79,6 +79,11 @@ Three faces, each with one job.
 - Monaspace Neon sets identifiers, measurements and anything in a column.
   Tabular figures, so digits line up between rows.
 
+Four sizes, and no more: one for the deck title, one for a slide title, one for
+anything read as content, and one for the small type that labels content.
+Monospace takes an optical step down at the same measure, which is a correction
+rather than a fifth size.
+
 Sizes are pixels on Reveal's fixed stage, which Reveal scales to the window, so
 a pixel here is a fixed fraction of the projected slide. Prose stops at 62
 characters a line and titles at 26, both well under the 80 that print would
@@ -90,31 +95,32 @@ scale that is enough.
 
 ## Layout
 
-Every slide is the same shape: a label saying which movement of the talk this
-is, a title, then rows. The header is a fixed height whether or not the title
-fills it, so the title sits on the same baseline on every slide and the deck
-does not jump as it advances.
+Every slide is the same shape: a title, then one block that takes the rest of
+the page. The title reserves two lines whether or not it needs them, so it sits
+on the same baseline on every slide and the deck does not jump as it advances,
+and the block below fills whatever it leaves, so a table or a diagram uses the
+page instead of floating in the top half of it.
 
 ```
-+--------------------------------------------------+
-|  ACT LABEL                                       |
-|  Title, up to two lines, reserved either way      |
-|                                                  |
-|  +----------------------+  +------------------+  |
-|  |                      |  |                  |  |
-|  |  content             |  |  content         |  |
-|  |                      |  |                  |  |
-|  +----------------------+  +------------------+  |
-+--------------------------------------------------+
++----------------------------------------------------+
+|  Title, up to two lines, reserved either way       |
+|                                                    |
+|  +------------------------------------------------+
+|  |                                                |
+|  |  one block, filling the rest of the page       |
+|  |                                                |
+|  +------------------------------------------------+
++----------------------------------------------------+
 ```
 
-Three column splits and no others: 2.2fr to 1fr, even halves, and 1fr to 2.2fr.
-Fractions rather than fixed widths, so a change of stage size does not rewrite
-the deck. There is deliberately no two-by-two grid, because a four-cell layout
-has no reading order and the fourth cell always ends up padded with something.
+That block is a `row` when it stacks and a `cols` when it splits. Three splits
+and no others: 2.2fr to 1fr, even halves, and 1fr to 2.2fr. Fractions rather
+than fixed widths, so a change of stage size does not rewrite the deck. There is
+deliberately no two-by-two grid, because a four-cell layout has no reading order
+and the fourth cell always ends up padded with something.
 
-Spacing lives on the elements, the way a document does it, so a slide never
-places its own gaps. Author order decides the rhythm.
+Gaps come from the block rather than from the elements inside it: a `row` spaces
+what it holds, so a slide never places a margin of its own.
 
 ## Structure
 

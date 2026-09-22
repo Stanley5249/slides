@@ -15,7 +15,7 @@
     controls: true,
     controlsBackArrows: "faded",
     progress: true,
-    slideNumber: "c/t",
+    slideNumber: "h.v",
   }}
   plugins={{ notes: true }}
 >

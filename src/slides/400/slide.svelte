@@ -1,5 +1,3 @@
-<p class="act">The frame</p>
-
 <h2>Three splits, and no others</h2>
 
 <div class="cols narrow-first">
@@ -8,7 +6,7 @@
       Fractions rather than fixed widths, so a change of stage size does not
       rewrite the deck.
     </p>
-    <p class="note">
+    <p>
       There is deliberately no two-by-two grid. A four-cell layout has no
       reading order, and the fourth cell always ends up padded with something.
     </p>
@@ -23,6 +21,11 @@
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><code>row</code></td>
+        <td>Stacked</td>
+        <td class="numeric">1</td>
+      </tr>
       <tr>
         <td><code>cols</code></td>
         <td>Wide first</td>
@@ -41,8 +44,3 @@
     </tbody>
   </table>
 </div>
-
-<p class="note">
-  The rules are a table's own: one above the head, one below it, one under the
-  last row, nothing vertical.
-</p>

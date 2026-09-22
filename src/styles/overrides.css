@@ -1,60 +1,75 @@
 /* ---------------------------------------------------------------------------
    The slide system.
 
-   Only the slide surface is styled here. Reveal owns the stage, the transitions
-   and the navigation; Animotion owns the slide runtime. Nothing below replaces
-   any of that.
+   Three things happen here.
 
-   Reveal injects its own stylesheet at runtime, unlayered, so a layered rule
-   loses to it whatever its specificity. These rules are therefore unlayered
-   too, and every selector carries the `.reveal-viewport` body class to sit one
-   class above anything reveal.css declares.
+   1. The section gets a frame: one column, a title row, and a content row that
+      takes everything left over.
+   2. Plain HTML tags get slide-sized typography, so a slide is written as
+      markup and needs no classes.
+   3. Four layout classes exist, and no more: row, cols, cols even,
+      cols narrow-first.
 
-   Sizes are pixels at Reveal's stage, which Reveal then scales to the window,
-   so a pixel here is a fixed fraction of the projected slide.
+   The `.reveal-viewport .reveal .slides` prefix on every selector carries no
+   meaning. Reveal injects its own stylesheet at runtime with no cascade layer,
+   and a layered rule loses to an unlayered one whatever its specificity, so
+   these rules stay unlayered and use the prefix to sit one class above Reveal's
+   own.
 
-   Colors come from the roles in theme.css and never from Catppuccin directly.
-   See docs/design.md for what each role is for.
+   Sizes are pixels at Reveal's stage, which Reveal scales to the window. Colors
+   come from the roles in theme.css. See docs/design.md for both.
    --------------------------------------------------------------------------- */
 
 /* ---------------------------------------------------------------------------
-   Slide frame
+   Frame
    --------------------------------------------------------------------------- */
 
 /* Reveal writes `display: grid` onto the section as an inline style, so the
-   frame is built as a grid rather than fought with !important. Rows size to
-   their content and stack from the top, under a header of fixed height. */
+   frame is built as a grid rather than fought with !important.
+
+   One column, and `minmax(0, 1fr)` rather than the implicit `auto`: an auto
+   column takes the width of its widest child, so a wide table or diagram would
+   size the column and run off the slide.
+
+   Two rows: the title, then everything else. The second row takes the leftover
+   height, so content fills the page instead of floating in the top half. */
 .reveal-viewport .reveal .slides > section {
-  /* One column, and `minmax(0, 1fr)` rather than the implicit `auto`: an auto
-     column takes the width of its widest child, so a wide table or diagram
-     would size the column and run off the slide. */
   grid-template-columns: minmax(0, 1fr);
-  align-content: start;
-  justify-items: stretch;
+  grid-template-rows: min-content 1fr;
+  row-gap: 36px;
   height: 100%;
-  padding: 52px 64px 40px;
+  padding: 48px 64px 44px;
   text-align: left;
 }
 
-/* The title slide is the only one without an act label, and the only one
-   centered. */
+/* Animotion steppers are empty control divs that become visible as the deck
+   advances. They are markers, not content, so they never take a row. */
+.reveal-viewport .reveal .slides > section > .fragment:empty {
+  display: none;
+}
+
+/* The title slide is the only one with nothing to fill. */
 .reveal-viewport .reveal .slides > section:first-child {
+  grid-template-rows: none;
   align-content: center;
-  padding-bottom: 88px;
+  row-gap: 28px;
 }
 
 /* ---------------------------------------------------------------------------
-   Typography
+   Type
+
+   Four sizes: 76 for the deck title, 44 for a slide title, 24 for everything
+   read as content, 18 for what labels it. Monospace takes an optical step down
+   at the same measure, which is a correction and not a fifth size.
    --------------------------------------------------------------------------- */
 
 .reveal-viewport .reveal .slides h1,
-.reveal-viewport .reveal .slides h2,
-.reveal-viewport .reveal .slides h3 {
+.reveal-viewport .reveal .slides h2 {
   margin: 0;
   color: var(--deck-heading);
   font-weight: 600;
   font-family: "Fredoka", var(--r-main-font), sans-serif;
-  font-size: inherit;
+  font-size: 44px;
   line-height: 1.1;
   letter-spacing: 0;
   text-transform: none;
@@ -73,47 +88,13 @@
 .reveal-viewport .reveal .slides h2 {
   min-height: 2.2em;
   max-width: 26ch;
-  margin-bottom: 36px;
-  font-size: 44px;
-}
-
-.reveal-viewport .reveal .slides h3 {
-  font-size: 26px;
-}
-
-/* The act label: which movement of the talk this slide belongs to. The template
-   styles it; the deck writes what it says. */
-.reveal-viewport .reveal .slides .act {
-  margin-bottom: 8px;
-  color: var(--deck-ink-quiet);
-  font-weight: 400;
-  font-size: 15px;
-  font-family: var(--r-main-font), sans-serif;
-  letter-spacing: 0.18em;
-  line-height: 1.5;
-  text-transform: uppercase;
 }
 
 .reveal-viewport .reveal .slides p {
   max-width: 62ch;
   margin: 0;
-  font-size: 22px;
   line-height: 1.5;
   text-wrap: pretty;
-}
-
-/* The paragraph directly under a title: the slide's claim, one step up. */
-.reveal-viewport .reveal .slides .lede {
-  max-width: 56ch;
-  color: var(--deck-ink-quiet);
-  font-size: 26px;
-  line-height: 1.4;
-}
-
-.reveal-viewport .reveal .slides .note {
-  color: var(--deck-ink-quiet);
-  font-size: 18px;
-  line-height: 1.45;
 }
 
 .reveal-viewport .reveal .slides strong {
@@ -150,30 +131,29 @@
   max-width: 58ch;
   margin: 0;
   padding-left: 0;
-  font-size: 22px;
   line-height: 1.5;
 }
 
 .reveal-viewport .reveal .slides li + li {
-  margin-top: 14px;
+  margin-top: 16px;
 }
 
-/* An en dash rather than a bullet: quieter, and it hangs the text on one
-   indent. */
+/* A middle dot rather than a filled bullet: quieter on a wall, and it hangs the
+   text on one indent. */
 .reveal-viewport .reveal .slides ul {
   list-style: none;
 }
 
 .reveal-viewport .reveal .slides ul > li {
   position: relative;
-  padding-left: 24px;
+  padding-left: 28px;
 }
 
 .reveal-viewport .reveal .slides ul > li::before {
   position: absolute;
   left: 0;
   color: var(--deck-mark);
-  content: "–";
+  content: "·";
 }
 
 .reveal-viewport .reveal .slides ol {
@@ -182,26 +162,6 @@
 
 .reveal-viewport .reveal .slides li::marker {
   color: var(--deck-mark);
-}
-
-/* A definition list is the right shape for a run's parameters: term, then
-   value. */
-.reveal-viewport .reveal .slides dl {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 18px 40px;
-  margin: 0;
-  font-size: 22px;
-}
-
-.reveal-viewport .reveal .slides dt {
-  color: var(--deck-ink-quiet);
-  font-size: 18px;
-  font-family: var(--r-code-font), ui-monospace, monospace;
-}
-
-.reveal-viewport .reveal .slides dd {
-  margin: 0;
 }
 
 /* ---------------------------------------------------------------------------
@@ -214,7 +174,6 @@
 .reveal-viewport .reveal .slides table {
   width: 100%;
   margin: 0;
-  font-size: 20px;
   border-collapse: collapse;
   border-spacing: 0;
 }
@@ -223,9 +182,9 @@
   padding: 6px 18px 10px;
   color: var(--deck-ink-quiet);
   font-weight: 400;
-  font-size: 15px;
+  font-size: 18px;
   font-family: var(--r-main-font), sans-serif;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-align: left;
   text-transform: uppercase;
   border-top: 1.5px solid var(--deck-rule-strong);
@@ -233,7 +192,7 @@
 }
 
 .reveal-viewport .reveal .slides tbody td {
-  padding: 10px 18px;
+  padding: 12px 18px;
   vertical-align: baseline;
   border: 0;
 }
@@ -252,20 +211,12 @@
   padding-right: 0;
 }
 
+/* A column of numbers is read down, not across, so it is set right-aligned in
+   figures of one width. */
 .reveal-viewport .reveal .slides .numeric {
   font-family: var(--r-code-font), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
   text-align: right;
-}
-
-/* More rows than the stage comfortably fits, at a tighter setting. */
-.reveal-viewport .reveal .slides .dense {
-  font-size: 18px;
-}
-
-.reveal-viewport .reveal .slides .dense tbody td {
-  padding-top: 5px;
-  padding-bottom: 5px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -275,8 +226,6 @@
    chrome makes it read as a widget.
    --------------------------------------------------------------------------- */
 
-/* The figure hugs its picture, so the leftover room in the column goes either
-   side of it rather than into an empty box beside it. */
 /* The auto inline margins center a figure narrower than its column. Without the
    cap they would also let a wide one size itself to its content and run off the
    slide. */
@@ -303,11 +252,11 @@
 }
 
 .reveal-viewport .reveal .slides figcaption {
-  margin-top: 12px;
+  margin-top: 14px;
   max-width: 62ch;
   color: var(--deck-ink-quiet);
-  font-size: 17px;
-  line-height: 1.4;
+  font-size: 18px;
+  line-height: 1.45;
 }
 
 /* ---------------------------------------------------------------------------
@@ -320,22 +269,31 @@
 
 .reveal-viewport .reveal .slides pre {
   margin-inline: 0;
-  font-size: 20px;
+  font-size: 0.88em;
   line-height: 1.5;
 }
 
 /* ---------------------------------------------------------------------------
    Rows and columns
 
-   Three splits, and no others. Fractions rather than fixed widths, so the deck
-   survives a change of stage size. Deliberately no 2x2 grid: a four-cell layout
-   has no reading order, and the fourth cell always ends up padded.
+   `row` stacks blocks down the slide and is the usual content block. `cols`
+   splits it in two, three ways and no others. Fractions rather than fixed
+   widths, so the deck survives a change of stage size. Deliberately no 2x2
+   grid: a four-cell layout has no reading order, and the fourth cell always
+   ends up padded.
    --------------------------------------------------------------------------- */
+
+.reveal-viewport .reveal .slides .row {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-height: 0;
+}
 
 .reveal-viewport .reveal .slides .cols {
   display: grid;
   grid-template-columns: 2.2fr 1fr;
-  gap: 40px;
+  gap: 48px;
   align-items: start;
   min-height: 0;
 }
@@ -352,40 +310,6 @@
    table push its column, and the slide, past the right edge. */
 .reveal-viewport .reveal .slides .cols > * {
   min-width: 0;
-}
-
-.reveal-viewport .reveal .slides .row {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  min-height: 0;
-}
-
-/* ---------------------------------------------------------------------------
-   Vertical rhythm
-
-   Margins live on the elements, markdown-style, so a slide never has to place
-   its own spacing. Author order decides the gap.
-   --------------------------------------------------------------------------- */
-
-.reveal-viewport .reveal .slides > section > * + * {
-  margin-top: 24px;
-}
-
-.reveal-viewport .reveal .slides > section > h2 + * {
-  margin-top: 0;
-}
-
-.reveal-viewport .reveal .slides > section > .lede + * {
-  margin-top: 32px;
-}
-
-.reveal-viewport .reveal .slides > section:first-child > h1 + * {
-  margin-top: 32px;
-}
-
-.reveal-viewport .reveal .slides > section:first-child > .lede + * {
-  margin-top: 40px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -410,25 +334,20 @@
   color: var(--deck-accent);
 }
 
-/* Bottom right belongs to the arrows, so the counter takes the opposite
-   corner. */
-.reveal-viewport .reveal .slide-number {
+/* Bottom right belongs to the arrows, so the counter takes the opposite corner.
+   Reveal builds it out of links when history is on, and it is a readout rather
+   than somewhere to go. */
+.reveal-viewport .reveal .slide-number,
+.reveal-viewport .reveal .slide-number a {
   right: auto;
   left: 20px;
   bottom: 16px;
   padding: 0;
   color: var(--deck-ink-quiet);
-  font-size: 14px;
+  font-size: 18px;
   font-family: var(--r-code-font), ui-monospace, monospace;
-  background: none;
-}
-
-/* Reveal builds the counter out of links when history is on. It is a readout,
-   not somewhere to go. */
-.reveal-viewport .reveal .slide-number,
-.reveal-viewport .reveal .slide-number a {
-  color: var(--deck-ink-quiet);
   text-decoration: none;
+  background: none;
 }
 
 .reveal-viewport .reveal .slides section:focus,

@@ -8,8 +8,6 @@
 		Fix --> Write`;
 </script>
 
-<p class="act">The components</p>
-
 <h2>Diagrams are drawn in the deck's own colors</h2>
 
 <div class="cols narrow-first">
@@ -18,7 +16,7 @@
       Mermaid is themed from the role tokens, read live from the document, so a
       diagram belongs to the slide rather than to its library.
     </p>
-    <p class="note">Click it to open the viewer.</p>
+    <p>Click it to open the viewer.</p>
   </div>
 
   <figure>
