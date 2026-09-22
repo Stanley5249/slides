@@ -20,7 +20,7 @@
 - Use Animotion and Reveal.js for presentation mechanics. Do not create
   replacement navigation, presenter, animation, or slide-runtime abstractions.
 - Use Svelte 5 components and runes for reactive and interactive slide content.
-- Use Tailwind and the Catppuccin Macchiato tokens for presentation styling.
+- Use Tailwind and the Catppuccin tokens for presentation styling.
 - Keep `main` template-only. Real presentation content belongs on `deck/<name>`
   or `deck/<group>/<name>` branches.
 
