@@ -3,7 +3,8 @@
   import Zoom from "$lib/components/Zoom.svelte";
 
   type Props = {
-    /** Path under `static/`, so the file can be dropped in without touching the slide. */
+    /** A path under `static/` or a URL. A file dropped into `static/` needs no
+     * build step, which is why a real deck keeps its pictures there. */
     src: string;
     alt: string;
     caption?: string;
