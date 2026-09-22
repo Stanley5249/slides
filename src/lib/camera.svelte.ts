@@ -14,14 +14,18 @@ type Origin = {
   y: number;
 };
 
-// Low enough that a tall subject can actually be fitted whole.
+// The viewer covers a tenfold overview through a fourfold inspection range.
 const minScale = 0.1;
 const maxScale = 4;
-// Ceiling for the automatic fit only, so a small subject opens comfortably instead of enormous.
+// Automatic fit stops at 2x so a small subject does not fill the dialog.
 const maxFitScale = 2;
+// Four keyboard or toolbar steps move between adjacent whole-number scales.
 const scaleStep = 0.25;
+// One keyboard pan matches the wide spacing step on the fixed slide stage.
 const panStep = 48;
-// A pinch is a wheel event with ctrlKey and a delta far smaller than a notch.
+// Browser wheel deltas are much larger than trackpad pinch deltas. These legacy
+// sensitivities have no external standard; changing them requires a manual
+// wheel and touchpad check.
 const wheelZoomRate = 0.0015;
 const pinchZoomRate = 0.01;
 

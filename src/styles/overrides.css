@@ -32,8 +32,8 @@
    Colors come from the roles in theme.css. See docs/design.md for both.
    --------------------------------------------------------------------------- */
 
-/* One scale for the space between things, so a gap is chosen from four values
-   rather than invented. Cell padding is not on it: that is table metrics. */
+/* These four spacing steps were calibrated for the 1280x720 stage. Shared
+   layouts choose from the scale; table padding remains a table metric. */
 :root {
   --deck-gap-tight: 16px;
   --deck-gap: 28px;
@@ -41,9 +41,8 @@
   --deck-pad: 64px;
 }
 
-/* The four sizes the deck sets type in, for the same reason the gaps are a
-   scale. The content size is read by --r-main-font-size in app.css, which is
-   the only place a prose element gets its size from. */
+/* The type scale was checked at the 1280x720 stage from title through caption.
+   app.css maps the content step to Reveal's main font size. */
 :root {
   --deck-text-title: 76px;
   --deck-text-heading: 44px;
@@ -323,11 +322,10 @@
 /* ---------------------------------------------------------------------------
    Rows and columns
 
-   `row` stacks blocks down the slide and is the usual content block. `cols`
-   splits it in two, three ways and no others. Fractions rather than fixed
-   widths, so the deck survives a change of stage size. Deliberately no 2x2
-   grid: a four-cell layout has no reading order, and the fourth cell always
-   ends up padded.
+   `row` stacks blocks. `cols` provides the three shared two-column splits.
+   Fractions adapt to the stage, and the 2.2:1 split leaves the supporting
+   column about one third of the available width. A deck can define a more
+   complex comparison when its content supplies a clear reading order.
    --------------------------------------------------------------------------- */
 
 .reveal .slides .row {

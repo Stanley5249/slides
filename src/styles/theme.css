@@ -1,21 +1,9 @@
-/* ---------------------------------------------------------------------------
-   Role tokens.
+/* Catppuccin names colors by appearance. Components use these semantic roles
+   because a role must keep its meaning when the deck flavor changes.
 
-   Catppuccin names colors by how they look. A deck needs to name them by what
-   they are for, because the same job takes a different color in a light
-   flavor than it does in a dark one. Everything downstream of this file asks
-   for a role and never for a color, so a change of flavor is one line in
-   src/lib/theme.ts and nothing else.
-
-   The defaults below are latte's. The dark flavors override the handful of
-   roles that cannot survive the swap, and inherit the rest.
-
-   Contrast ratios in the comments are measured against that flavor's base.
-   Text clears 4.5:1, and marks, rules and focus rings clear 3:1. Latte is the
-   binding case: its accents sit around 2.5:1 at full strength, which is why
-   they are taken from the palette's darker steps. The Catppuccin style guide
-   asks for exactly this judgement — "legibility always comes first".
-   --------------------------------------------------------------------------- */
+   Latte provides the defaults. Dark flavors override roles that need another
+   palette step. When a mapping changes, verify text against its surface at
+   4.5:1 and non-text marks at 3:1. */
 
 :root {
   /* Surfaces. The canvas is the slide; the panel is the one step up a dialog
@@ -26,37 +14,36 @@
   --deck-hover: var(--catppuccin-color-surface0);
 
   /* Ink. Two weights of text and one for marks that carry no words. */
-  --deck-ink: var(--catppuccin-color-text); /* 7.06 */
-  --deck-ink-quiet: var(--catppuccin-color-subtext1); /* 5.53 */
-  --deck-mark: var(--catppuccin-color-overlay2); /* 3.49, never text */
+  --deck-ink: var(--catppuccin-color-text);
+  --deck-ink-quiet: var(--catppuccin-color-subtext1);
+  --deck-mark: var(--catppuccin-color-overlay2);
 
   /* Rules. The hairline separates, the strong rule structures a table. Both
      are drawn, not read, and a projector loses anything under 3:1. */
   --deck-rule: var(--catppuccin-color-surface1);
-  --deck-rule-strong: var(--catppuccin-color-overlay2); /* 3.49 */
+  --deck-rule-strong: var(--catppuccin-color-overlay2);
 
   /* Accents. Latte takes the darkest step that clears 4.5:1, so an accent can
      carry a word and not only a shape. */
-  --deck-heading: var(--catppuccin-color-mauve-700); /* 5.89 */
-  --deck-accent: var(--catppuccin-color-blue-700); /* 5.36 */
-  --deck-ok: var(--catppuccin-color-green-900); /* 5.48 */
-  --deck-warn: var(--catppuccin-color-yellow-950); /* 5.99 */
-  --deck-bad: var(--catppuccin-color-red); /* 4.80 */
+  --deck-heading: var(--catppuccin-color-mauve-700);
+  --deck-accent: var(--catppuccin-color-blue-700);
+  --deck-ok: var(--catppuccin-color-green-900);
+  --deck-warn: var(--catppuccin-color-yellow-950);
+  --deck-bad: var(--catppuccin-color-red);
 
   /* The focus ring is the accent until a deck says otherwise. */
   --deck-focus: var(--deck-accent);
 }
 
-/* The dark flavors. Their accents already clear 7:1 at full strength, so they
-   are taken straight from the palette, and the two ink roles drop one step
-   because there is room below the body weight. */
+/* Dark flavors use their standard accents and quieter ink steps because the
+   canvas provides more contrast than latte. */
 :root:is(.frappe, .macchiato, .mocha) {
-  --deck-ink-quiet: var(--catppuccin-color-subtext0); /* 7.37 */
-  --deck-mark: var(--catppuccin-color-overlay1); /* 4.44 */
+  --deck-ink-quiet: var(--catppuccin-color-subtext0);
+  --deck-mark: var(--catppuccin-color-overlay1);
 
-  --deck-heading: var(--catppuccin-color-lavender); /* 9.17 */
-  --deck-accent: var(--catppuccin-color-sky); /* 10.54 */
-  --deck-ok: var(--catppuccin-color-green); /* 11.03 */
-  --deck-warn: var(--catppuccin-color-yellow); /* 12.91 */
-  --deck-bad: var(--catppuccin-color-red); /* 7.08 */
+  --deck-heading: var(--catppuccin-color-lavender);
+  --deck-accent: var(--catppuccin-color-sky);
+  --deck-ok: var(--catppuccin-color-green);
+  --deck-warn: var(--catppuccin-color-yellow);
+  --deck-bad: var(--catppuccin-color-red);
 }

@@ -57,8 +57,8 @@ function enqueue<T>(work: () => Promise<T>) {
 export async function renderMermaid(source: string, id: string) {
   return enqueue(async () => {
     const mermaid = await getMermaid();
-    // Initialized per render, not once: the config is read from the live Catppuccin custom
-    // properties, so a theme swap has to reach the next diagram.
+    // Read the computed role tokens for each render instead of caching a second
+    // copy of the deck's color configuration.
     mermaid.initialize(createConfig());
     const { svg } = await mermaid.render(id, source);
 

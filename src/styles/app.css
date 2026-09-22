@@ -3,28 +3,23 @@
    unlayered: see its header. */
 @layer theme, base, components, reset, presentation, utilities;
 
-/* fonts */
-/* One weight of the display face, because titles are all it sets. */
+/* Titles only use this weight. */
 @import "@fontsource/fredoka/600.css";
 @import "@fontsource/atkinson-hyperlegible";
 @import "@fontsource/monaspace-neon";
 
-/* presentation */
 @import "@animotion/core/theme" layer(presentation);
 
-/* tailwind */
 @import "tailwindcss/theme";
 @import "tailwindcss/utilities";
 /* Every flavor ships in this file. The name only picks the one a page without a flavor class
    would fall back to, and src/lib/theme.ts sees to it that no page is ever without one. */
 @import "@catppuccin/tailwindcss/macchiato.css";
 
-/* custom styles */
 @import "./theme.css" layer(presentation);
 @import "./overrides.css";
 
 @layer reset {
-  /* reset */
   *,
   *::before,
   *::after {
@@ -35,7 +30,6 @@
 }
 
 @layer presentation {
-  /* defaults */
   :root {
     --r-background-color: var(--deck-canvas);
     --r-main-font: "Atkinson Hyperlegible";
@@ -67,31 +61,28 @@
       0.9949 89.15%,
       1 100%
     );
+    /* Half of slide 600's 1.2s full turn. The item reaches its new position
+       before the rotation settles. */
     --view-transition-duration: 0.6s;
   }
 
-  /* for animations */
   .hidden {
     display: none;
   }
 
-  /* view transitions */
   html {
     view-transition-name: none;
   }
 
-  /* all view transitions */
   ::view-transition-group(*) {
     animation-duration: var(--view-transition-duration);
     animation-timing-function: var(--ease);
   }
 
-  /* entry transition */
   ::view-transition-new(*):only-child {
     animation: scale-in var(--view-transition-duration) var(--ease);
   }
 
-  /* exit transition */
   ::view-transition-old(*):only-child {
     animation: scale-out var(--view-transition-duration) var(--ease);
   }

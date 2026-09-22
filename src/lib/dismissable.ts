@@ -8,6 +8,10 @@
  * inside the dialog is safe from dismissal by default.
  */
 export function dismissable(blankSelector: string) {
+  // Preserve the existing three-pixel tolerance. It has no external standard,
+  // so changing it requires a manual mouse and touchpad check.
+  const clickJitter = 3;
+
   return (dialog: HTMLDialogElement) => {
     let candidate = false;
     let startX = 0;
@@ -28,8 +32,8 @@ export function dismissable(blankSelector: string) {
 
     function up(event: PointerEvent) {
       const dragged =
-        Math.abs(event.clientX - startX) > 3 ||
-        Math.abs(event.clientY - startY) > 3;
+        Math.abs(event.clientX - startX) > clickJitter ||
+        Math.abs(event.clientY - startY) > clickJitter;
       if (candidate && !dragged) dialog.close();
       candidate = false;
     }
