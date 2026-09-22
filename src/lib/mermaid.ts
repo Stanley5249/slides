@@ -2,7 +2,7 @@ import type { MermaidConfig } from "mermaid";
 
 type MermaidApi = (typeof import("mermaid"))["default"];
 
-// The flavour is pinned on `<html>`, which is the element these properties are declared against.
+// The flavor is pinned on `<html>`, which is the element these properties are declared against.
 function token(name: string) {
   return getComputedStyle(document.documentElement)
     .getPropertyValue(name)

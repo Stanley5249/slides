@@ -5,13 +5,13 @@ distance, once, without the option to scroll back. Everything below follows from
 that: a slide holds one claim, the type is large, and nothing is drawn that the
 claim does not need.
 
-The system has one rule that the rest hangs off. Colour is named by the job it
+The system has one rule that the rest hangs off. Color is named by the job it
 does, never by the hue it happens to be, so a deck can be presented light or
 dark without anyone rereading it.
 
-## Flavour
+## Flavor
 
-The deck is presented in one of the four Catppuccin flavours, named once in
+The deck is presented in one of the four Catppuccin flavors, named once in
 `src/lib/theme.ts` and committed with the deck. Latte is the default because a
 lit room beats a dark slide, and most rooms are lit.
 
@@ -20,13 +20,13 @@ There is no theme switch in the interface, and nothing follows
 speaker knows in advance and the presenting machine does not, so the choice
 belongs to whoever writes the deck, at the time they write it.
 
-The flavour class goes on `<html>`. Catppuccin declares its palette against
+The flavor class goes on `<html>`. Catppuccin declares its palette against
 `:root`, which is that element and nothing else, so a class anywhere lower
-leaves every property resolved at `:root` on a different flavour from the
-slides. A server hook writes the class as the page is served, which keeps the
+leaves every property resolved at `:root` on a different flavor from the slides.
+A server hook writes the class as the page is served, which keeps the
 stylesheet, the Shiki theme and the Mermaid palette reading from one constant.
 
-## Colour
+## Color
 
 `src/styles/theme.css` holds the roles. Deck and component CSS asks for a role
 and never for `--catppuccin-color-*` directly, because a Catppuccin token means
@@ -58,7 +58,7 @@ The thresholds are not bureaucracy. A projector in a lit room loses perhaps a
 third of the contrast a monitor shows, and the back row is four times further
 from the screen than you are.
 
-Two further rules. Colour on a slide is never decoration, so anything tinted is
+Two further rules. Color on a slide is never decoration, so anything tinted is
 making a claim that the text also makes. And an accent means one thing per deck:
 if sky is "the step you are on" in a table, it cannot also be a link.
 
@@ -85,7 +85,7 @@ characters a line and titles at 26, both well under the 80 that print would
 allow, because a line the eye has to track across a wall is longer than the same
 line on a desk.
 
-Identifiers get a weight and colour shift, never a pill or a plate. At slide
+Identifiers get a weight and color shift, never a pill or a plate. At slide
 scale that is enough.
 
 ## Layout
@@ -162,20 +162,20 @@ Not a checklist to pass but the condition the room is actually in.
 - Figures carry alt text that states what the picture shows, not that it is a
   picture.
 
-## Surfaces that must follow the flavour
+## Surfaces that must follow the flavor
 
-Three things draw themselves and have to be told which flavour they are in.
+Three things draw themselves and have to be told which flavor they are in.
 
 Mermaid is told the deck's roles in `src/lib/mermaid.ts`, read live from the
-document each time it renders, so a diagram is drawn in the deck's own colours
+document each time it renders, so a diagram is drawn in the deck's own colors
 rather than in its library's. A diagram already on screen is not redrawn, which
-is one reason the flavour is a build-time constant and not a runtime switch.
+is one reason the flavor is a build-time constant and not a runtime switch.
 
 Shiki needs a theme by name. `codeTheme` in `src/lib/theme.ts` derives it from
-the flavour, so a code block cannot stay dark on a light deck.
+the flavor, so a code block cannot stay dark on a light deck.
 
 Screenshots follow nothing. A dark capture on a latte slide stays dark, and that
-is correct: the evidence is what the tool actually showed. Recolouring it would
+is correct: the evidence is what the tool actually showed. Recoloring it would
 be editing the evidence, and giving it a light frame would turn it into a
 widget. Capture at the contrast you want to project.
 
@@ -185,7 +185,7 @@ The template owns the system. Decks own what they are about.
 
 | Template                                  | Deck                                            |
 | ----------------------------------------- | ----------------------------------------------- |
-| Role tokens and the flavour constant      | Which flavour, named in `src/lib/theme.ts`      |
+| Role tokens and the flavor constant       | Which flavor, named in `src/lib/theme.ts`       |
 | Type scale, prose, lists, tables, figures | The act labels, the one big figure, the ledgers |
 | Column splits and vertical rhythm         | What goes in the columns                        |
 | Reveal chrome, focus rules                | Tone mappings for `data-tone`                   |

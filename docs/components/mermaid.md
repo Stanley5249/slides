@@ -31,6 +31,6 @@ panel when it does not.
 
 Mermaid is loaded only in the browser, renders under strict security mode, and
 its renders are serialized. It is themed from the deck's role tokens, read live
-from the document, so a diagram is drawn in the deck's own colours.
+from the document, so a diagram is drawn in the deck's own colors.
 
 One render feeds both the preview and the enlarged copy.

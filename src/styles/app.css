@@ -13,7 +13,7 @@
 /* tailwind */
 @import "tailwindcss/theme";
 @import "tailwindcss/utilities";
-/* Every flavour ships in this file. The name only picks the one a page without a flavour class
+/* Every flavor ships in this file. The name only picks the one a page without a flavor class
    would fall back to, and src/lib/theme.ts sees to it that no page is ever without one. */
 @import "@catppuccin/tailwindcss/macchiato.css";
 

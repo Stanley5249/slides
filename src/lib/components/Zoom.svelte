@@ -285,7 +285,7 @@
   .preview {
     position: relative;
     /* Column flex, not grid: a grid item's automatic minimum size is its min-content width, so
-       wide content blows the column out instead of honouring its own max-width. */
+       wide content blows the column out instead of honoring its own max-width. */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -400,7 +400,7 @@
     }
   }
 
-  /* Centred with a transform: grid and flex start-align an item larger than their area, which drops
+  /* Centered with a transform: grid and flex start-align an item larger than their area, which drops
      a tall subject off the bottom once the camera scales it. */
   .plate {
     position: absolute;

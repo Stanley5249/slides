@@ -228,7 +228,7 @@
   }
 
   /* One shade further from the canvas than the resting fill, in whichever
-     direction the flavour runs. */
+     direction the flavor runs. */
   .error-head button:hover {
     background: color-mix(in srgb, var(--deck-hover) 88%, var(--deck-ink));
   }

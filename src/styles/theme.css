@@ -1,16 +1,16 @@
 /* ---------------------------------------------------------------------------
    Role tokens.
 
-   Catppuccin names colours by how they look. A deck needs to name them by what
-   they are for, because the same job takes a different colour in a light
-   flavour than it does in a dark one. Everything downstream of this file asks
-   for a role and never for a colour, so a change of flavour is one line in
+   Catppuccin names colors by how they look. A deck needs to name them by what
+   they are for, because the same job takes a different color in a light
+   flavor than it does in a dark one. Everything downstream of this file asks
+   for a role and never for a color, so a change of flavor is one line in
    src/lib/theme.ts and nothing else.
 
-   The defaults below are latte's. The dark flavours override the handful of
+   The defaults below are latte's. The dark flavors override the handful of
    roles that cannot survive the swap, and inherit the rest.
 
-   Contrast ratios in the comments are measured against that flavour's base.
+   Contrast ratios in the comments are measured against that flavor's base.
    Text clears 4.5:1, and marks, rules and focus rings clear 3:1. Latte is the
    binding case: its accents sit around 2.5:1 at full strength, which is why
    they are taken from the palette's darker steps. The Catppuccin style guide
@@ -47,7 +47,7 @@
   --deck-focus: var(--deck-accent);
 }
 
-/* The dark flavours. Their accents already clear 7:1 at full strength, so they
+/* The dark flavors. Their accents already clear 7:1 at full strength, so they
    are taken straight from the palette, and the two ink roles drop one step
    because there is room below the body weight. */
 :root:is(.frappe, .macchiato, .mocha) {

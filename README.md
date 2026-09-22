@@ -26,8 +26,8 @@ just ci
 
 ## Design
 
-Colour, type, layout and the rules a slide is built to are in the
-[design reference](docs/design.md). The flavour a deck is presented in is named
+Color, type, layout and the rules a slide is built to are in the
+[design reference](docs/design.md). The flavor a deck is presented in is named
 in `src/lib/theme.ts`.
 
 ## Components

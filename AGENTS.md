@@ -37,6 +37,13 @@
   this SvelteKit 2 template. Do not install it alongside
   `@sveltejs/adapter-bun`.
 
+## Writing
+
+- Write documentation, comments and interface copy in American English: color,
+  behavior, center, flavor.
+- Identifiers keep the spelling of whatever they come from, so a DOM or library
+  name is left alone.
+
 ## Workflow
 
 - Use `just` recipes for standard commands.
