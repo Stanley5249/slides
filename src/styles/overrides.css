@@ -85,6 +85,20 @@
   text-align: left;
 }
 
+/* Print is the one place this file answers in kind. Reveal's print stylesheet
+   flattens every section with `display: block` and `padding: 0`, both
+   !important, and those two declarations are the frame above.
+
+   `top` is the third. Reveal centers a slide by writing an inline `top` it
+   measures from the content, and a frame that is already the height of the page
+   does not want one: each page would otherwise start at its own offset and run
+   off the bottom. The rest of the frame survives print untouched. */
+html.reveal-print .reveal .slides section:not(.stack) {
+  display: grid !important;
+  padding: var(--deck-gap-wide) var(--deck-pad) !important;
+  top: 0 !important;
+}
+
 /* Animotion steppers are empty control divs that become visible as the deck
    advances. They are markers, not content, so they never take a row. */
 .reveal .slides .fragment:empty {
