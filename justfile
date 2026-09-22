@@ -31,16 +31,20 @@ fmt-check:
     bun run oxfmt --check
     just --fmt --check
 
-# Check types and Svelte diagnostics
-typecheck:
+# Synchronize generated SvelteKit types
+_sync:
     bun run svelte-kit sync
-    bun run svelte-check
+
+# Check types and Svelte diagnostics
+typecheck: _sync
+    bun run svelte-check --incremental
 
 # Report bugs and smells, warnings included
-lint:
-    bun run eslint --max-warnings 0
+lint: _sync
+    bun run eslint --cache --cache-strategy content --cache-location .svelte-kit/eslint/ --max-warnings 0
 
 # The fast local gate
+[parallel]
 check: typecheck lint
 
 # Run the tests
@@ -61,5 +65,9 @@ clean:
 lock-check:
     bun install --frozen-lockfile
 
+# Run independent CI checks concurrently
+[parallel]
+_ci-check: fmt-check typecheck lint
+
 # The gate a change has to pass
-ci: lock-check fmt-check check build
+ci: lock-check _ci-check build
