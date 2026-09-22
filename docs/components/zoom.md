@@ -35,8 +35,8 @@ rather than on the dialog.
 
 - Click the preview to open the viewer, fitted to the window.
 - Wheel or pinch to zoom around the pointer.
-- Drag to pan. A press on a control or on text selects instead, and the cursor
-  follows the same rule.
+- Drag anywhere to pan. Nothing inside the viewer takes a press of its own, so
+  the grab cursor never promises a pan that will not happen.
 - Arrow keys move the content, `Ctrl` with up or down zooms, `+` and `-` zoom,
   `0` resets.
 - Escape, the backdrop, or the close button exits.

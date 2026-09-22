@@ -7,6 +7,8 @@ from `src/lib/index.ts`. Slide-specific content stays in `src/slides`.
 
 - [Mermaid](mermaid.md): render a Mermaid diagram, zoomable, with the parse
   error shown in place.
+- [Shot](shot.md): put a screenshot on a slide, zoomable, with a labelled slot
+  when the file is missing.
 - [Zoom](zoom.md): show any content as a preview that opens in a modal
   pan-and-zoom viewer.
 
