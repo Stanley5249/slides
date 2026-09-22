@@ -245,7 +245,7 @@
     overflow: auto;
     color: var(--deck-ink);
     font-size: 0.95rem;
-    font-family: "Monaspace Neon", ui-monospace, monospace;
+    font-family: var(--r-code-font), ui-monospace, monospace;
     line-height: 1.5;
     text-align: left;
     white-space: pre-wrap;

@@ -4,8 +4,7 @@
 @layer theme, base, components, reset, presentation, utilities;
 
 /* fonts */
-/* Two weights of the display face, and no more: it sets titles and nothing else. */
-@import "@fontsource/fredoka/500.css";
+/* One weight of the display face, because titles are all it sets. */
 @import "@fontsource/fredoka/600.css";
 @import "@fontsource/atkinson-hyperlegible";
 @import "@fontsource/monaspace-neon";
@@ -44,7 +43,6 @@
        fallback for anything it does not reach. */
     --r-main-font-size: 24px;
     --r-main-color: var(--deck-ink);
-    --r-heading-font: "Fredoka";
     --r-code-font: "Monaspace Neon";
     --r-link-color: var(--deck-accent);
     --ease: linear(
@@ -123,9 +121,6 @@
 @keyframes rotate {
   from {
     opacity: 0;
-  }
-  20% {
-    rotate: 0deg;
   }
   40% {
     opacity: 1;
