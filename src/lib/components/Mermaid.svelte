@@ -169,17 +169,17 @@
     font-size: 1rem;
   }
 
-  /* Same plate rule as Zoom: base with a surface1 hairline, one step above its ground. */
+  /* Same plate rule as Zoom: the canvas with a hairline, one step above its ground. */
   .error {
     display: flex;
     flex-direction: column;
     width: 100%;
     overflow: hidden;
-    background: var(--catppuccin-color-base);
-    border: 1px solid var(--catppuccin-color-surface1);
+    background: var(--deck-canvas);
+    border: 1px solid var(--deck-rule);
     border-radius: 0.75rem;
     box-shadow: 0 0.5rem 1.5rem
-      color-mix(in srgb, var(--catppuccin-color-crust) 56%, transparent);
+      color-mix(in srgb, var(--deck-veil) 56%, transparent);
   }
 
   .error-head {
@@ -188,11 +188,11 @@
     justify-content: space-between;
     gap: 1rem;
     padding: 0.75rem 0.75rem 0.75rem 1.25rem;
-    color: var(--catppuccin-color-red);
+    color: var(--deck-bad);
     font-weight: 600;
     font-size: 1.1rem;
-    background: var(--catppuccin-color-mantle);
-    border-bottom: 1px solid var(--catppuccin-color-surface1);
+    background: var(--deck-panel);
+    border-bottom: 1px solid var(--deck-rule);
   }
 
   .error-head button {
@@ -201,16 +201,16 @@
     height: 2.25rem;
     place-items: center;
     padding: 0;
-    color: var(--catppuccin-color-text);
-    background: var(--catppuccin-color-surface0);
-    border: 1px solid var(--catppuccin-color-surface1);
+    color: var(--deck-ink);
+    background: var(--deck-hover);
+    border: 1px solid var(--deck-rule);
     border-radius: 0.5rem;
     cursor: pointer;
   }
 
   .check {
     display: grid;
-    color: var(--catppuccin-color-green);
+    color: var(--deck-ok);
     animation: pop 120ms ease-out;
   }
 
@@ -227,12 +227,14 @@
     }
   }
 
+  /* One shade further from the canvas than the resting fill, in whichever
+     direction the flavour runs. */
   .error-head button:hover {
-    background: var(--catppuccin-color-surface1);
+    background: color-mix(in srgb, var(--deck-hover) 88%, var(--deck-ink));
   }
 
   .error-head button:focus-visible {
-    outline: 3px solid var(--catppuccin-color-sapphire);
+    outline: 3px solid var(--deck-focus);
     outline-offset: 3px;
   }
 
@@ -241,7 +243,7 @@
     margin: 0;
     padding: 1.25rem;
     overflow: auto;
-    color: var(--catppuccin-color-text);
+    color: var(--deck-ink);
     font-size: 0.95rem;
     font-family: "Monaspace Neon", ui-monospace, monospace;
     line-height: 1.5;

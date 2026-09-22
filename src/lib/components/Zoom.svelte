@@ -281,7 +281,7 @@
 </dialog>
 
 <style>
-  /* Plate rule: every zoom surface is base with a surface1 hairline, one step above its ground. */
+  /* Plate rule: every zoom surface is the canvas with a hairline, one step above its ground. */
   .preview {
     position: relative;
     /* Column flex, not grid: a grid item's automatic minimum size is its min-content width, so
@@ -293,16 +293,16 @@
     min-height: 8rem;
     padding: 1rem;
     overflow: hidden;
-    color: var(--catppuccin-color-text);
-    background: var(--catppuccin-color-base);
-    border: 1px solid var(--catppuccin-color-surface1);
+    color: var(--deck-ink);
+    background: var(--deck-canvas);
+    border: 1px solid var(--deck-rule);
     border-radius: 0.75rem;
     box-shadow: 0 0.5rem 1.5rem
-      color-mix(in srgb, var(--catppuccin-color-crust) 56%, transparent);
+      color-mix(in srgb, var(--deck-veil) 56%, transparent);
   }
 
   .preview:hover {
-    border-color: var(--catppuccin-color-blue);
+    border-color: var(--deck-accent);
   }
 
   .hit {
@@ -318,12 +318,12 @@
   .hit:focus-visible,
   .close:focus-visible,
   .zoom-controls button:focus-visible {
-    outline: 3px solid var(--catppuccin-color-sapphire);
+    outline: 3px solid var(--deck-focus);
     outline-offset: 3px;
   }
 
   .viewport:focus-visible {
-    outline: 3px solid var(--catppuccin-color-sapphire);
+    outline: 3px solid var(--deck-focus);
     outline-offset: -3px;
   }
 
@@ -342,18 +342,14 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    color: var(--catppuccin-color-text);
+    color: var(--deck-ink);
     background: transparent;
     border: 0;
     transform: none;
   }
 
   .viewer::backdrop {
-    background: color-mix(
-      in srgb,
-      var(--catppuccin-color-crust) 78%,
-      transparent
-    );
+    background: color-mix(in srgb, var(--deck-veil) 78%, transparent);
     backdrop-filter: blur(5px);
   }
 
@@ -411,11 +407,11 @@
     top: 50%;
     left: 50%;
     line-height: 0;
-    background: var(--catppuccin-color-base);
-    border: 1px solid var(--catppuccin-color-surface1);
+    background: var(--deck-canvas);
+    border: 1px solid var(--deck-rule);
     border-radius: 0.75rem;
     box-shadow: 0 1.25rem 3.5rem
-      color-mix(in srgb, var(--catppuccin-color-crust) 78%, transparent);
+      color-mix(in srgb, var(--deck-veil) 78%, transparent);
     transform: translate(-50%, -50%);
   }
 
@@ -429,7 +425,7 @@
     height: 2.75rem;
     place-items: center;
     padding: 0;
-    color: var(--catppuccin-color-text);
+    color: var(--deck-ink);
     background: transparent;
     border: 0;
     border-radius: 0.5rem;
@@ -437,11 +433,7 @@
   }
 
   .close:hover {
-    background: color-mix(
-      in srgb,
-      var(--catppuccin-color-surface0) 80%,
-      transparent
-    );
+    background: color-mix(in srgb, var(--deck-hover) 80%, transparent);
   }
 
   .zoom-controls {
@@ -451,15 +443,11 @@
     z-index: 2;
     display: flex;
     align-items: stretch;
-    background: color-mix(
-      in srgb,
-      var(--catppuccin-color-mantle) 92%,
-      transparent
-    );
-    border: 1px solid var(--catppuccin-color-surface1);
+    background: color-mix(in srgb, var(--deck-panel) 92%, transparent);
+    border: 1px solid var(--deck-rule);
     border-radius: 0.6rem;
     box-shadow: 0 0.5rem 1.5rem
-      color-mix(in srgb, var(--catppuccin-color-crust) 62%, transparent);
+      color-mix(in srgb, var(--deck-veil) 62%, transparent);
     transform: translateX(-50%);
     backdrop-filter: blur(12px);
   }
@@ -469,7 +457,7 @@
     min-width: 2.5rem;
     place-items: center;
     padding: 0.45rem 0.7rem;
-    color: var(--catppuccin-color-text);
+    color: var(--deck-ink);
     font: inherit;
     font-size: 1rem;
     background: transparent;
@@ -487,11 +475,11 @@
   }
 
   .zoom-controls button:hover:not(:disabled) {
-    background: var(--catppuccin-color-surface0);
+    background: var(--deck-hover);
   }
 
   .zoom-controls button:disabled {
-    color: var(--catppuccin-color-overlay0);
+    color: var(--deck-mark);
     cursor: default;
   }
 
