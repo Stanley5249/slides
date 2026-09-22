@@ -23,22 +23,14 @@ runtime.
 
 ## Properties
 
-| Property | Type     | Required | Default                | Purpose                                    |
-| -------- | -------- | -------- | ---------------------- | ------------------------------------------ |
-| `code`   | `string` | Yes      |                        | Mermaid source to render.                  |
-| `label`  | `string` | No       | `Open Mermaid diagram` | Accessible label for the zoom trigger.     |
-| `class`  | `string` | No       | Empty string           | Additional class applied to the outer box. |
+The `Props` type in the component carries the signature. `class` lands on the
+outer box, which is the zoom preview when the diagram renders and the error
+panel when it does not.
 
 ## Notes
 
 Mermaid is loaded only in the browser, renders under strict security mode, and
-its renders are serialized. The configuration is read from the live Catppuccin
-custom properties.
+its renders are serialized. It is themed from the deck's role tokens, read live
+from the document, so a diagram is drawn in the deck's own colours.
 
-One render feeds both copies, so the enlarged copy is rewritten into its own ID
-namespace before it is inserted. Mermaid prefixes every internal ID with the
-diagram ID, references and the scoped `<style>` block included, so a single
-replace is enough. Without it both copies would define the same marker IDs.
-
-When rendering settles, the component calls Animotion's Reveal instance
-`layout()` so a freshly sized slide is measured again.
+One render feeds both the preview and the enlarged copy.

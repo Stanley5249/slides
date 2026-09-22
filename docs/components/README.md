@@ -16,6 +16,7 @@ For each component:
 
 1. Add the Svelte file under `src/lib/components`.
 2. Export it from `src/lib/index.ts`.
-3. Add a reference page here with its purpose, API, example, interactions, and
-   accessibility behavior.
+3. Add a reference page here with its purpose, an example, its interactions and
+   its accessibility behavior. Leave the signature to the component's own type
+   and record only what that type cannot say.
 4. Add it to the component list above.

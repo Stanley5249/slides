@@ -40,8 +40,7 @@
 ## Workflow
 
 - Use `just` recipes for standard commands.
-- Run `just ci` before committing. It composes `fmt-check`, `check`, and
-  `build`.
+- Run `just ci` before committing.
 - Keep commits small, conventional, and independently reviewable.
 
 ## Branches

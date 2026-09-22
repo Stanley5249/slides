@@ -44,14 +44,15 @@ a different thing in latte than it does in mocha.
 | `--deck-rule`, `--deck-rule-strong`      | A hairline, and the rule that structures a table.     |
 | `--deck-heading`                         | Titles.                                               |
 | `--deck-accent`                          | Links, and the one state the viewer is currently on.  |
+| `--deck-focus`                           | The focus ring.                                       |
 | `--deck-ok`, `--deck-warn`, `--deck-bad` | A claim about the data underneath.                    |
 
 Text clears 4.5:1 against the canvas; marks, rules and focus rings clear 3:1.
-Latte is the binding case. Its accents sit near 2.5:1 at full strength, which is
-why the light map takes them from the palette's darker steps, and why
-`--deck-heading` is mauve in latte where it is lavender in the dark flavours.
-The Catppuccin style guide asks for exactly this judgement: legibility comes
-first.
+Latte is the binding case: its accents are too pale at full strength, so the
+light map takes each one from the darkest palette step that clears the
+threshold. The Catppuccin style guide asks for exactly this judgement:
+legibility comes first. The measured ratios are in `src/styles/theme.css`,
+beside the values they justify.
 
 The thresholds are not bureaucracy. A projector in a lit room loses perhaps a
 third of the contrast a monitor shows, and the back row is four times further
@@ -78,11 +79,11 @@ Three faces, each with one job.
 - Monaspace Neon sets identifiers, measurements and anything in a column.
   Tabular figures, so digits line up between rows.
 
-Sizes are pixels at Reveal's 1280 x 720 stage, which Reveal scales to the
-window, so a pixel here is a fixed fraction of the projected slide. Prose stops
-at 62 characters a line and titles at 26, both well under the 80 that print
-would allow, because a line the eye has to track across a wall is longer than
-the same line on a desk.
+Sizes are pixels on Reveal's fixed stage, which Reveal scales to the window, so
+a pixel here is a fixed fraction of the projected slide. Prose stops at 62
+characters a line and titles at 26, both well under the 80 that print would
+allow, because a line the eye has to track across a wall is longer than the same
+line on a desk.
 
 Identifiers get a weight and colour shift, never a pill or a plate. At slide
 scale that is enough.
@@ -117,9 +118,14 @@ places its own gaps. Author order decides the rhythm.
 
 ## Structure
 
-No plates, no cards, no borders, no shadows. A screenshot is evidence and a
-diagram is a drawing; framing either one in chrome makes it read as a widget the
-audience is meant to operate.
+Content carries no plates, no cards, no borders and no shadows. A screenshot is
+evidence and a diagram is a drawing; framing either one makes it read as a
+widget the audience is meant to operate.
+
+Chrome is the opposite case, and it has one shape. A surface that really is
+operated, a viewer or a report, sits on the canvas with a hairline and a soft
+shadow, one step above its ground. Every such surface uses that same shape, so
+the audience can tell at a glance what is evidence and what is apparatus.
 
 The only rules on a slide are a table's own, set the way every paper in this
 field already sets them: one rule above the head, one below it, one under the
@@ -129,9 +135,9 @@ Structural devices carry information or they are cut. Numbered markers mean the
 content is a sequence. An eyebrow label means there is a hierarchy above the
 title. If neither is true, neither appears.
 
-The one place chrome earns its keep is a failure. A diagram that did not render
-must not be mistaken for a diagram that did, so the error takes a panel, a red
-rule and the message in full.
+A failure is the one thing that must never be quiet. A diagram that did not
+render must not be mistaken for a diagram that did, so the error takes a panel,
+a heading in the tone that says it failed, and the message in full.
 
 ## Motion
 
@@ -160,9 +166,10 @@ Not a checklist to pass but the condition the room is actually in.
 
 Three things draw themselves and have to be told which flavour they are in.
 
-Mermaid reads the live custom properties at render time, so it needs no
-configuration beyond the role tokens. It renders once when the diagram mounts,
-which is why the flavour is a build-time constant and not a runtime switch.
+Mermaid is told the deck's roles in `src/lib/mermaid.ts`, read live from the
+document each time it renders, so a diagram is drawn in the deck's own colours
+rather than in its library's. A diagram already on screen is not redrawn, which
+is one reason the flavour is a build-time constant and not a runtime switch.
 
 Shiki needs a theme by name. `codeTheme` in `src/lib/theme.ts` derives it from
 the flavour, so a code block cannot stay dark on a light deck.

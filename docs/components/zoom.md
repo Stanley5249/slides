@@ -27,17 +27,14 @@ Pass a `zoomed` snippet when the enlarged copy should differ from the preview:
 
 ## Properties
 
-| Property   | Type      | Required | Default            | Purpose                                      |
-| ---------- | --------- | -------- | ------------------ | -------------------------------------------- |
-| `children` | `Snippet` | Yes      |                    | Preview content, taken from the tag body.    |
-| `zoomed`   | `Snippet` | No       | `children`         | Enlarged content, when it differs.           |
-| `label`    | `string`  | No       | `Open zoomed view` | Accessible label for the trigger.            |
-| `class`    | `string`  | No       | Empty string       | Additional class applied to the preview box. |
+The `Props` type in the component carries the signature. Two things it does not
+say: `zoomed` falls back to `children`, and `class` lands on the preview box
+rather than on the dialog.
 
 ## Interactions
 
-- Click the preview to open the viewer, fitted to the window up to 200%.
-- Wheel or pinch to zoom between 10% and 400% around the pointer.
+- Click the preview to open the viewer, fitted to the window.
+- Wheel or pinch to zoom around the pointer.
 - Drag to pan. A press on a control or on text selects instead, and the cursor
   follows the same rule.
 - Arrow keys move the content, `Ctrl` with up or down zooms, `+` and `-` zoom,
