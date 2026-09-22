@@ -1,13 +1,15 @@
 <script lang="ts">
   import ImageOff from "lucide-svelte/icons/image-off";
   import Zoom from "$lib/components/Zoom.svelte";
+  import type { Snippet } from "svelte";
 
   type Props = {
     /** A path under `static/` or a URL. A file dropped into `static/` needs no
      * build step, which is why a real deck keeps its pictures there. */
     src: string;
     alt: string;
-    caption?: string;
+    /** Plain text, or a snippet when the caption carries a link. */
+    caption?: string | Snippet;
     /** Height of the picture itself. Omit it and the picture fills the width it is given. */
     height?: string;
     class?: string;
@@ -41,7 +43,9 @@
     </Zoom>
   {/if}
   {#if caption}
-    <figcaption>{caption}</figcaption>
+    <figcaption>
+      {#if typeof caption === "string"}{caption}{:else}{@render caption()}{/if}
+    </figcaption>
   {/if}
 </figure>
 
