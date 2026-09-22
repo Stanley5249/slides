@@ -1,4 +1,3 @@
-// The deck is a client-side Reveal presentation and its widgets build their
-// state at init with browser-only APIs. Rendering the shell on the server buys
-// nothing.
-export const ssr = false;
+// Render the slide markup at build time. Reveal and the interactive widgets
+// attach their browser-only behavior when the page hydrates.
+export const prerender = true;

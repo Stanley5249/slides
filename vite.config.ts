@@ -11,8 +11,15 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     sveltekit({
-      adapter: pages ? staticAdapter({ fallback: "404.html" }) : bunAdapter(),
+      adapter: pages ? staticAdapter() : bunAdapter(),
       paths: { base },
+      prerender: {
+        handleHttpError: ({ path, message }) => {
+          // This missing file deliberately demonstrates Shot's failure state.
+          if (path.endsWith("/not-written-yet.png")) return;
+          throw new Error(message);
+        },
+      },
     }),
   ],
 });

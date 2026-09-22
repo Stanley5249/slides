@@ -37,9 +37,7 @@ jobs:
         env:
           GITHUB_PAGES: "true"
           BASE_PATH: /${{ github.event.repository.name }}
-        run: |
-          just build
-          cp build/404.html build/index.html
+        run: just build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { asset } from "$app/paths";
   import { Slide } from "@animotion/core";
   import { Shot } from "$lib";
 </script>
@@ -29,7 +30,10 @@
   <h2>Missing evidence should remain visible</h2>
 
   <div class="cols">
-    <Shot src="/not-written-yet.png" alt="The screenshot for this slide" />
+    <Shot
+      src={asset("/not-written-yet.png")}
+      alt="The screenshot for this slide"
+    />
 
     <div class="row">
       <p>
