@@ -37,6 +37,22 @@
   this SvelteKit 2 template. Do not install it alongside
   `@sveltejs/adapter-bun`.
 
+## Values
+
+- Name a value that more than one place reads. The size scales live in
+  `src/styles/overrides.css` and the color roles in `src/styles/theme.css`, so a
+  size or a color is chosen from a scale rather than invented at the call site.
+- Derive a value from whatever it depends on when there is something to derive
+  it from, because a slot sized in `em` follows its type size and the two cannot
+  drift apart.
+- Keep a number literal when it belongs to one widget's own composition and
+  nothing else reads it. A token with a single site is indirection, not a scale.
+- Leave out a setting that only repeats the library's default, because it says
+  nothing and it buries the settings that do differ. Check the default before
+  writing the line.
+- Say where an invented number came from in a comment beside it, since that is
+  the first thing the next reader asks.
+
 ## Writing
 
 - Write documentation, comments and interface copy in American English: color,
