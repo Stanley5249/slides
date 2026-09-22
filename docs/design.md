@@ -1,237 +1,224 @@
 # Design
 
-This template makes technical talks. The audience is in a room, reading from a
-distance, once, without the option to scroll back. Everything below follows from
-that: a slide holds one claim, the type is large, and nothing is drawn that the
-claim does not need.
+This template is for technical talks presented in a room. The audience reads
+from a distance and cannot scroll back. Each slide should make one claim and
+show only the information needed to support it.
 
-The system has one rule that the rest hangs off. Color is named by the job it
-does, never by the hue it happens to be, so a deck can be presented light or
-dark without anyone rereading it.
+## Theme
 
-## Flavor
+### Rule
 
-The deck is presented in one of the four Catppuccin flavors, named once in
-`src/lib/theme.ts` and committed with the deck. Latte is the default because a
-lit room beats a dark slide, and most rooms are lit.
+Choose one Catppuccin flavor in `src/lib/theme.ts` and commit that choice with
+the deck. Do not add a runtime theme switch or follow `prefers-color-scheme`.
 
-There is no theme switch in the interface, and nothing follows
-`prefers-color-scheme`. A talk is projected into a room whose lighting the
-speaker knows in advance and the presenting machine does not, so the choice
-belongs to whoever writes the deck, at the time they write it.
+### Reason
 
-The flavor class goes on `<html>`. Catppuccin declares its palette against
-`:root`, which is that element and nothing else, so a class anywhere lower
-leaves every property resolved at `:root` on a different flavor from the slides.
-A server hook writes the class as the page is served, which keeps the
-stylesheet, the Shiki theme and the Mermaid palette reading from one constant.
+The presenter knows the room lighting before the talk. A runtime preference
+cannot account for the projector or the room.
 
-## Color
+### Implementation
 
-`src/styles/theme.css` holds the roles. Deck and component CSS asks for a role
-and never for `--catppuccin-color-*` directly, because a Catppuccin token means
-a different thing in latte than it does in mocha.
+The server hook writes the selected flavor class on `<html>`. Catppuccin defines
+its palette on `:root`, so placing the class lower in the document would leave
+root-level custom properties on another flavor. The same flavor constant selects
+the Shiki theme and supplies the colors Mermaid reads.
 
-| Role                                     | What it is for                                         |
-| ---------------------------------------- | ------------------------------------------------------ |
-| `--deck-canvas`                          | The slide itself.                                      |
-| `--deck-panel`                           | The one step up a dialog or an error report may take.  |
-| `--deck-veil`                            | What covers the deck behind a modal.                   |
-| `--deck-hover`                           | A pointer resting on something that responds.          |
-| `--deck-ink`                             | Body text, table values, anything read word by word.   |
-| `--deck-ink-quiet`                       | The second weight: captions, table heads, the counter. |
-| `--deck-mark`                            | Bullets, chevrons, diagram lines. Never a word.        |
-| `--deck-rule`, `--deck-rule-strong`      | A hairline, and the rule that structures a table.      |
-| `--deck-heading`                         | Titles.                                                |
-| `--deck-accent`                          | Links, and the one state the viewer is currently on.   |
-| `--deck-focus`                           | The focus ring.                                        |
-| `--deck-ok`, `--deck-warn`, `--deck-bad` | A claim about the data underneath.                     |
+## Color roles
 
-Text clears 4.5:1 against the canvas; marks, rules and focus rings clear 3:1.
-Latte is the binding case: its accents are too pale at full strength, so the
-light map takes each one from the darkest palette step that clears the
-threshold. The Catppuccin style guide asks for exactly this judgement:
-legibility comes first. The measured ratios are in `src/styles/theme.css`,
-beside the values they justify.
+### Rule
 
-The thresholds are not bureaucracy. A projector in a lit room loses perhaps a
-third of the contrast a monitor shows, and the back row is four times further
-from the screen than you are.
+Components use semantic roles from `src/styles/theme.css`. They do not use
+Catppuccin palette tokens directly.
 
-Two further rules. Color on a slide is never decoration, so anything tinted is
-making a claim that the text also makes. And an accent means one thing per deck:
-if sky is "the step you are on" in a table, it cannot also be a link.
+| Role                                     | Use                                     |
+| ---------------------------------------- | --------------------------------------- |
+| `--deck-canvas`                          | Slide background                        |
+| `--deck-panel`                           | Dialogs and error reports               |
+| `--deck-veil`                            | Modal backdrop                          |
+| `--deck-hover`                           | Interactive hover state                 |
+| `--deck-ink`                             | Body text and table values              |
+| `--deck-ink-quiet`                       | Captions, table headings, slide counter |
+| `--deck-mark`                            | Bullets, chevrons, and diagram lines    |
+| `--deck-rule`, `--deck-rule-strong`      | Separators and table structure          |
+| `--deck-heading`                         | Slide titles                            |
+| `--deck-accent`                          | Links and the current state             |
+| `--deck-focus`                           | Focus ring                              |
+| `--deck-ok`, `--deck-warn`, `--deck-bad` | Meaning attached to the underlying data |
 
-Tones are a vocabulary, not a palette. A component that keys a row to a claim
-emits `data-tone` and stops there; the deck maps that attribute onto
-`--deck-ok`, `--deck-warn` or `--deck-bad`, because only the deck knows whether
-a row is good news.
+### Reason
 
-## Type
+A palette color changes meaning between light and dark flavors. A semantic role
+keeps the component's intent stable. Color should support information already
+present in text or structure instead of carrying meaning alone.
 
-Three faces, each with one job.
+### Implementation
 
-- Fredoka sets titles. It is the web-served stand-in for the face
-  `catppuccin/powerpoint-slides` uses, and it is the only place the deck has a
-  voice rather than a style.
-- Atkinson Hyperlegible sets everything read as prose. It was drawn for low
-  vision, which is what a projector gives everybody.
-- Monaspace Neon sets code blocks and the identifiers in prose. It stops at the
-  edge of a table: the body face has tabular figures, so a column of numbers
-  lines up without a second face in it.
+Latte uses darker palette steps for text-bearing accents. Dark flavors can use
+lighter palette colors against their dark canvas. When a mapping changes, verify
+text contrast against the canvas and non-text contrast against the surface where
+the mark appears.
 
-Four sizes, and no more: one for the deck title, one for a slide title, one for
-anything read as content, and one for the small type that labels content.
-Monospace takes an optical step down at the same measure, which is a correction
-rather than a fifth size.
+A component that reports status sets `data-tone`. The deck maps that attribute
+to the appropriate semantic role.
 
-Sizes are pixels on Reveal's fixed stage, which Reveal scales to the window, so
-a pixel here is a fixed fraction of the projected slide. Prose stops at 62
-characters a line and titles at 26, both well under the 80 that print would
-allow, because a line the eye has to track across a wall is longer than the same
-line on a desk.
+## Typography
 
-Identifiers get a weight and color shift, never a pill or a plate. At slide
-scale that is enough.
+### Rule
+
+Use Fredoka for titles, Atkinson Hyperlegible for prose, and Monaspace Neon for
+code and inline identifiers. Choose sizes and spacing from the scales in
+`src/styles/overrides.css`.
+
+### Reason
+
+Each face has one responsibility. A short type and spacing scale keeps slides
+consistent and prevents local adjustments from becoming a second design system.
+
+### Implementation
+
+Reveal renders a fixed stage and scales it to the window, so stage pixels remain
+proportional when projected. Titles and prose use limited line widths to reduce
+eye movement across a wide screen. Inline identifiers use weight and color
+instead of badges or filled backgrounds.
 
 ## Layout
 
-Every slide is the same shape: a title, then one block that takes the rest of
-the page. The title takes the height it needs and stays at the top. The block
-below is centered in what is left, so a short title and a long one leave the
-content looking equally placed, and a table or a diagram uses the page instead
-of floating in the top half of it.
+### Rule
 
-```
+A slide has a title followed by one content area. Use `row` for stacked content
+and a `cols` variant for two columns. Split a four-cell comparison across slides
+when the cells do not have an obvious reading order.
+
+```text
 +----------------------------------------------------+
-|  Title, up to two lines, reserved either way       |
+| Title                                              |
 |                                                    |
-|  +------------------------------------------------+
-|  |                                                |
-|  |  one block, filling the rest of the page       |
-|  |                                                |
-|  +------------------------------------------------+
+| +------------------------------------------------+ |
+| | One content area                               | |
+| +------------------------------------------------+ |
 +----------------------------------------------------+
 ```
 
-That block is a `row` when it stacks and a `cols` when it splits. Three splits
-and no others: 2.2fr to 1fr, even halves, and 1fr to 2.2fr. Fractions rather
-than fixed widths, so a change of stage size does not rewrite the deck. There is
-deliberately no two-by-two grid, because a four-cell layout has no reading order
-and the fourth cell always ends up padded with something.
+### Reason
 
-Gaps come from the block rather than from the elements inside it: a `row` spaces
-what it holds, so a slide never places a margin of its own.
+A stable frame reduces layout decisions and gives the audience a predictable
+reading order. Fractional columns adapt to the stage without fixed component
+widths.
 
-A block shorter than the page leaves the space under it empty, and that is the
-block's size rather than a gap to fill. Stretching a table only stretches its
-rows, and a table with air inside it reads worse than a table with air beneath
+### Implementation
+
+The shared classes live in `src/styles/overrides.css`. The content area fills
+the remaining slide height. Gaps belong to `row` and `cols`, not to individual
+children. Content that is shorter than its area leaves empty space below it
+instead of stretching tables or diagrams.
+
+## CSS ownership
+
+### Rule
+
+Use the shared slide classes when they cover the layout. Add a rule to
+`src/styles/overrides.css` when Animotion or Reveal already controls the same
+property. Use a Tailwind utility only when upstream CSS does not compete with
 it.
 
-## Classes on a slide
+### Reason
 
-A slide is written as markup. `row`, `cols`, `cols even`, `cols narrow-first`
-and `numeric` are the classes it needs, and all of them live in
-`src/styles/overrides.css`.
+Animotion's unlayered stylesheet can outrank layered utilities. Reveal also uses
+descendant selectors that a single utility class may not override.
 
-A Tailwind utility is not a reliable substitute for one of them. Animotion's
-stylesheet arrives twice: once through the layered import in
-`src/styles/app.css`, and once through a plain JavaScript import inside one of
-Animotion's own components. An unlayered stylesheet outranks every layer, so it
-is the second copy that decides, and it decides on specificity alone.
+### Implementation
 
-That leaves one test. A utility is a single class and carries the weight of a
-single class. It wins when nothing upstream names the same property, and it
-loses whenever Animotion or Reveal names that property with a descendant
-selector.
+`tabular-nums` works on a table cell because upstream CSS does not set
+`font-variant-numeric`. `text-right` does not work there because Reveal sets
+`text-align` with a stronger selector. The shared `numeric` class provides the
+required specificity.
 
-| On a table cell | Result  | Why                                          |
-| --------------- | ------- | -------------------------------------------- |
-| `tabular-nums`  | applies | nothing upstream sets `font-variant-numeric` |
-| `text-right`    | ignored | `.reveal table td` sets `text-align`         |
+## Content and interface surfaces
 
-Reordering the layers does not change this, and dropping the unlayered copy
-would cost more than it buys, because that copy is what lets Animotion's theme
-override `reveal.css` at all. So a property the template needs to control gets a
-class in `overrides.css`, written under `.reveal .slides` so that it carries
-enough weight. `numeric` is that pattern, and it exists because `text-right` did
-not work.
+### Rule
 
-## Structure
+Show screenshots and diagrams without decorative cards. Give interactive viewers
+and error reports a consistent panel, border, and shadow.
 
-Content carries no plates, no cards, no borders and no shadows. A screenshot is
-evidence and a diagram is a drawing; framing either one makes it read as a
-widget the audience is meant to operate.
+### Reason
 
-Chrome is the opposite case, and it has one shape. A surface that really is
-operated, a viewer or a report, sits on the canvas with a hairline and a soft
-shadow, one step above its ground. Every such surface uses that same shape, so
-the audience can tell at a glance what is evidence and what is apparatus.
+A screenshot or diagram is evidence. A viewer is an interface. Their visual
+treatment should make that difference clear.
 
-The only rules on a slide are a table's own, set the way every paper in this
-field already sets them: one rule above the head, one below it, one under the
-last row, nothing vertical.
+### Implementation
 
-Structural devices carry information or they are cut. Numbered markers mean the
-content is a sequence. An eyebrow label means there is a hierarchy above the
-title. If neither is true, neither appears.
-
-A failure is the one thing that must never be quiet. A diagram that did not
-render must not be mistaken for a diagram that did, so the error takes a panel,
-a heading in the tone that says it failed, and the message in full.
+Tables use horizontal rules only. Sequence markers and labels appear only when
+they communicate order or hierarchy. Rendering failures display a visible panel
+and the complete error message instead of leaving an empty area.
 
 ## Motion
 
-Reveal owns the transitions and Animotion owns the slide runtime. The deck does
-not replace either.
+### Rule
 
-Motion that answers a keypress is welcome, because it shows what changed. Motion
-that plays by itself is not, because the audience is listening to a person, not
-watching a page. View transitions run at one duration with one easing curve, and
-every one of them is switched off under `prefers-reduced-motion`.
+Motion starts with a presenter action and explains one state change. Use an
+immediate undo when replaying the change backward adds no information. Respect
+`prefers-reduced-motion`.
 
-## Accessibility floor
+### Reason
 
-Not a checklist to pass but the condition the room is actually in.
+The presenter controls the speaking pace. Replaying an explanation while moving
+back delays navigation without adding information.
 
-- Focus is always visible, in `--deck-focus`, at 3:1 against whatever it sits
-  on.
-- Anything reachable by pointer is reachable by keyboard, and a pan-and-zoom
-  surface says what its keys do.
-- Reveal listens on `document`, so any widget that takes the arrow keys stops
-  propagation while it is open.
-- Figures carry alt text that states what the picture shows, not that it is a
-  picture.
+### Implementation
 
-## Surfaces that must follow the flavor
+Reveal owns slide navigation. Animotion owns actions and view transitions. Name
+a duration when more than one part of an animation uses it, and record why that
+duration was chosen beside the value.
 
-Three things draw themselves and have to be told which flavor they are in.
+## Accessibility
 
-Mermaid is told the deck's roles in `src/lib/mermaid.ts`, read live from the
-document each time it renders, so a diagram is drawn in the deck's own colors
-rather than in its library's. A diagram already on screen is not redrawn, which
-is one reason the flavor is a build-time constant and not a runtime switch.
+### Rule
 
-Shiki needs a theme by name. `codeTheme` in `src/lib/theme.ts` derives it from
-the flavor, so a code block cannot stay dark on a light deck.
+- Keep keyboard focus visible.
+- Make every pointer action available from the keyboard.
+- State pan and zoom controls in accessible text.
+- Stop keyboard events inside a viewer before Reveal handles them.
+- Describe what an image shows instead of stating that it is an image.
 
-Screenshots follow nothing. A dark capture on a latte slide stays dark, and that
-is correct: the evidence is what the tool actually showed. Recoloring it would
-be editing the evidence, and giving it a light frame would turn it into a
-widget. Capture at the contrast you want to project.
+### Reason
 
-## Template or deck
+The presentation runtime and interactive viewers share the same keyboard.
+Without explicit event and focus handling, an action inside a viewer can also
+navigate the deck.
 
-The template owns the system. Decks own what they are about.
+### Implementation
 
-| Template                                  | Deck                                       |
-| ----------------------------------------- | ------------------------------------------ |
-| Role tokens and the flavor constant       | Which flavor, named in `src/lib/theme.ts`  |
-| Type scale, prose, lists, tables, figures | What an act label says, the one big figure |
-| Column splits and vertical rhythm         | What goes in the columns                   |
-| Reveal chrome, focus rules                | Tone mappings for `data-tone`              |
-| Components under `src/lib` and their docs | Slide content under `src/slides`           |
+Use `--deck-focus` and `--deck-focus-ring` for focus indicators. Components that
+capture navigation keys stop propagation while open. Dialogs keep native Escape
+behavior.
 
-A pattern earns its way into the template when a second deck needs it, not when
-the first one invents it. Until then it lives on the deck branch where it was
-written.
+## Rendered content
+
+### Mermaid
+
+`src/lib/mermaid.ts` reads the current semantic color roles before each render.
+Existing diagrams are not redrawn because the deck flavor does not change at
+runtime.
+
+### Shiki
+
+`codeTheme` in `src/lib/theme.ts` derives the Shiki theme from the deck flavor.
+Code blocks therefore match the selected light or dark presentation.
+
+### Screenshots
+
+Screenshots keep the colors produced by the source application. Capture them at
+the contrast needed for projection instead of recoloring them in the deck.
+
+## Ownership
+
+| Template                         | Deck                                    |
+| -------------------------------- | --------------------------------------- |
+| Color roles and flavor mechanism | Selected flavor                         |
+| Type and spacing scales          | Slide copy                              |
+| Layout classes                   | Content placed in each layout           |
+| Reveal chrome and focus behavior | Tone assignments for deck-specific data |
+| Components under `src/lib`       | Slides under `src/slides`               |
+
+Add a pattern to the template when more than one deck needs it. Until then, keep
+it on the deck branch that introduced it.
