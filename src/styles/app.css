@@ -91,6 +91,14 @@
   ::view-transition-old(*):only-child {
     animation: scale-out var(--view-transition-duration) var(--ease);
   }
+
+  /* Every transition above is timed by the one variable, so cutting it to a
+     frame is enough: the swap still happens, nothing animates through it. */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --view-transition-duration: 1ms;
+    }
+  }
 }
 
 @keyframes scale-in {
