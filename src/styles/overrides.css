@@ -276,11 +276,16 @@
   font: inherit;
 }
 
+/* Centered under the picture it belongs to, not under the slide. The figure is
+   sized to its content, so the caption centers on the subject rather than
+   drifting off it. */
 .reveal .slides figcaption {
   margin-top: var(--deck-gap-tight);
+  margin-inline: auto;
   max-width: 62ch;
   color: var(--deck-ink-quiet);
   font-size: 18px;
+  text-align: center;
 }
 
 /* ---------------------------------------------------------------------------
