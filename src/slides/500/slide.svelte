@@ -1,10 +1,12 @@
 <script lang="ts" module>
+  import { defineProps } from "@animotion/core";
+
   // `<Slides />` spreads this onto the section it wraps a file-based slide in,
   // which is how such a slide reaches Animotion's own `in` event. The first
   // step answers the keypress that arrived here, so the slide is never a still
   // picture waiting for a second press.
   let arrive: (() => void) | undefined;
-  export const props = { in: () => arrive?.() };
+  export const props = defineProps({ in: () => arrive?.() });
 </script>
 
 <script lang="ts">

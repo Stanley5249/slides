@@ -56,20 +56,21 @@
 
   .strip {
     display: flex;
-    gap: 32px;
+    gap: var(--deck-gap);
   }
 
-  /* A numeral on a hairline, not a card: the movement is the subject, so the
-     shape around it stays quiet. */
+  /* A numeral and nothing else: the movement is the subject, so the shape
+     around it stays quiet. */
   .tile {
+    /* Grid because <Transition> wraps each numeral in a div of its own, which
+       leaves the span inline and deaf to a width. Two ems of slot, tabular
+       figures inside it, so a reorder moves the glyphs and not the strip. */
     display: grid;
-    width: 170px;
-    height: 120px;
     place-content: center;
+    min-width: 2em;
     color: var(--deck-ink);
-    font-size: 60px;
+    font-size: var(--deck-text-title);
     font-family: var(--r-code-font), ui-monospace, monospace;
     font-variant-numeric: tabular-nums;
-    border-bottom: 2px solid var(--deck-rule-strong);
   }
 </style>
