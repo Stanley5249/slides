@@ -123,6 +123,40 @@ and the fourth cell always ends up padded with something.
 Gaps come from the block rather than from the elements inside it: a `row` spaces
 what it holds, so a slide never places a margin of its own.
 
+A block shorter than the page leaves the space under it empty, and that is the
+block's size rather than a gap to fill. Stretching a table only stretches its
+rows, and a table with air inside it reads worse than a table with air beneath
+it.
+
+## Classes on a slide
+
+A slide is written as markup. `row`, `cols`, `cols even`, `cols narrow-first`
+and `numeric` are the classes it needs, and all of them live in
+`src/styles/overrides.css`.
+
+A Tailwind utility is not a reliable substitute for one of them. Animotion's
+stylesheet arrives twice: once through the layered import in
+`src/styles/app.css`, and once through a plain JavaScript import inside one of
+Animotion's own components. An unlayered stylesheet outranks every layer, so it
+is the second copy that decides, and it decides on specificity alone.
+
+That leaves one test. A utility is a single class and carries the weight of a
+single class. It wins when nothing upstream names the same property, and it
+loses whenever Animotion or Reveal names that property with a descendant
+selector.
+
+| On a table cell | Result  | Why                                          |
+| --------------- | ------- | -------------------------------------------- |
+| `tabular-nums`  | applies | nothing upstream sets `font-variant-numeric` |
+| `text-right`    | ignored | `.reveal table td` sets `text-align`         |
+
+Reordering the layers does not change this, and dropping the unlayered copy
+would cost more than it buys, because that copy is what lets Animotion's theme
+override `reveal.css` at all. So a property the template needs to control gets a
+class in `overrides.css`, written under `.reveal .slides` so that it carries
+enough weight. `numeric` is that pattern, and it exists because `text-right` did
+not work.
+
 ## Structure
 
 Content carries no plates, no cards, no borders and no shadows. A screenshot is
