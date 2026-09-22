@@ -10,6 +10,11 @@
    3. Four layout classes exist, and no more: row, cols, cols even,
       cols narrow-first.
 
+   A slide may be one section or a vertical stack of them. Reveal puts the
+   class `stack` on the outer section of a stack, which is a container and not
+   a slide, so the frame here asks for a section without it and reaches both
+   depths with one selector.
+
    No Reveal theme is loaded, and Animotion's own stylesheet sits in
    `@layer presentation`, so almost nothing upstream contests these rules. What
    does contest them is `reveal.css`, which is unlayered: a layered rule loses
@@ -54,7 +59,7 @@
    nothing resets it, so anything this file does not name would set solid.
 
    Ties with `.reveal .slides > section` in reveal.css, hence the extra class. */
-.reveal-viewport .reveal .slides > section {
+.reveal-viewport .reveal .slides section:not(.stack) {
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: min-content 1fr;
   row-gap: var(--deck-gap);
@@ -73,7 +78,7 @@
 /* The title stays at the top of the slide. Everything else is centered in
    whatever room is left, so a short title and a long one leave the content
    looking equally placed. */
-.reveal .slides > section > :not(h1, h2) {
+.reveal .slides section:not(.stack) > :not(h1, h2) {
   align-self: center;
 }
 
