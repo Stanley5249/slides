@@ -53,23 +53,21 @@ present in text or structure instead of carrying meaning alone.
 
 ### Implementation
 
-An accent takes the palette color by its bare name wherever that color can carry
-the reading, and darkens only as far as contrast demands. Only the bare name is
-Catppuccin, so every step away from it is a cost the file pays as sparingly as
-it can. Latte needs the concession because its accents are drawn as marks on a
-light surface rather than as text on one; the three dark flavors take every
-accent unaided.
+Every accent is the palette color itself, darkened by the smallest percentage
+that meets its contrast bar and left at full strength where it already clears
+one. Only the bare name is Catppuccin, so the percentage beside each role in
+`src/styles/theme.css` is the exact size of the concession. Latte needs it
+because its accents are drawn as marks on a light surface rather than as text on
+one; the three dark flavors take every accent unaided.
 
 The bar is 3:1. Every type size on a slide except the 18px label is WCAG large
 text, where AA asks for 3:1 rather than 4.5:1. The one accent that appears at
-label size is a link in a figcaption, which is why blue steps once while the
-others answer only to the large-text bar.
+label size is a link in a figcaption, so the accent alone answers to 4.5:1.
 
-Latte measures mauve 4.79, red 4.80, blue-600 4.70, yellow-800 3.56, green-600
-3.21 and the identifier role 3.08. Ink, marks and rules carry the reading in
-every flavor, so an accent is never the only thing saying what a slide says.
-Check a latte deck on the projector before a talk and take a dark flavor if the
-room defeats it.
+Latte measures mauve 4.79, red 4.80, accent 4.55, ok 3.10, the identifier role
+3.08 and warn 3.02. Ink, marks and rules carry the reading in every flavor, so
+an accent is never the only thing saying what a slide says. Check a latte deck
+on the projector before a talk and take a dark flavor if the room defeats it.
 
 A component that reports status sets `data-tone`. The deck maps that attribute
 to the appropriate semantic role.

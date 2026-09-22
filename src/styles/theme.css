@@ -1,24 +1,19 @@
 /* Catppuccin names colors by appearance. Components use these semantic roles
    because a role must keep its meaning when the deck flavor changes.
 
-   An accent takes the palette color by its bare name wherever that color can
-   carry the reading, and steps down the Tailwind package's scale only as far as
-   contrast demands. Only the bare name is Catppuccin, so every step away from
-   it is a cost, and the file below pays as little as it can.
+   Every accent is the palette color itself, darkened by the smallest step that
+   meets its contrast bar and left alone where it already clears one. Only the
+   bare name is Catppuccin, so the percentage beside each role is the exact size
+   of the concession, written where the next reader can see it rather than
+   hidden behind a step name from the Tailwind scale.
 
    The bar is 3:1. Every type size on a slide except the 18px label is WCAG
-   large text, where AA asks for 3:1 rather than 4.5:1. The one accent that does
-   appear at label size is a link in a figcaption, which is why blue steps once
-   and the others answer only to the large-text bar.
+   large text, where AA asks for 3:1 rather than 4.5:1. The one accent that
+   appears at label size is a link in a figcaption, so the accent alone answers
+   to 4.5:1.
 
-   The scale is coarse, and the identifier role is the one accent that appears
-   in running prose on every slide, so its exact weight is worth more than the
-   convenience of a step name. Nothing on the scale sits between peach-600 at
-   2.89 and peach-700 at 3.35, so that role mixes instead. The other three
-   found a step that fit.
-
-   Measured against latte's base: mauve 4.79, red 4.80, blue-600 4.70,
-   yellow-800 3.56, green-600 3.21, identifier 3.08. */
+   Measured against latte's base: mauve 4.79, red 4.80, accent 4.55,
+   identifier 3.08, ok 3.10, warn 3.02. */
 
 :root {
   /* Surfaces. The canvas is the slide; the panel is the one step up a dialog
@@ -40,11 +35,12 @@
 
   /* Accents. The style guide's own mapping where it has one: blue for links,
      green for success, yellow for warnings, red for errors. Mauve and red
-     clear the bar unaided; the other three are the first step that does. */
+     carry the reading at full strength; the rest give up as little as the bar
+     allows. */
   --deck-heading: var(--catppuccin-color-mauve);
-  --deck-accent: var(--catppuccin-color-blue-600);
-  --deck-ok: var(--catppuccin-color-green-600);
-  --deck-warn: var(--catppuccin-color-yellow-800);
+  --deck-accent: color-mix(in oklch, var(--catppuccin-color-blue) 98%, black);
+  --deck-ok: color-mix(in oklch, var(--catppuccin-color-green) 98%, black);
+  --deck-warn: color-mix(in oklch, var(--catppuccin-color-yellow) 90%, black);
   --deck-bad: var(--catppuccin-color-red);
 
   /* Identifiers. A role of its own: an identifier is neither a link nor a
@@ -55,7 +51,7 @@
   --deck-focus: var(--deck-accent);
 }
 
-/* The dark flavors take every accent at its bare name, because a light color on
+/* The dark flavors take every accent at full strength, because a light color on
    a dark canvas clears 4.5:1 without help. Only the two ink steps and the
    heading differ: lavender carries a title against a dark canvas better than
    mauve does. */
