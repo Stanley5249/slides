@@ -335,6 +335,17 @@
   min-width: 0;
 }
 
+/* A table narrower than its column is centered in it. The same table in a `row`
+   keeps the left edge, because prose above or below has already set one, while
+   a column often holds nothing else to line up with.
+
+   A code block is not on this rule. It is read a line at a time, so it belongs
+   to the left edge the way prose does, and centering it costs a slide its only
+   alignment when the code is what the first column holds. */
+.reveal .slides .cols > table {
+  margin-inline: auto;
+}
+
 /* ---------------------------------------------------------------------------
    Reveal chrome
 
