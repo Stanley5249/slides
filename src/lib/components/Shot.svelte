@@ -21,7 +21,7 @@
 
 <figure class={className}>
   {#if missing}
-    <div class="placeholder" style:height={height ?? "11rem"}>
+    <div class="placeholder" style:height>
       <ImageOff size={28} strokeWidth={1.75} />
       <p>{alt}</p>
       <code>static{src}</code>
@@ -67,6 +67,7 @@
      because the box is the whole element here and a projector loses a hairline. */
   .placeholder {
     display: grid;
+    min-height: var(--deck-slot-min);
     gap: 0.5rem;
     place-content: center;
     place-items: center;

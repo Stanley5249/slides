@@ -184,7 +184,7 @@
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    min-height: 8rem;
+    min-height: var(--deck-slot-min);
     overflow: hidden;
     color: var(--deck-ink);
   }
@@ -207,13 +207,13 @@
   .hit:focus-visible,
   .close:focus-visible,
   .zoom-controls button:focus-visible {
-    outline: 3px solid var(--deck-focus);
-    outline-offset: 3px;
+    outline: var(--deck-focus-ring) solid var(--deck-focus);
+    outline-offset: var(--deck-focus-ring);
   }
 
   .viewport:focus-visible {
-    outline: 3px solid var(--deck-focus);
-    outline-offset: -3px;
+    outline: var(--deck-focus-ring) solid var(--deck-focus);
+    outline-offset: calc(-1 * var(--deck-focus-ring));
   }
 
   .viewer {

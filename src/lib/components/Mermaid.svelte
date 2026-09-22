@@ -1,7 +1,3 @@
-<script lang="ts" module>
-  let componentId = 0;
-</script>
-
 <script lang="ts">
   import { browser } from "$app/environment";
   import { getPresentation } from "@animotion/core";
@@ -28,14 +24,16 @@
     class: className = "",
   }: Props = $props();
 
-  // The counter lives in the module block, so the increment is read by the next
-  // instance rather than by anything below it here.
-  // eslint-disable-next-line no-useless-assignment
-  const instanceId = ++componentId;
+  const instanceId = $props.id();
 
   let renderState = $state<RenderState>({ kind: "rendering" });
   let copied = $state(false);
   let copiedTimer: ReturnType<typeof setTimeout>;
+
+  // The confirmation outlives the component when a slide moves while it shows.
+  $effect(() => () => {
+    clearTimeout(copiedTimer);
+  });
 
   $effect(() => {
     if (!browser) return;
@@ -158,7 +156,7 @@
 
   .loading {
     display: grid;
-    min-height: 8rem;
+    min-height: var(--deck-slot-min);
     place-items: center;
     font-size: 1rem;
   }
@@ -229,8 +227,8 @@
   }
 
   .error-head button:focus-visible {
-    outline: 3px solid var(--deck-focus);
-    outline-offset: 3px;
+    outline: var(--deck-focus-ring) solid var(--deck-focus);
+    outline-offset: var(--deck-focus-ring);
   }
 
   .error-body {

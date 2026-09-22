@@ -2,6 +2,8 @@
  * Closes a dialog when a pointer gesture starts and ends on blank space, so every view inside it
  * dismisses the same way instead of each one reimplementing the rule.
  *
+ * Escape is left to the native `<dialog>` cancel behavior and is not handled here.
+ *
  * `blankSelector` matches the empty surfaces exactly, never their children, so anything placed
  * inside the dialog is safe from dismissal by default.
  */
