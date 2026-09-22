@@ -87,8 +87,8 @@
    Type
 
    Four sizes: 76 for the deck title, 44 for a slide title, 24 for everything
-   read as content, 18 for what labels it. Monospace takes an optical step down
-   at the same measure, which is a correction and not a fifth size.
+   read as content, 18 for what labels it. Monospace is matched to the body face
+   by x-height rather than given a size of its own.
    --------------------------------------------------------------------------- */
 
 .reveal .slides h1,
@@ -123,11 +123,15 @@
   text-underline-offset: 0.15em;
 }
 
-/* Identifiers are the nouns of a technical talk. The face and a small optical
-   step down are enough at slide scale: no pill, no background, and no color of
-   its own, so an identifier reads as well as the sentence holding it. */
+/* Identifiers are the nouns of a technical talk. The face alone is enough at
+   slide scale: no pill, no background, and no color of its own, so an
+   identifier reads as well as the sentence holding it.
+
+   0.5 is the body face's x-height over its em. Matching the two faces there
+   rather than guessing a size keeps them the same height on the line, and a
+   change of either face is a change of one number. */
 .reveal .slides code {
-  font-size: 0.88em;
+  font-size-adjust: 0.5;
   font-family: var(--r-code-font), ui-monospace, monospace;
   font-variant-ligatures: none;
   word-break: break-word;
@@ -171,14 +175,12 @@
   width: 100%;
 }
 
+/* The head is set in the same type as the rows it labels. Booktabs separates
+   with rules, so a second typographic system on top of them is one distinction
+   too many. */
 .reveal .slides thead th {
-  padding: 6px 18px 10px;
-  color: var(--deck-ink-quiet);
+  padding: 12px 18px 10px;
   font-weight: 600;
-  font-size: 18px;
-  font-family: var(--r-main-font), sans-serif;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   border-top: 1.5px solid var(--deck-rule-strong);
   border-bottom: 1px solid var(--deck-rule);
 }
@@ -224,8 +226,8 @@
    inside a cell it reads as the cell it is in. */
 .reveal .slides th code,
 .reveal .slides td code {
-  font-size: inherit;
   font-family: inherit;
+  font-size-adjust: none;
 }
 
 /* ---------------------------------------------------------------------------
@@ -277,12 +279,6 @@
   margin-inline: 0;
   font-size: 0.88em;
   line-height: 1.5;
-}
-
-/* Both `pre` and `code` step down, so a hand-written `<pre><code>` would step
-   down twice. */
-.reveal .slides pre code {
-  font-size: inherit;
 }
 
 /* ---------------------------------------------------------------------------
