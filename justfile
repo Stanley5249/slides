@@ -33,7 +33,7 @@ fmt-check:
 # Check types and Svelte diagnostics
 check:
     bun run svelte-kit sync
-    bun run svelte-check --tsconfig ./tsconfig.json
+    bun run svelte-check
 
 # Run the tests
 test:
