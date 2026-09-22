@@ -4,6 +4,5 @@
   "printWidth": 80,
   "sortPackageJson": false,
   "sortTailwindcss": { "stylesheet": "src/styles/app.css" },
-  "svelte": {},
-  "ignorePatterns": [".agents/skills"]
+  "svelte": {}
 }

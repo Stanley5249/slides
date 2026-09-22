@@ -1,19 +1,29 @@
 ---
 name: chrome-devtools-cli
-description: Use this skill to write shell scripts or run shell commands to automate tasks in the browser or otherwise use Chrome DevTools via CLI.
+description:
+  Use this skill to write shell scripts or run shell commands to automate tasks
+  in the browser or otherwise use Chrome DevTools via CLI.
 ---
 
-The `chrome-devtools-mcp` CLI lets you interact with the browser from your terminal.
+The `chrome-devtools-mcp` CLI lets you interact with the browser from your
+terminal.
 
 ## Setup
 
-_Note: If this is your very first time using the CLI, see [references/installation.md](references/installation.md) for setup. Installation is a one-time prerequisite and is **not** part of the regular AI workflow._
+_Note: If this is your very first time using the CLI, see
+[references/installation.md](references/installation.md) for setup. Installation
+is a one-time prerequisite and is **not** part of the regular AI workflow._
 
 ## AI Workflow
 
-1. **Execute**: Run tools directly. If you don't know the target page's ID, run `chrome-devtools list_pages` to find it. The background server starts implicitly; **do not** run `start`/`status`/`stop` before each use.
-2. **Inspect**: Use `chrome-devtools take_snapshot <pageId>` to get an element `<uid>`.
-3. **Act**: Use `chrome-devtools click <pageId> <uid>`, `chrome-devtools fill <pageId> <uid> <value>`, etc. State persists across commands.
+1. **Execute**: Run tools directly. If you don't know the target page's ID, run
+   `chrome-devtools list_pages` to find it. The background server starts
+   implicitly; **do not** run `start`/`status`/`stop` before each use.
+2. **Inspect**: Use `chrome-devtools take_snapshot <pageId>` to get an element
+   `<uid>`.
+3. **Act**: Use `chrome-devtools click <pageId> <uid>`,
+   `chrome-devtools fill <pageId> <uid> <value>`, etc. State persists across
+   commands.
 
 Snapshot example:
 
@@ -24,7 +34,11 @@ uid=1_0 RootWebArea "Example Domain" url="https://example.com/"
 
 ## Permissions & File Access
 
-By default, the CLI has full filesystem access (`--allowUnrestrictedPaths=true`), allowing file-saving parameters (`--filePath`, `--outputDirPath`) and `upload_file` to access files anywhere on the system. Pass `--allowUnrestrictedPaths=false` if you want to restrict file access to the OS temp directory.
+By default, the CLI has full filesystem access
+(`--allowUnrestrictedPaths=true`), allowing file-saving parameters
+(`--filePath`, `--outputDirPath`) and `upload_file` to access files anywhere on
+the system. Pass `--allowUnrestrictedPaths=false` if you want to restrict file
+access to the OS temp directory.
 
 ## Command Usage
 
@@ -34,7 +48,8 @@ chrome-devtools <tool> [arguments] [flags]
 
 - Required arguments are passed positionally; optional arguments use flags.
 - Use `--help` on any command for usage details.
-- Output defaults to plain Markdown-like text; pass `--output-format=json` for JSON.
+- Output defaults to plain Markdown-like text; pass `--output-format=json` for
+  JSON.
 
 ## Input Automation (<uid> from snapshot)
 
@@ -172,7 +187,8 @@ chrome-devtools uninstall_pwa "https://example.com/" # Uninstall PWA and close w
 
 ## Experimental Features
 
-Experimental tools are disabled by default. Enable them with the corresponding flag during `start`.
+Experimental tools are disabled by default. Enable them with the corresponding
+flag during `start`.
 
 ```bash
 chrome-devtools click_at 1 100 200 # Clicks at the provided coordinates on page 1 (requires --experimentalVision=true)

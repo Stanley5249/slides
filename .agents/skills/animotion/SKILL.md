@@ -1,8 +1,8 @@
 ---
 name: animotion
 description:
-  Build and maintain Animotion presentations with Svelte 5 and Reveal.js. Use for
-  slides, presentation mechanics, presenter actions, transitions, and deck
+  Build and maintain Animotion presentations with Svelte 5 and Reveal.js. Use
+  for slides, presentation mechanics, presenter actions, transitions, and deck
   behavior.
 ---
 
@@ -12,8 +12,8 @@ Read the Animotion documentation before changing presentation mechanics:
 
 - Animotion: https://animotion.pages.dev/llms.txt
 
-For Svelte questions, start with the smallest sufficient reference and escalate as
-needed:
+For Svelte questions, start with the smallest sufficient reference and escalate
+as needed:
 
 - Small: https://svelte.dev/llms-small.txt
 - Medium: https://svelte.dev/llms-medium.txt
