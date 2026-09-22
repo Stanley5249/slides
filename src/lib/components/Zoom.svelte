@@ -281,7 +281,9 @@
 </dialog>
 
 <style>
-  /* Plate rule: every zoom surface is the canvas with a hairline, one step above its ground. */
+  /* No plate. A diagram or a screenshot on a slide is evidence, and a frame
+     around it makes it read as a widget. The viewer it opens keeps its plate,
+     because that one really is apparatus. */
   .preview {
     position: relative;
     /* Column flex, not grid: a grid item's automatic minimum size is its min-content width, so
@@ -291,18 +293,13 @@
     justify-content: center;
     width: 100%;
     min-height: 8rem;
-    padding: 1rem;
     overflow: hidden;
     color: var(--deck-ink);
-    background: var(--deck-canvas);
-    border: 1px solid var(--deck-rule);
-    border-radius: 0.75rem;
-    box-shadow: 0 0.5rem 1.5rem
-      color-mix(in srgb, var(--deck-veil) 56%, transparent);
   }
 
+  /* The only affordance, so the surface still says it opens. */
   .preview:hover {
-    border-color: var(--deck-accent);
+    background: color-mix(in srgb, var(--deck-ink) 6%, transparent);
   }
 
   .hit {
