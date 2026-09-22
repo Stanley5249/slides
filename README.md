@@ -1,35 +1,28 @@
-# Animotion Template
+# Slides
 
-This is an Animotion presentation.
+A template for building [Reveal.js](https://revealjs.com/) presentations with
+[Animotion](https://animotion.pages.dev/) and [Svelte 5](https://svelte.dev/).
 
-## Setup
+## Requirements
 
-Install dependencies:
+Install [Bun](https://bun.sh/) as the project runtime.
+
+Optionally install [`just`](https://github.com/casey/just) to use the command
+recipes below.
+
+## Quickstart
 
 ```sh
+# Install dependencies.
 just install
-```
 
-Run the development server, at the URL Vite prints:
-
-```sh
+# Start the development server.
 just dev
 ```
 
-Check and build the presentation:
+See the [`justfile`](justfile) for more commands.
 
-```sh
-just ci
-```
+## Reference
 
-`just` on its own lists every recipe.
-
-## Design
-
-Color, type, layout and the rules a slide is built to are in the
-[design reference](docs/design.md). The flavor a deck is presented in is named
-in `src/lib/theme.ts`.
-
-## Components
-
-See the [component reference](docs/components/README.md).
+- [Design guidance](docs/design.md)
+- [Component reference](docs/components/README.md)

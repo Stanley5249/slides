@@ -1,83 +1,37 @@
 # Presentation template instructions
 
-## Runtime and package management
+## Commands
 
-- Use Bun for every package and project command: `bun`, `bunx`, and `bun run`.
-- Do not run `node`, `npm`, `npx`, or `yarn`.
-- Use `bun add` and `bun remove` to change dependencies.
-- Keep the project free of a Node runtime requirement. Compatibility type
-  packages may remain when SvelteKit tooling requires them.
-- Do not add a `scripts` field to `package.json`. Define project commands in the
-  root `justfile` and run project binaries with `bun run <binary>`.
-- To drive a CDP target, prefer Bunx and the `chrome-devtools` CLI over
-  playwright-cli: `bunx chrome-devtools`. Start it once with
-  `--no-usage-statistics --no-performance-crux`.
-- For visual or interaction changes, take a targeted screenshot with Chrome
-  DevTools after the relevant interaction.
+- Use Bun exclusively for package commands, project commands, and package
+  management.
+- Manage dependencies with `bun add` and `bun remove`. Keep `package.json` free
+  of `scripts`.
+- Define standard commands in the root `justfile`. Use `just` recipes and run
+  project binaries with `bun run <binary>`.
+- Get the user's approval before using CDP or other automation tools. After
+  approval, use
+  `bunx chrome-devtools --no-usage-statistics --no-performance-crux` for CDP.
+- When browser automation is approved for a visual or interaction change,
+  capture a targeted screenshot after the relevant interaction.
 
-## Presentation architecture
+## Presentation
 
-- Use Animotion and Reveal.js for presentation mechanics. Do not create
-  replacement navigation, presenter, animation, or slide-runtime abstractions.
-- Use Svelte 5 components and runes for reactive and interactive slide content.
-- Use Tailwind and the Catppuccin tokens for presentation styling.
-- Keep `main` template-only. Real presentation content belongs on `deck/<name>`
-  or `deck/<group>/<name>` branches.
+- Keep Animotion and Reveal.js presentation mechanics, including their
+  navigation, presenter, animation, and slide-runtime abstractions.
+- Use Svelte 5 components and runes for reactive and interactive content, with
+  Tailwind and Catppuccin tokens for styling.
+- Keep `main` template-only. Put presentation content on local
+  `deck/<group>/<name>` branches and keep those branches local.
 
-## Preferred libraries
+## Dependencies
 
-- Prefer Bits UI for accessible interactive primitives before creating custom
-  controls.
-- Use `lucide-svelte` for interface icons instead of hand-drawn SVGs, Unicode
-  symbols, or text glyphs.
-- Prefer TanStack Table for tabular interactions, Plotly.js for charts, and Papa
-  Parse for CSV fixtures before creating equivalents.
-- Add those libraries only in the validation phase that needs them.
-- Use `svelte-adapter-bun` for the standalone Bun server because it supports
-  this SvelteKit 2 template. Do not install it alongside
-  `@sveltejs/adapter-bun`.
+- Choose `svelte-adapter-bun` over `@sveltejs/adapter-bun` for the standalone
+  Bun server.
+- Prefer Bits UI for accessible interactive primitives and `lucide-svelte` for
+  interface icons.
 
-## Values
+## Convention
 
-- Name a value that more than one place reads. The size scales live in
-  `src/styles/overrides.css` and the color roles in `src/styles/theme.css`, so a
-  size or a color is chosen from a scale rather than invented at the call site.
-- Derive a value from whatever it depends on when there is something to derive
-  it from, because a slot sized in `em` follows its type size and the two cannot
-  drift apart.
-- Keep a number literal when it belongs to one widget's own composition and
-  nothing else reads it. A token with a single site is indirection, not a scale.
-- Leave out a setting that only repeats the library's default, because it says
-  nothing and it buries the settings that do differ. Check the default before
-  writing the line.
-- Say where an invented number came from in a comment beside it, since that is
-  the first thing the next reader asks.
-
-## Writing
-
-- Write documentation, comments and interface copy in American English: color,
-  behavior, center, flavor.
-- Identifiers keep the spelling of whatever they come from, so a DOM or library
-  name is left alone.
-
-## Workflow
-
-- Use `just` recipes for standard commands.
-- Run `just ci` before committing.
-- Keep commits small, conventional, and independently reviewable.
-
-## Branches
-
-- Template and component work goes on `feat/<topic>` or `fix/<topic>`, branched
-  from `main`.
-- Deck content goes on `deck/<group>/<date>-<venue>-<topic>`, branched from
-  `main`, where the group is the client or org, the date is the talk date as
-  `YYYY-MM-DD`, and the venue and topic are lowercase and hyphenated. For
-  example, `deck/tenstorrent/2026-09-02-itri-vllm-tracy`.
-- The date sorts the group chronologically under plain listing, and the venue
-  keeps a recurring talk from colliding with its earlier outings.
-- Never put a version or a status in a branch name. No `-v2`, no `-final`, no
-  `-wip`.
-- Switching branches is a shell concern, not a project one. Use a fuzzy
-  `git switch` helper from your own profile rather than a recipe here, since a
-  recipe is unavailable on any branch that predates it.
+- Follow the existing design system.
+- Omit redundant defaults.
+- Write documentation, comments, and UI copy in American English.
