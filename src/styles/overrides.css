@@ -146,9 +146,8 @@
   text-underline-offset: 0.15em;
 }
 
-/* Identifiers are the nouns of a technical talk. The face alone is enough at
-   slide scale: no pill, no background, and no color of its own, so an
-   identifier reads as well as the sentence holding it.
+/* Identifiers are the nouns of a technical talk, so they carry a weight and a
+   color of their own. Still no pill and no plate: the mark is on the word.
 
    0.5 is the body face's x-height over its em. Matching the two faces there
    rather than guessing a size keeps them the same height on the line, and a
@@ -158,6 +157,14 @@
   font-family: var(--r-code-font), ui-monospace, monospace;
   font-variant-ligatures: none;
   word-break: break-word;
+}
+
+/* Inline only. A highlighted block keeps the weights and colors Shiki gives it.
+   Nothing upstream sets either property on an inline identifier, so the child
+   selector carries enough weight on its own. */
+.reveal .slides :not(pre) > code {
+  font-weight: 600;
+  color: var(--deck-code);
 }
 
 /* ---------------------------------------------------------------------------

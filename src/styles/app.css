@@ -7,6 +7,8 @@
 @import "@fontsource/fredoka/600.css";
 @import "@fontsource/atkinson-hyperlegible";
 @import "@fontsource/monaspace-neon";
+/* The weight an inline identifier is set in. */
+@import "@fontsource/monaspace-neon/600.css";
 
 @import "@animotion/core/theme" layer(presentation);
 

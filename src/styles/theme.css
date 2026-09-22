@@ -31,6 +31,10 @@
   --deck-warn: var(--catppuccin-color-yellow-950);
   --deck-bad: var(--catppuccin-color-red);
 
+  /* Identifiers. A role of its own: an identifier is neither a link nor a
+     heading, and the accent already means the state the viewer is on. */
+  --deck-code: var(--catppuccin-color-peach-900);
+
   /* The focus ring is the accent until a deck says otherwise. */
   --deck-focus: var(--deck-accent);
 }
@@ -46,4 +50,5 @@
   --deck-ok: var(--catppuccin-color-green);
   --deck-warn: var(--catppuccin-color-yellow);
   --deck-bad: var(--catppuccin-color-red);
+  --deck-code: var(--catppuccin-color-peach);
 }
