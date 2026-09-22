@@ -3,15 +3,7 @@ name: chrome-devtools-cli
 description: Use this skill to write shell scripts or run shell commands to automate tasks in the browser or otherwise use Chrome DevTools via CLI.
 ---
 
-> Local modification: this project uses Bunx instead of a global npm installation. See [UPSTREAM.md](UPSTREAM.md) for source and license details.
-
-The `chrome-devtools-mcp` CLI lets you interact with the browser from your terminal. Run it through Bunx:
-
-```sh
-bunx chrome-devtools <command> [arguments] [flags]
-```
-
-The examples below use `chrome-devtools` as a shorthand. Expand it to the Bunx command above when running it.
+The `chrome-devtools-mcp` CLI lets you interact with the browser from your terminal.
 
 ## Setup
 
@@ -37,7 +29,7 @@ By default, the CLI has full filesystem access (`--allowUnrestrictedPaths=true`)
 ## Command Usage
 
 ```sh
-bunx chrome-devtools <tool> [arguments] [flags]
+chrome-devtools <tool> [arguments] [flags]
 ```
 
 - Required arguments are passed positionally; optional arguments use flags.
@@ -143,6 +135,8 @@ chrome-devtools list_network_requests 1 --includePreservedRequests true # Includ
 chrome-devtools evaluate_script "() => document.title" --pageId 1 # Evaluate a JavaScript function on page 1
 chrome-devtools evaluate_script "(a) => a.innerText" --pageId 1 --args 1_4 # Evaluate JS with UID arguments on page 1
 chrome-devtools get_console_message 1 1 # Gets a console message by its ID
+chrome-devtools get_css_styles 1 "1_4" # Retrieves resolved CSS styles (inline, matched, inherited, pseudo) for an element on page 1
+chrome-devtools get_css_styles 1 "1_4" --pageSize 20 --pageIdx 0 # Get CSS styles with pagination on page 1
 chrome-devtools lighthouse_audit 1 --mode "navigation" # Run Lighthouse audit for navigation
 chrome-devtools lighthouse_audit 1 --mode "snapshot" --device "mobile" # Run Lighthouse audit for a snapshot on mobile
 chrome-devtools lighthouse_audit 1 --outputDirPath ./out # Run Lighthouse audit and save reports
@@ -193,8 +187,8 @@ chrome-devtools execute_3p_developer_tool 1 "tool_name" --params '{"arg":"val"}'
 ## Service Management
 
 ```bash
-bunx chrome-devtools start --no-usage-statistics --no-performance-crux
-bunx chrome-devtools start --headless=false --no-usage-statistics --no-performance-crux
-bunx chrome-devtools status
-bunx chrome-devtools stop
+chrome-devtools start   # Start or restart chrome-devtools-mcp
+chrome-devtools start --headless=false # Start with visible browser window
+chrome-devtools status  # Checks if chrome-devtools-mcp is running
+chrome-devtools stop    # Stop chrome-devtools-mcp if any
 ```

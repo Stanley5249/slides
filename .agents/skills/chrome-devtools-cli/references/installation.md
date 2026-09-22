@@ -1,26 +1,14 @@
 # Installation
 
-> Local modification: this project runs Chrome DevTools through Bunx, not a global npm installation.
-
-No global installation is needed. Bunx downloads and caches the package as needed.
+Install the package globally to make the `chrome-devtools` command available. You only need to do this the first time you use it.
 
 ```sh
-bunx chrome-devtools --help
-```
-
-Start the service once per browser session with telemetry and CrUX requests disabled:
-
-```sh
-bunx chrome-devtools start --no-usage-statistics --no-performance-crux
-```
-
-Then invoke commands through the same Bunx prefix, for example:
-
-```sh
-bunx chrome-devtools list_pages
+npm i chrome-devtools-mcp@latest -g
+chrome-devtools status # check if install worked.
 ```
 
 ## Troubleshooting
 
-- **Bunx download error:** retry the command after confirming Bun can access the package registry.
-- **Old service running:** use `bunx chrome-devtools stop`, then run the start command again.
+- **Command not found:** If `chrome-devtools` is not recognized, ensure your global npm `bin` directory is in your system's `PATH`. Restart your terminal or source your shell configuration file (e.g., `.bashrc`, `.zshrc`).
+- **Permission errors:** If you encounter `EACCES` or permission errors during installation, avoid using `sudo`. Instead, use a node version manager like `nvm`, or configure npm to use a different global directory.
+- **Old version running:** Run `chrome-devtools stop && npm uninstall -g chrome-devtools-mcp` before reinstalling, or ensure the latest version is being picked up by your path.
