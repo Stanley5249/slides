@@ -163,7 +163,8 @@
     font-size: 1rem;
   }
 
-  /* Same plate rule as Zoom: the canvas with a hairline, one step above its ground. */
+  /* The canvas with a hairline, one step above its ground. A failure is a
+     panel to read, not a subject to look at, so it keeps its edge. */
   .error {
     display: flex;
     flex-direction: column;

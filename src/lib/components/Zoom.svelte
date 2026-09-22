@@ -286,8 +286,9 @@
     left: 50%;
     line-height: 0;
     background: var(--deck-canvas);
-    border: 1px solid var(--deck-rule);
     border-radius: 0.75rem;
+    /* No hairline. At this size the shadow is enough of an edge, and a rule
+       around a diagram reads as part of the diagram. */
     box-shadow: 0 1.25rem 3.5rem
       color-mix(in srgb, var(--deck-veil) 78%, transparent);
     transform: translate(-50%, -50%);
