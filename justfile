@@ -31,9 +31,16 @@ fmt-check:
     just --fmt --check
 
 # Check types and Svelte diagnostics
-check:
+typecheck:
     bun run svelte-kit sync
     bun run svelte-check
+
+# Report bugs and smells, warnings included
+lint:
+    bun run eslint --max-warnings 0
+
+# The fast local gate
+check: typecheck lint
 
 # Run the tests
 test:

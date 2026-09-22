@@ -33,7 +33,7 @@
     bind:this={code}
     lang="ts"
     theme={codeTheme}
-    code={``}
+    code=""
     options={{ duration: 600, stagger: 0.3, containerStyle: false }}
   />
 </Transition>

@@ -28,6 +28,9 @@
     class: className = "",
   }: Props = $props();
 
+  // The counter lives in the module block, so the increment is read by the next
+  // instance rather than by anything below it here.
+  // eslint-disable-next-line no-useless-assignment
   const instanceId = ++componentId;
 
   let renderState = $state<RenderState>({ kind: "rendering" });
@@ -88,6 +91,9 @@
 {#if renderState.kind === "ready"}
   {@const { svg, width } = renderState}
   {#snippet plate(source: string, capped: boolean)}
+    <!-- The markup is an SVG Mermaid rendered under its strict security level,
+         from a diagram source the deck itself holds. -->
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     <span class="diagram" class:capped style:width>{@html source}</span>
   {/snippet}
   <Zoom {label} class={className}>
