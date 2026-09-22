@@ -36,6 +36,24 @@
 />
 
 <style>
+  /* Named globally because Animotion writes `animation: rotate` into a
+     `::view-transition-new` rule of its own, where a scoped name would not
+     resolve. It lives here because this slide is the only thing that asks for
+     it: an entry animation is a deck's choice, not the template's. */
+  @keyframes -global-rotate {
+    from {
+      opacity: 0;
+    }
+
+    40% {
+      opacity: 1;
+    }
+
+    to {
+      rotate: 360deg;
+    }
+  }
+
   .strip {
     display: flex;
     gap: 32px;

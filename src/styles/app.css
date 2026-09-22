@@ -117,15 +117,3 @@
     opacity: 0;
   }
 }
-
-@keyframes rotate {
-  from {
-    opacity: 0;
-  }
-  40% {
-    opacity: 1;
-  }
-  to {
-    rotate: 360deg;
-  }
-}
