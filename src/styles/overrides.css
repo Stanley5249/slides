@@ -82,8 +82,10 @@
   align-self: center;
 }
 
-/* The title slide is the only one with nothing to fill. */
-.reveal .slides > section:first-child {
+/* The title slide is the only one with nothing to fill. It carries the same
+   `:not(.stack)` as the frame above so the two weigh the same and this one,
+   being later, wins the row template. */
+.reveal .slides > section:first-child:not(.stack) {
   grid-template-rows: none;
   align-content: center;
 }
