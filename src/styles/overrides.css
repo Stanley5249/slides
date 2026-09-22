@@ -178,8 +178,15 @@
    rules are undoing.
    --------------------------------------------------------------------------- */
 
+/* Sized to its content, not to its column. Stretched to the full width, a
+   table of short cells puts all the slack between the words and reads as
+   sparser than the prose beside it. `reveal.css` centers a table with auto
+   inline margins, and every other block on a slide starts at the same left
+   edge, so this one does too. */
 .reveal .slides table {
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: 0;
 }
 
 /* The head is set in the same type as the rows it labels. Booktabs separates
@@ -193,10 +200,13 @@
 }
 
 /* Alignment is left to Animotion and to the deck, so a cell can still take a
-   Tailwind utility for a column of numbers. */
+   Tailwind utility for a column of numbers.
+
+   6px holds a one-line row at 48px against a 36px line of prose. The head is
+   given more, because it has a rule on either side of it. */
 .reveal .slides tbody th,
 .reveal .slides tbody td {
-  padding: 12px 18px;
+  padding: 6px 18px;
   font-weight: inherit;
   vertical-align: baseline;
   border: 0;
