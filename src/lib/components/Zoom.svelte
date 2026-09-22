@@ -132,7 +132,7 @@
   }
 
   // The keys move the content, matching a drag, not the viewport as a scrollbar would.
-  const panKeys: Record<string, [number, number]> = {
+  const panKeys: Record<string, [number, number] | undefined> = {
     ArrowLeft: [-panStep, 0],
     ArrowRight: [panStep, 0],
     ArrowUp: [0, -panStep],
@@ -161,7 +161,7 @@
       stepScale(-scaleStep);
     } else if (event.key === "0") {
       smooth = true;
-      resetView();
+      void resetView();
     }
   }
 
@@ -260,7 +260,7 @@
       class="percentage"
       onclick={() => {
         smooth = true;
-        resetView();
+        void resetView();
       }}
       aria-label="Reset zoom"
       title="Reset zoom"

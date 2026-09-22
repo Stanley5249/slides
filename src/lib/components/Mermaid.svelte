@@ -41,15 +41,17 @@
     if (!browser) return;
 
     // The flag drops a render whose source changed under it before it finished.
-    let cancelled = false;
+    // It is a field rather than a local because the cleanup below writes it
+    // while the work above is suspended at an await.
+    const render = { cancelled: false };
 
     void (async () => {
       try {
         const svg = await renderMermaid(code, `mermaid-${instanceId}`);
-        if (cancelled) return;
+        if (render.cancelled) return;
         renderState = { kind: "ready", svg, width: naturalWidth(svg) };
       } catch (error) {
-        if (cancelled) return;
+        if (render.cancelled) return;
         renderState = {
           kind: "failed",
           message:
@@ -63,11 +65,14 @@
       await new Promise<void>((resolve) =>
         requestAnimationFrame(() => resolve()),
       );
-      if (!cancelled) getPresentation().slides?.layout();
+      // TypeScript keeps a property narrowed across a call it cannot see into,
+      // so it reads this flag as still false. The cleanup writes it.
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      if (!render.cancelled) getPresentation().slides?.layout();
     })();
 
     return () => {
-      cancelled = true;
+      render.cancelled = true;
     };
   });
 
@@ -75,7 +80,7 @@
   // collapses every diagram to the same width. The viewBox carries the real one; max-content is the
   // fallback because it fails visibly wide rather than invisibly narrow.
   function naturalWidth(svg: string) {
-    const viewBoxWidth = Number(svg.match(/viewBox="\S+ \S+ (\S+) /)?.[1]);
+    const viewBoxWidth = Number(/viewBox="\S+ \S+ (\S+) /.exec(svg)?.[1]);
     return viewBoxWidth > 0 ? `${viewBoxWidth}px` : "max-content";
   }
 
