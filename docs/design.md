@@ -183,13 +183,13 @@ widget. Capture at the contrast you want to project.
 
 The template owns the system. Decks own what they are about.
 
-| Template                                  | Deck                                            |
-| ----------------------------------------- | ----------------------------------------------- |
-| Role tokens and the flavor constant       | Which flavor, named in `src/lib/theme.ts`       |
-| Type scale, prose, lists, tables, figures | The act labels, the one big figure, the ledgers |
-| Column splits and vertical rhythm         | What goes in the columns                        |
-| Reveal chrome, focus rules                | Tone mappings for `data-tone`                   |
-| Components under `src/lib` and their docs | Slide content under `src/slides`                |
+| Template                                  | Deck                                       |
+| ----------------------------------------- | ------------------------------------------ |
+| Role tokens and the flavor constant       | Which flavor, named in `src/lib/theme.ts`  |
+| Type scale, prose, lists, tables, figures | What an act label says, the one big figure |
+| Column splits and vertical rhythm         | What goes in the columns                   |
+| Reveal chrome, focus rules                | Tone mappings for `data-tone`              |
+| Components under `src/lib` and their docs | Slide content under `src/slides`           |
 
 A pattern earns its way into the template when a second deck needs it, not when
 the first one invents it. Until then it lives on the deck branch where it was

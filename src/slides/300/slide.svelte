@@ -1,54 +1,29 @@
-<script lang="ts">
-  import { Transition } from "@animotion/core";
+<p class="act">The frame</p>
 
-  let items = $state([1, 2, 3, 4]);
-  let layout = $state("flex gap-4");
-</script>
+<h2>What a paragraph is allowed to hold</h2>
 
-<Transition>
-  <p class="text-6xl font-bold drop-shadow-sm">🪄 Layout Animations</p>
-</Transition>
+<p class="lede">
+  Prose stops at 62 characters, because a line the eye tracks across a wall is
+  longer than the same line on a desk.
+</p>
 
-<Transition
-  do={() => {
-    items = [1, 2, 3, 4];
-    layout = "flex gap-4";
-  }}
-  class="mt-16"
->
-  <div class={layout}>
-    {#each items as item, i (item)}
-      <Transition
-        class="grid h-45 w-45 place-content-center rounded-2xl border-t-2 border-white bg-gray-200 text-6xl font-semibold text-black shadow-2xl"
-        entry="rotate"
-        duration={2}
-        delay={i * 0.1}
-        visible
-      >
-        {item}
-      </Transition>
-    {/each}
-  </div>
-</Transition>
+<p>
+  Body text is <strong>Atkinson Hyperlegible</strong>, drawn for low vision,
+  which is what a projector gives everybody. An identifier such as
+  <code>--deck-ink</code> takes a weight and a color shift and never a pill. A
+  word carries <em>emphasis</em> without changing size, and a
+  <a href="https://animotion.pages.dev/docs">link</a> takes the accent.
+</p>
 
-<Transition
-  transitions={[
-    () => {
-      layout = "grid grid-cols-2 grid-rows-2 gap-4";
-      items = [4, 3, 2, 1];
-    },
-    () => {
-      layout = "grid grid-cols-2 grid-rows-2 gap-4";
-      items = [2, 1, 4, 3];
-    },
-    () => {
-      layout = "grid grid-cols-2 grid-rows-2 gap-4";
-      items = [4, 3, 2, 1];
-    },
-    () => {
-      layout = "grid grid-cols-2 grid-rows-2 gap-4";
-      items = [1, 2, 3, 4];
-    },
-    () => (layout = "flex gap-4"),
-  ]}
-/>
+<dl>
+  <dt>display</dt>
+  <dd>Fredoka, titles only</dd>
+  <dt>prose</dt>
+  <dd>Atkinson Hyperlegible</dd>
+  <dt>data</dt>
+  <dd>Monaspace Neon, tabular figures</dd>
+</dl>
+
+<p class="note">
+  A definition list is the right shape for a run's parameters: term, then value.
+</p>
