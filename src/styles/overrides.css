@@ -216,11 +216,20 @@
 }
 
 /* A column of numbers is read down, not across, so it is set right-aligned in
-   figures of one width. */
+   figures of one width. The body face has those figures, so no second face is
+   needed to line them up. */
 .reveal-viewport .reveal .slides .numeric {
-  font-family: var(--r-code-font), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
   text-align: right;
+}
+
+/* A table is set in one face. An identifier still marks itself up as code, but
+   inside a cell it reads as the cell it is in. */
+.reveal-viewport .reveal .slides th code,
+.reveal-viewport .reveal .slides td code {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 /* ---------------------------------------------------------------------------

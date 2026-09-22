@@ -76,8 +76,9 @@ Three faces, each with one job.
   voice rather than a style.
 - Atkinson Hyperlegible sets everything read as prose. It was drawn for low
   vision, which is what a projector gives everybody.
-- Monaspace Neon sets identifiers, measurements and anything in a column.
-  Tabular figures, so digits line up between rows.
+- Monaspace Neon sets code blocks and the identifiers in prose. It stops at the
+  edge of a table: the body face has tabular figures, so a column of numbers
+  lines up without a second face in it.
 
 Four sizes, and no more: one for the deck title, one for a slide title, one for
 anything read as content, and one for the small type that labels content.
