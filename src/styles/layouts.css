@@ -1,0 +1,93 @@
+/* ---------------------------------------------------------------------------
+   Layout classes.
+
+   These arrange content inside the frame from overrides.css. Each one is a
+   choice about reading order, so the set stays short. Unlayered for the same
+   reason as overrides.css.
+   --------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
+   Rows and columns
+
+   `row` stacks blocks. `cols` provides the three shared two-column splits.
+   Fractions adapt to the stage, and the 2.2:1 split leaves the supporting
+   column about one third of the available width. A deck can define a more
+   complex comparison when its content supplies a clear reading order.
+   --------------------------------------------------------------------------- */
+
+.reveal .slides .row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--deck-gap);
+}
+
+.reveal .slides .cols {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: var(--deck-gap-wide);
+  align-items: start;
+}
+
+.reveal .slides .cols.even {
+  grid-template-columns: 1fr 1fr;
+}
+
+.reveal .slides .cols.narrow-first {
+  grid-template-columns: 1fr 2.2fr;
+}
+
+/* A grid item's automatic minimum size is its content width, which lets a wide
+   table push its column, and the slide, past the right edge. */
+.reveal .slides .cols > * {
+  min-width: 0;
+}
+
+/* A table narrower than its column is centered in it. The same table in a `row`
+   keeps the left edge, because prose above or below has already set one, while
+   a column often holds nothing else to line up with.
+
+   A code block is not on this rule. It is read a line at a time, so it belongs
+   to the left edge the way prose does, and centering it costs a slide its only
+   alignment when the code is what the first column holds. */
+.reveal .slides .cols > table {
+  margin-inline: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Steps
+
+   An ordered list laid across the stage, for a process whose order is the
+   point. Each step hangs from a rule, and the rules read as one line broken
+   into stages. The number is the list's own counter, so the markup stays an
+   `ol` for a screen reader. Use a plain list when the order does not matter.
+   --------------------------------------------------------------------------- */
+
+.reveal .slides ol.steps {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: var(--deck-gap);
+  max-width: none;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+/* Outweighs the gap lists put between their items. */
+.reveal .slides ol.steps > li {
+  margin: 0;
+  padding-top: var(--deck-gap-tight);
+  border-top: 2px solid var(--deck-rule-strong);
+  counter-increment: step;
+}
+
+.reveal .slides ol.steps > li::before {
+  display: block;
+  margin-bottom: var(--deck-gap-tight);
+  color: var(--deck-ink-quiet);
+  font-weight: 600;
+  font-size: var(--deck-text-heading);
+  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  line-height: 1;
+  content: counter(step);
+}

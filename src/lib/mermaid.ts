@@ -18,6 +18,9 @@ function createConfig(): MermaidConfig {
       // A diagram is drawn in the deck's own roles, so it reads as part of the slide rather than
       // as a picture pasted onto it.
       fontFamily: `${token("--r-main-font")}, sans-serif`,
+      // The preview is drawn at its natural size, so Mermaid's own 16px would
+      // put labels below the smallest step of the deck's type scale.
+      fontSize: token("--deck-text-content"),
       background: token("--deck-canvas"),
       primaryColor: token("--deck-panel"),
       primaryBorderColor: token("--deck-rule-strong"),
@@ -32,7 +35,25 @@ function createConfig(): MermaidConfig {
       errorBkgColor: token("--deck-hover"),
       errorTextColor: token("--deck-bad"),
     },
+    // Mermaid draws edges and borders at 1px, which a projector loses.
+    themeCSS: `
+      .flowchart-link { stroke-width: 2px; }
+      .node rect, .node polygon, .node circle { stroke-width: 1.5px; }
+    `,
   };
+}
+
+// Arrowheads are sized in user space, so they keep their size when the edge
+// gets heavier. Their box is an attribute rather than a style, so the markup
+// is scaled directly. The viewBox is untouched, so the tip stays on the node.
+const markerScale = 1.5;
+
+function enlargeMarkers(svg: string) {
+  return svg.replace(
+    /(<marker\s[^>]*?)markerWidth="([\d.]+)" markerHeight="([\d.]+)"/g,
+    (_, head: string, width: string, height: string) =>
+      `${head}markerWidth="${Number(width) * markerScale}" markerHeight="${Number(height) * markerScale}"`,
+  );
 }
 
 let mermaidPromise: Promise<MermaidApi> | undefined;
@@ -62,6 +83,6 @@ export async function renderMermaid(source: string, id: string) {
     mermaid.initialize(createConfig());
     const { svg } = await mermaid.render(id, source);
 
-    return svg;
+    return enlargeMarkers(svg);
   });
 }

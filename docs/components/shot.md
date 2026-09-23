@@ -35,9 +35,11 @@ need no build step.
 ## The missing state
 
 An `onerror` on the picture swaps it for a dashed slot holding the alt text and
-the path that was looked for. A screenshot that has not been taken yet is the
-state a deck spends most of its drafting life in, and it has to be visible from
-the back row rather than a gap nobody notices. The deck still builds.
+the path that was looked for. The slot fills the width it is given at 16:9, or
+the `height` when one is set, so the slide keeps the layout the picture will
+have. A screenshot that has not been taken yet is the state a deck spends most
+of its drafting life in, and it has to be visible from the back row rather than
+a gap nobody notices. The deck still builds.
 
 ## Accessibility
 

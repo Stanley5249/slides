@@ -21,7 +21,7 @@
   let missing = $state(false);
 </script>
 
-<figure class={className}>
+<figure class={className} class:missing>
   {#if missing}
     <div class="placeholder" style:height>
       <ImageOff size={28} strokeWidth={1.75} />
@@ -57,6 +57,12 @@
     max-width: 100%;
   }
 
+  /* A missing picture has no size of its own to fit, so the slot takes the width it is given and
+     holds the place a 16:9 capture would. */
+  .missing {
+    width: 100%;
+  }
+
   img {
     display: block;
     max-width: 100%;
@@ -72,6 +78,7 @@
   .placeholder {
     display: grid;
     min-height: var(--deck-slot-min);
+    aspect-ratio: 16 / 9;
     gap: 0.5rem;
     place-content: center;
     place-items: center;
@@ -82,12 +89,12 @@
   }
 
   .placeholder p {
-    font-size: 1rem;
+    font-size: var(--deck-text-label);
   }
 
-  /* The path is words an author has to read, so it keeps the quiet ink and steps back on size
-     alone. A mark would dim it below the ratio text has to clear. */
+  /* The path is words an author has to read, so it keeps the quiet ink and the label size. A mark
+     would dim it below the ratio text has to clear. */
   .placeholder code {
-    font-size: 0.85rem;
+    font-size: var(--deck-text-label);
   }
 </style>

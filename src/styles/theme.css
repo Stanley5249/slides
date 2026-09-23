@@ -22,6 +22,9 @@
   --deck-panel: var(--catppuccin-color-mantle);
   --deck-veil: var(--catppuccin-color-crust);
   --deck-hover: var(--catppuccin-color-surface0);
+  /* The canvas laid over a picture, so words keep their contrast on any
+     image without hiding what is under them. */
+  --deck-scrim: color-mix(in srgb, var(--deck-canvas) 94%, transparent);
 
   /* Ink. Two weights of text and one for marks that carry no words. */
   --deck-ink: var(--catppuccin-color-text);

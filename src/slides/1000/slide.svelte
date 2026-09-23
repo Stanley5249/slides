@@ -1,27 +1,34 @@
-<script lang="ts" module>
+<script lang="ts">
+  import { Code } from "@animotion/core";
+  import { codeTheme } from "$lib/theme";
+
+  // Written apart so the Svelte parser does not end this script at the string.
+  const close = "</" + "script>";
+
+  const source = `<script lang="ts" module>
   import { defineProps } from "@animotion/core";
 
-  // Reveal draws a background iframe in its own layer behind `.slides`, at the
-  // full size of the stage. That is the largest a frame gets, and it costs the
-  // template nothing: `iframe` and `interactive` are Animotion's own `<Slide>`
-  // props, so nothing here is a component.
-  //
-  // `interactive` hands pointer and keyboard to the site, which is the point of
-  // embedding a live one, but it also means the arrow keys stop reaching the
-  // deck until the presenter clicks back onto the slide.
-  export const props = defineProps({
-    iframe: "https://animotion.pages.dev/",
-    interactive: true,
-  });
+  export const props = defineProps({ class: "statement" });
+${close}
+
+<p>Give one sentence the whole slide.</p>
+<p>Use a statement for a thesis or a quote.</p>`;
 </script>
 
-<script lang="ts">
-  import { Notes } from "@animotion/core";
-</script>
+<h2>A slide is one Svelte file</h2>
 
-<Notes>
-  This is an iframe example, not the conclusion of the presentation. The
-  Animotion homepage is sample content and can be replaced with any live site.
-  Click into the frame to demonstrate it, then click the slide edge before using
-  the arrow keys again.
-</Notes>
+<div class="row">
+  <p>
+    Each slide is a <code>slide.svelte</code> in a numbered folder under
+    <code>src/slides</code>. The deck plays them in numeric order, so leave gaps
+    for the slides you add later.
+  </p>
+
+  <Code
+    lang="svelte"
+    theme={codeTheme}
+    code={source}
+    autoIndent={false}
+    options={{ containerStyle: false }}
+  />
+</div>

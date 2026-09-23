@@ -5,10 +5,13 @@ from `src/lib/index.ts`. Slide-specific content stays in `src/slides`.
 
 ## Components
 
+- [Link](link.md): set a link with an optional icon, such as the GitHub mark.
 - [Mermaid](mermaid.md): render a Mermaid diagram, zoomable, with the parse
   error shown in place.
 - [Shot](shot.md): put a screenshot on a slide, zoomable, with a labelled slot
   when the file is missing.
+- [Tex](tex.md): set TeX source as math, rendered at build time with the fonts
+  bundled.
 - [Zoom](zoom.md): show any content as a preview that opens in a modal
   pan-and-zoom viewer.
 

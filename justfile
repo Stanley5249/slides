@@ -31,6 +31,10 @@ fmt-check:
     bun run oxfmt --check
     just --fmt --check
 
+# Check that every embedded site allows a frame
+embeds: build
+    bun run scripts/check-embeds.ts
+
 # Synchronize generated SvelteKit types
 _sync:
     bun run svelte-kit sync

@@ -1,0 +1,159 @@
+/* ---------------------------------------------------------------------------
+   Slide archetypes.
+
+   overrides.css gives every slide one frame: a title, then a content area. The
+   classes here replace that frame for the slides that have no title row. A
+   slide opts in from its module script:
+
+     export const props = defineProps({ class: "statement" });
+
+   Each frame rule repeats the selector of the frame in overrides.css and adds
+   the class, so it outweighs the frame without depending on file order. This
+   file is unlayered for the same reason overrides.css is.
+   --------------------------------------------------------------------------- */
+
+/* The three archetypes center their content on the stage instead of hanging it
+   under a title. */
+.reveal-viewport
+  .reveal
+  .slides
+  section:is(.divider, .statement, .metric):not(.stack) {
+  grid-template-rows: none;
+  align-content: center;
+}
+
+/* ---------------------------------------------------------------------------
+   Divider
+
+   The section number beside the section name. It is the one oversized mark in
+   the template, and it is only a number because the sections of a talk are a
+   sequence. It keeps the content edge every other slide starts at.
+   --------------------------------------------------------------------------- */
+
+.reveal-viewport .reveal .slides section.divider:not(.stack) {
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--deck-gap-wide);
+}
+
+/* The section name sits level with the middle of the numeral. The frame hangs
+   every child from the top, so this repeats its selector with the class. */
+.reveal .slides section.divider:not(.stack) > * {
+  align-self: center;
+}
+
+.reveal .slides .divider > .numeral {
+  /* Fredoka has no tabular figures, so a fixed width is what keeps the section
+     name at one place on every divider. 0.6em holds its widest digit. */
+  width: 0.6em;
+  max-width: none;
+  color: var(--deck-heading);
+  font-weight: 600;
+  font-size: 480px;
+  font-family: var(--r-heading-font), sans-serif;
+  line-height: 0.8;
+}
+
+/* ---------------------------------------------------------------------------
+   Statement and metric
+
+   One claim, or one figure, takes the stage. The first paragraph carries it;
+   whatever follows is read as support, at the content size.
+   --------------------------------------------------------------------------- */
+
+.reveal .slides .statement > p:first-child {
+  max-width: 22ch;
+  color: var(--deck-ink);
+  font-weight: 600;
+  font-size: var(--deck-text-title);
+  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.reveal .slides .metric > p:first-child {
+  color: var(--deck-heading);
+  font-weight: 600;
+  font-size: 176px;
+  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.reveal .slides :is(.statement, .metric) > p + p {
+  max-width: 48ch;
+  color: var(--deck-ink-quiet);
+}
+
+/* A quote is a statement with a source, written as a figure so the source sits
+   outside the words it credits. Quotes run longer than a claim, so they take
+   the heading size. The opening mark hangs in the margin, which keeps the
+   first letter on the content edge. */
+.reveal .slides .statement > figure {
+  margin: 0;
+}
+
+.reveal .slides .statement blockquote {
+  margin: 0;
+}
+
+.reveal .slides .statement blockquote > p {
+  max-width: 30ch;
+  color: var(--deck-ink);
+  font-weight: 600;
+  font-size: var(--deck-text-heading);
+  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.reveal .slides .statement blockquote > p::before {
+  margin-left: -0.45em;
+  content: "\201C";
+}
+
+.reveal .slides .statement blockquote > p::after {
+  content: "\201D";
+}
+
+.reveal .slides .statement figcaption {
+  margin: var(--deck-gap-wide) 0 0;
+  color: var(--deck-ink-quiet);
+  font-size: var(--deck-text-content);
+  text-align: left;
+}
+
+/* ---------------------------------------------------------------------------
+   Byline
+
+   Where to find the talk, under the title slide's lede. A handle already
+   names its owner, so one link is the whole byline.
+   --------------------------------------------------------------------------- */
+
+.reveal .slides .byline {
+  color: var(--deck-ink-quiet);
+}
+
+/* ---------------------------------------------------------------------------
+   Bleed
+
+   A picture fills the stage and the words sit on a scrim in the lower left,
+   where a caption is looked for. Animotion's `image` prop draws the picture
+   in Reveal's background layer, behind the frame. The scrim's padding is
+   pulled back out of the margin, so its words keep the content edge.
+   --------------------------------------------------------------------------- */
+
+.reveal-viewport .reveal .slides section.bleed:not(.stack) {
+  grid-template-rows: none;
+  align-content: end;
+  justify-items: start;
+}
+
+.reveal .slides .bleed > .scrim {
+  display: flex;
+  flex-direction: column;
+  gap: var(--deck-gap-tight);
+  max-width: 36em;
+  margin-left: calc(-1 * var(--deck-gap));
+  padding: var(--deck-gap);
+  background: var(--deck-scrim);
+}

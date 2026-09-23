@@ -5,10 +5,12 @@
 
 /* Titles only use this weight. */
 @import "@fontsource/fredoka/600.css";
-@import "@fontsource/atkinson-hyperlegible";
-@import "@fontsource/monaspace-neon";
+@import "@fontsource/atkinson-hyperlegible-next/400.css";
+@import "@fontsource/atkinson-hyperlegible-next/400-italic.css";
+@import "@fontsource/atkinson-hyperlegible-next/700.css";
+@import "@fontsource/iosevka/400.css";
 /* The weight an inline identifier is set in. */
-@import "@fontsource/monaspace-neon/600.css";
+@import "@fontsource/iosevka/600.css";
 
 @import "@animotion/core/theme" layer(presentation);
 
@@ -20,6 +22,8 @@
 
 @import "./theme.css" layer(presentation);
 @import "./overrides.css";
+@import "./layouts.css";
+@import "./archetypes.css";
 
 @layer reset {
   *,
@@ -34,13 +38,13 @@
 @layer presentation {
   :root {
     --r-background-color: var(--deck-canvas);
-    --r-main-font: "Atkinson Hyperlegible";
+    --r-main-font: "Atkinson Hyperlegible Next";
     --r-heading-font: "Fredoka";
     /* overrides.css sizes headings, captions and chrome. It never sizes a
        prose element, so this is where the content tier of the scale lands. */
     --r-main-font-size: var(--deck-text-content);
     --r-main-color: var(--deck-ink);
-    --r-code-font: "Monaspace Neon";
+    --r-code-font: "Iosevka";
     --r-link-color: var(--deck-accent);
     --ease: linear(
       0 0%,
@@ -63,8 +67,8 @@
       0.9949 89.15%,
       1 100%
     );
-    /* Half of slide 600's 1.2s full turn. The item reaches its new position
-       before the rotation settles. */
+    /* Long enough to follow one item across a strip, short enough to land
+       before the presenter's next sentence does. */
     --view-transition-duration: 0.6s;
   }
 

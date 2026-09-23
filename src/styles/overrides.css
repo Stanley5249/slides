@@ -1,14 +1,14 @@
 /* ---------------------------------------------------------------------------
    The slide system.
 
-   Three things happen here.
+   Two things happen here.
 
    1. The section gets a frame: one column, a title row, and a content row that
       takes everything left over.
    2. Plain HTML tags get slide-sized typography, so a slide is written as
       markup and needs no classes.
-   3. Four layout classes exist, and no more: row, cols, cols even,
-      cols narrow-first.
+
+   The classes that arrange content inside the frame live in layouts.css.
 
    A slide may be one section or a vertical stack of them. Reveal puts the
    class `stack` on the outer section of a stack, which is a container and not
@@ -69,7 +69,8 @@
    size the column and run off the slide.
 
    Two rows: the title, then everything else. The second row takes the leftover
-   height, so content fills the page instead of floating in the top half.
+   height, which is the room a figure may grow into. The wide gap between them
+   separates the claim from its support more than any two blocks of support.
 
    `line-height` is set here because `reveal.css` puts `1` on the viewport and
    nothing resets it, so anything this file does not name would set solid.
@@ -78,7 +79,7 @@
 .reveal-viewport .reveal .slides section:not(.stack) {
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: min-content 1fr;
-  row-gap: var(--deck-gap);
+  row-gap: var(--deck-gap-wide);
   height: 100%;
   padding: var(--deck-gap-wide) var(--deck-pad);
   line-height: 1.5;
@@ -105,10 +106,30 @@ html.reveal-print .reveal .slides section:not(.stack) {
   display: none;
 }
 
-/* The title stays at the top of the slide. Everything else is centered in
-   whatever room is left, so a short title and a long one leave the content
-   looking equally placed. */
+/* A list marked `dim` fades the points already read, so the room can see which
+   one is current. It is opt-in, because a list read as a whole should stay
+   whole. Reveal marks the current point itself, so plain `fragment` items
+   work. 0.6 is the least that keeps latte ink above 3:1. The extra classes
+   outweigh reveal.css, which sets a shown fragment back to full opacity. */
+.reveal-viewport
+  .reveal
+  .slides
+  .dim
+  > .fragment.visible:not(.current-fragment) {
+  opacity: 0.6;
+}
+
+/* Content hangs from the title at one fixed distance, so every slide shares a
+   rhythm and a short slide ends early rather than floating in its leftover
+   room. `start` rather than the grid's default stretch, which would pull a
+   table's rows apart to fill the height. */
 .reveal .slides section:not(.stack) > :not(h1, h2) {
+  align-self: start;
+}
+
+/* A sparse slide, such as a figure beside a short paragraph, balances better
+   centered in the room under its title. `middle` opts a slide into that. */
+.reveal .slides section.middle:not(.stack) > :not(h1, h2) {
   align-self: center;
 }
 
@@ -149,6 +170,16 @@ html.reveal-print .reveal .slides section:not(.stack) {
   max-width: 26ch;
 }
 
+/* A label over one side of a comparison. It sits in the content tier, so the
+   face and weight say "heading" and the size stays out of the title's way. */
+.reveal .slides h3 {
+  color: var(--deck-ink);
+  font-weight: 600;
+  font-size: var(--deck-text-content);
+  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  line-height: 1.2;
+}
+
 .reveal .slides p {
   max-width: 62ch;
   text-wrap: pretty;
@@ -163,13 +194,13 @@ html.reveal-print .reveal .slides section:not(.stack) {
 /* Identifiers are the nouns of a technical talk, so they carry a weight and a
    color of their own. Still no pill and no plate: the mark is on the word.
 
-   0.475 matches the two faces at the cap height rather than the x-height.
-   Monaspace is 0.51 x over em and 0.73 cap over em; Atkinson is 0.50 and 0.68.
-   Equal x-heights therefore leave its capitals, digits and ascenders reading
-   larger, and 0.68 * 0.51 / 0.73 is the aspect value that levels the caps.
-   A change of either face is a change of one number. */
+   Iosevka is narrow, half an em a character, so a line of code stays short
+   on a wide stage. Its capitals run taller than the body face's: 0.735 of
+   the em against 0.668, with an x-height of 0.52. 0.52 * 0.668 / 0.735 is
+   the aspect value that levels the caps, so identifiers sit in a line of
+   prose at its height. A change of either face is a change of one number. */
 .reveal .slides code {
-  font-size-adjust: 0.475;
+  font-size-adjust: 0.473;
   font-family: var(--r-code-font), ui-monospace, monospace;
   font-variant-ligatures: none;
   word-break: break-word;
@@ -332,61 +363,15 @@ html.reveal-print .reveal .slides section:not(.stack) {
 
    Animotion centers a code block with auto inline margins, which also shrinks
    it to its longest line. Every other block on a slide starts at the same left
-   edge, so this one does too. Its 0.55em would be 13px on this stage, which is
-   why the size is set here as well.
+   edge, so this one does too. Its 0.55em would be 13px on this stage, so the
+   block is set at the content size instead: Iosevka is narrow enough that a
+   line of code still fits a column at the size of the prose around it.
    --------------------------------------------------------------------------- */
 
 .reveal .slides pre {
   margin-inline: 0;
-  font-size: 0.88em;
+  font-size: 1em;
   line-height: 1.5;
-}
-
-/* ---------------------------------------------------------------------------
-   Rows and columns
-
-   `row` stacks blocks. `cols` provides the three shared two-column splits.
-   Fractions adapt to the stage, and the 2.2:1 split leaves the supporting
-   column about one third of the available width. A deck can define a more
-   complex comparison when its content supplies a clear reading order.
-   --------------------------------------------------------------------------- */
-
-.reveal .slides .row {
-  display: flex;
-  flex-direction: column;
-  gap: var(--deck-gap);
-}
-
-.reveal .slides .cols {
-  display: grid;
-  grid-template-columns: 2.2fr 1fr;
-  gap: var(--deck-gap-wide);
-  align-items: start;
-}
-
-.reveal .slides .cols.even {
-  grid-template-columns: 1fr 1fr;
-}
-
-.reveal .slides .cols.narrow-first {
-  grid-template-columns: 1fr 2.2fr;
-}
-
-/* A grid item's automatic minimum size is its content width, which lets a wide
-   table push its column, and the slide, past the right edge. */
-.reveal .slides .cols > * {
-  min-width: 0;
-}
-
-/* A table narrower than its column is centered in it. The same table in a `row`
-   keeps the left edge, because prose above or below has already set one, while
-   a column often holds nothing else to line up with.
-
-   A code block is not on this rule. It is read a line at a time, so it belongs
-   to the left edge the way prose does, and centering it costs a slide its only
-   alignment when the code is what the first column holds. */
-.reveal .slides .cols > table {
-  margin-inline: auto;
 }
 
 /* ---------------------------------------------------------------------------
@@ -421,7 +406,9 @@ html.reveal-print .reveal .slides section:not(.stack) {
 
 /* Bottom right belongs to the arrows, so the counter takes the opposite corner.
    Reveal builds it out of links when history is on, and it is a readout rather
-   than somewhere to go. */
+   than somewhere to go. It is set in the body face with figures of one width,
+   so it reads as a number rather than as code and does not jitter as it
+   counts. */
 .reveal-viewport .reveal .slide-number,
 .reveal-viewport .reveal .slide-number a {
   right: auto;
@@ -430,7 +417,19 @@ html.reveal-print .reveal .slides section:not(.stack) {
   padding: 0;
   color: var(--deck-ink-quiet);
   font-size: var(--deck-text-label);
-  font-family: var(--r-code-font), ui-monospace, monospace;
+  font-family: var(--r-main-font), sans-serif;
+  font-variant-numeric: tabular-nums;
   text-decoration: none;
   background: none;
+}
+
+/* Reveal writes the parts of "3.2" with whitespace between them and pads the
+   dot with a margin. A flex row drops the whitespace, and the margin goes, so
+   the readout sets as one number. */
+.reveal-viewport .reveal .slide-number a {
+  display: inline-flex;
+}
+
+.reveal-viewport .reveal .slide-number-delimiter {
+  margin: 0;
 }

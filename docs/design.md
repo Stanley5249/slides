@@ -36,6 +36,7 @@ Catppuccin palette tokens directly.
 | `--deck-panel`                           | Dialogs and error reports               |
 | `--deck-veil`                            | Modal backdrop                          |
 | `--deck-hover`                           | Interactive hover state                 |
+| `--deck-scrim`                           | Words set over a full-bleed picture     |
 | `--deck-ink`                             | Body text and table values              |
 | `--deck-ink-quiet`                       | Captions, table headings, slide counter |
 | `--deck-mark`                            | Bullets, chevrons, and diagram lines    |
@@ -76,14 +77,16 @@ to the appropriate semantic role.
 
 ### Rule
 
-Use Fredoka for titles, Atkinson Hyperlegible for prose, and Monaspace Neon for
+Use Fredoka for titles, Atkinson Hyperlegible Next for prose, and Iosevka for
 code and inline identifiers. Choose sizes and spacing from the scales in
 `src/styles/overrides.css`.
 
 ### Reason
 
-Each face has one responsibility. A short type and spacing scale keeps slides
-consistent and prevents local adjustments from becoming a second design system.
+Each face has one responsibility. Atkinson was drawn for low vision readers.
+Iosevka is narrow, so a line of code fits a wide stage without shrinking. A
+short type and spacing scale keeps slides consistent and prevents local
+adjustments from becoming a second design system.
 
 ### Implementation
 
@@ -96,9 +99,10 @@ instead of badges or filled backgrounds.
 
 ### Rule
 
-A slide has a title followed by one content area. Use `row` for stacked content
-and a `cols` variant for two columns. Split a four-cell comparison across slides
-when the cells do not have an obvious reading order.
+A slide has a title followed by one content area. Use `row` for stacked content,
+a `cols` variant for two columns, and an `ol` with `steps` for a process whose
+order matters. Split a four-cell comparison across slides when the cells do not
+have an obvious reading order.
 
 ```text
 +----------------------------------------------------+
@@ -118,10 +122,44 @@ widths.
 
 ### Implementation
 
-The shared classes live in `src/styles/overrides.css`. The content area fills
-the remaining slide height. Gaps belong to `row` and `cols`, not to individual
-children. Content that is shorter than its area leaves empty space below it
-instead of stretching tables or diagrams.
+The shared classes live in `src/styles/layouts.css`. Content hangs from the
+title at the wide gap, so every slide starts its content at the same height. A
+sparse slide, such as a figure beside a short paragraph, takes the `middle`
+class to center its content in the room under the title instead. Gaps belong to
+`row` and `cols`, not to individual children. Content that is shorter than its
+area leaves empty space below it instead of stretching tables or diagrams.
+
+## Archetypes
+
+### Rule
+
+A slide without a title row takes an archetype class on its section through
+`defineProps({ class })`. Use `divider` to open a section, `statement` for one
+claim, `metric` for one figure, and `bleed` for a picture that fills the stage.
+The title slide keeps the plain frame and takes a `byline` paragraph: one link
+to the talk under the speaker's handle. The template deck shows every archetype
+and layout in the order a talk tends to use them.
+
+```text
+divider                 statement               metric
++-------------------+   +-------------------+   +-------------------+
+|  ##               |   |                   |   |                   |
+|   #  Section name |   |  One claim, set   |   |  1280 x 720       |
+|   #  One line     |   |  large.           |   |  What it means    |
+|  ###              |   |  Support          |   |                   |
++-------------------+   +-------------------+   +-------------------+
+```
+
+### Reason
+
+Pacing slides carry no evidence, so the title-and-content frame gives them a
+heading they do not need. A section number is the only oversized mark in the
+template because the sections of a talk are a sequence.
+
+### Implementation
+
+The classes live in `src/styles/archetypes.css`. Each one centers its content on
+the stage and styles the first paragraph as the subject.
 
 ## CSS ownership
 
@@ -220,6 +258,15 @@ Code blocks therefore match the selected light or dark presentation.
 
 Screenshots keep the colors produced by the source application. Capture them at
 the contrast needed for projection instead of recoloring them in the deck.
+
+### Embedded sites
+
+A live site goes one slide below an intro slide that links to it, so the room is
+told before the stage becomes someone else's page. Many sites refuse to load in
+a frame, and the browser shows its own error page without telling the deck. Run
+`just embeds` before a talk: it builds the deck and checks each embedded site's
+`X-Frame-Options` and `frame-ancestors` headers. The intro slide's link is the
+way out when a site still fails on the venue's network.
 
 ## Ownership
 

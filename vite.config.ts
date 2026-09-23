@@ -13,6 +13,14 @@ export default defineConfig({
     sveltekit({
       adapter: pages ? staticAdapter() : bunAdapter(),
       paths: { base },
+      typescript: {
+        // Tooling under scripts/ is TypeScript too, and type-aware lint needs
+        // it in the program SvelteKit generates.
+        config: (config) => ({
+          ...config,
+          include: [...(config.include as string[]), "../scripts/**/*.ts"],
+        }),
+      },
       prerender: {
         handleHttpError: ({ path, message }) => {
           // This missing file deliberately demonstrates Shot's failure state.

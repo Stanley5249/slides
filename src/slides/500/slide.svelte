@@ -1,90 +1,33 @@
 <script lang="ts">
-  import { Action, Code, Transition } from "@animotion/core";
-  import { tween } from "@animotion/motion";
-  import { codeTheme } from "$lib/theme";
-
-  let code: ReturnType<typeof Code>;
-  let circle = tween({ x: 0, y: 80, r: 80, fill: "#00ffff" });
+  import { Slide } from "@animotion/core";
 </script>
 
-<h2>Animotion</h2>
+<Slide>
+  <h2>Reveal a list one point at a time</h2>
 
-<Transition
-  do={async () => {
-    await code.update`
-					async function animate() {
-						// ...
-					}
-				`;
-    await circle.to({ x: 0, fill: "#00ffff" });
-  }}
-  class="mt-16"
->
-  <Code
-    bind:this={code}
-    lang="ts"
-    theme={codeTheme}
-    code=""
-    options={{ duration: 600, stagger: 0.3, containerStyle: false }}
-  />
-</Transition>
+  <div class="row">
+    <ul>
+      <li class="fragment">
+        Each point waits for the presenter’s next keypress.
+      </li>
+      <li class="fragment">
+        The room reads the point being made, not the three after it.
+      </li>
+      <li class="fragment">
+        Add <code>class="fragment"</code> to any element to hold it back.
+      </li>
+    </ul>
 
-<Transition
-  do={async () => {
-    await code.update`
-					async function animate() {
-						// ...
-					}
-				`;
-    await circle.to({ x: 0, fill: "#00ffff" });
-  }}
-  class="mt-16"
->
-  <svg width="560" height={circle.r * 2} viewBox="-80 0 560 {circle.r * 2}">
-    <circle cx={circle.x} cy={circle.y} r={circle.r} fill={circle.fill} />
-    <text
-      x={circle.x}
-      y={circle.y}
-      font-size={circle.r * 0.4}
-      font-family="Monaspace Neon"
-      text-anchor="middle"
-      dominant-baseline="middle"
-    >
-      {circle.x.toFixed(0)}
-    </text>
-  </svg>
-</Transition>
+    <p class="fragment">Press the down arrow for a list that dims.</p>
+  </div>
+</Slide>
 
-<Action
-  actions={[
-    async () => {
-      await code.update`
-						async function animate() {
-							await circle.to({ x: 400, fill: '#ffff00' })
-						}
-					`;
-      await code.selectLines`2`;
-      await circle.to({ x: 400, fill: "#ffff00" });
-    },
-    async () => {
-      await code.update`
-						async function animate() {
-							await circle.to({ x: 400, fill: '#ffff00' })
-							await circle.to({ x: 0, fill: '#00ffff' })
-						}
-					`;
-      await code.selectLines`3`;
-      await circle.to({ x: 0, fill: "#00ffff" });
-    },
-    async () => {
-      await code.selectLines`*`;
-      await code.update`
-						async function animate() {
-							await circle.to({ x: 400, fill: '#ffff00' })
-							await circle.to({ x: 0, fill: '#00ffff' })
-						}
-					`;
-      await circle.to({ x: 0, fill: "#00ffff" });
-    },
-  ]}
-/>
+<Slide>
+  <h2>Dim the points already made</h2>
+
+  <ul class="dim">
+    <li class="fragment">Add <code>dim</code> to the list.</li>
+    <li class="fragment">Each point fades once the next one arrives.</li>
+    <li class="fragment">The current point keeps its full ink.</li>
+  </ul>
+</Slide>
