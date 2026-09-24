@@ -38,17 +38,23 @@
   /* The words stay in ink and the icon carries the color, so a link reads as
      text first and names its destination by its mark. The selector repeats
      the deck's so it outweighs the link color overrides.css gives every
-     link. */
+     link.
+
+     An inline flex box sits on the baseline of its first item that takes
+     part in baseline alignment. The label does and the icon, centered on
+     the line, does not, so the words share the baseline of the sentence
+     around them. */
   :global(.reveal .slides) a.link {
     display: inline-flex;
     gap: 0.35em;
-    align-items: center;
+    align-items: baseline;
     color: var(--deck-ink);
     text-decoration: none;
   }
 
   .link :global(svg) {
     flex: none;
+    align-self: center;
     color: var(--deck-icon);
   }
 
