@@ -4,7 +4,7 @@
   import { tick } from "svelte";
   import Check from "lucide-svelte/icons/check";
   import Copy from "lucide-svelte/icons/copy";
-  import TriangleAlert from "lucide-svelte/icons/triangle-alert";
+  import Workflow from "lucide-svelte/icons/workflow";
   import Zoom from "$lib/components/Zoom.svelte";
   import { renderMermaid } from "$lib/mermaid";
 
@@ -126,7 +126,7 @@
 {:else if renderState.kind === "failed"}
   <div class={`slot failed ${className}`}>
     <div class="head">
-      <TriangleAlert size={20} strokeWidth={2} />
+      <Workflow size={20} strokeWidth={2} />
       <p>Mermaid could not render this diagram</p>
       <button
         type="button"
