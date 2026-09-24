@@ -57,6 +57,13 @@
   --deck-slot-min: 8rem;
 }
 
+/* One ring for anything focusable on a slide. `:where` keeps it at the weight
+   of the pseudo-class alone, so a component can still move its own ring. */
+:where(.reveal .slides) :focus-visible {
+  outline: var(--deck-focus-ring) solid var(--deck-focus);
+  outline-offset: var(--deck-focus-ring);
+}
+
 /* ---------------------------------------------------------------------------
    Frame
    --------------------------------------------------------------------------- */

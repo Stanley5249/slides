@@ -67,9 +67,4 @@
     text-decoration-thickness: 2px;
     text-underline-offset: 0.2em;
   }
-
-  .link:focus-visible {
-    outline: var(--deck-focus-ring) solid var(--deck-focus);
-    outline-offset: 2px;
-  }
 </style>

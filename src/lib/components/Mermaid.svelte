@@ -227,11 +227,6 @@
     scrollbar-color: var(--deck-rule-strong) transparent;
   }
 
-  .message:focus-visible {
-    outline: var(--deck-focus-ring) solid var(--deck-focus);
-    outline-offset: 2px;
-  }
-
   .line {
     display: block;
     white-space: pre-wrap;
@@ -260,11 +255,6 @@
   .copy:hover {
     color: var(--deck-ink);
     background: var(--deck-hover);
-  }
-
-  .copy:focus-visible {
-    outline: var(--deck-focus-ring) solid var(--deck-focus);
-    outline-offset: 2px;
   }
 
   .check {
