@@ -9,7 +9,7 @@
     display?: boolean;
   };
 
-  let { tex, display = false }: Props = $props();
+  let { tex, display }: Props = $props();
 
   // Rendered to markup on the server as well, so a prerendered deck carries its
   // math and KaTeX's fonts come from the bundle rather than a CDN a venue's

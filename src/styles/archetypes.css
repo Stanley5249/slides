@@ -45,7 +45,6 @@
   /* Fredoka has no tabular figures, so a fixed width is what keeps the section
      name at one place on every divider. 0.6em holds its widest digit. */
   width: 0.6em;
-  max-width: none;
   color: var(--deck-heading);
   font-weight: 600;
   font-size: 480px;
@@ -62,7 +61,6 @@
 
 .reveal .slides .statement > p:first-child {
   max-width: 22ch;
-  color: var(--deck-ink);
   font-weight: 600;
   font-size: var(--deck-text-title);
   font-family: var(--deck-heading-face);
@@ -98,7 +96,6 @@
 
 .reveal .slides .statement blockquote > p {
   max-width: 30ch;
-  color: var(--deck-ink);
   font-weight: 600;
   font-size: var(--deck-text-heading);
   font-family: var(--deck-heading-face);

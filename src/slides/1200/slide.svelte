@@ -52,16 +52,14 @@
   }
 
   /* A numeral and nothing else: the movement is the subject, so the shape
-     around it stays quiet. Two ems of slot, tabular figures inside it, so a
+     around it stays quiet. Two ems of slot, monospace figures inside it, so a
      reorder moves the glyphs and not the strip. The figures start the slot,
      so the first one keeps the content edge. */
   .tile {
     display: grid;
     place-content: center start;
     min-width: 2em;
-    color: var(--deck-ink);
     font-size: var(--deck-text-title);
     font-family: var(--r-code-font), ui-monospace, monospace;
-    font-variant-numeric: tabular-nums;
   }
 </style>
