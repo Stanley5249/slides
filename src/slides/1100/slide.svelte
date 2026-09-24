@@ -7,13 +7,15 @@
 </script>
 
 <script lang="ts">
+  import { Spring } from "svelte/motion";
   import { Action, Code } from "@animotion/core";
-  import { tween } from "@animotion/motion";
   import { restart } from "$lib/restart";
   import { codeTheme } from "$lib/theme";
 
   let code: ReturnType<typeof Code>;
-  let dot = tween({ x: 0 });
+  // A spring keeps its speed when the target moves, so a step taken while the
+  // dot is still travelling turns it in flight instead of stopping it first.
+  const dot = new Spring(0, { stiffness: 0.1, damping: 0.85 });
 
   // Each step is the whole picture it shows, so any step can be shown from
   // any other, in either direction.
@@ -53,14 +55,14 @@
     const { source, lines, x } = steps[step];
     return Promise.all([
       code.update`${source}`.then(() => code.selectLines`${lines}`),
-      dot.to({ x }),
+      dot.set(x),
     ]);
   }
 
   // Opening the slide again puts the dot home at once rather than replaying
   // the way back.
   function reset() {
-    dot.reset();
+    void dot.set(0, { instant: true });
     return show(0);
   }
 </script>
@@ -89,9 +91,9 @@
   <div class="preview">
     <svg viewBox="-40 -40 480 80" aria-hidden="true">
       <line x1="0" x2="400" />
-      <circle cx={dot.x} r="32" />
+      <circle cx={dot.current} r="32" />
     </svg>
-    <p><code>x = {Math.round(dot.x)}</code></p>
+    <p><code>x = {Math.round(dot.current)}</code></p>
   </div>
 </div>
 

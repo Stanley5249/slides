@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { flushSync } from "svelte";
+  import { browser } from "$app/environment";
+  import { flip } from "svelte/animate";
   import { Action } from "@animotion/core";
   import { restart } from "$lib/restart";
 
@@ -14,34 +15,28 @@
 
   let items = $state(steps[0]);
 
-  // The view transition snapshots the page before and after its callback, so
-  // the new order has to reach the DOM inside it rather than on Svelte's next
-  // flush.
-  function show(step: number) {
-    const reorder = () => flushSync(() => (items = steps[step]));
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) reorder();
-    else document.startViewTransition(reorder);
-  }
+  // FLIP measures each tile where it is drawn right now, so a step taken
+  // mid-move turns the tiles in flight rather than snapping them to the end.
+  const duration =
+    browser && matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 600;
 
-  // Opening the slide again sets the first order without a transition, which
-  // would otherwise run under the deck's own fade.
-  function reset() {
-    items = steps[0];
+  function show(step: number) {
+    items = steps[step];
   }
 </script>
 
 <h2>Move items to their new order</h2>
 
-<div class="row" {@attach restart(reset)}>
+<div class="row" {@attach restart(() => show(0))}>
   <div class="strip">
     {#each items as item (item)}
-      <span class="tile" style:view-transition-name="tile-{item}">{item}</span>
+      <span class="tile" animate:flip={{ duration }}>{item}</span>
     {/each}
   </div>
 
   <p>
-    A view transition carries each item from its old place to its new one, so
-    the room sees what moved instead of spotting the difference.
+    Each item slides from its old place to its new one, so the room sees what
+    moved instead of spotting the difference.
   </p>
 </div>
 
