@@ -1,4 +1,5 @@
 <script lang="ts">
+  import BookOpen from "lucide-svelte/icons/book-open";
   import { Link } from "$lib";
 </script>
 
@@ -13,7 +14,10 @@
   <p>An identifier such as <code>show(step)</code> keeps a face of its own.</p>
   <p>
     A link names where to go next:
-    <Link href="https://github.com/Stanley5249/slides/blob/main/docs/design.md">
+    <Link
+      href="https://github.com/Stanley5249/slides/blob/main/docs/design.md"
+      icon={BookOpen}
+    >
       the design notes
     </Link>.
   </p>
