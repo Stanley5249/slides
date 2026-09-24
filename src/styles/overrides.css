@@ -202,13 +202,17 @@ html.reveal-print .reveal .slides section:not(.stack) {
 /* Identifiers are the nouns of a technical talk, so they carry a weight and a
    face of their own. Still no pill and no plate: the mark is on the word.
 
-   Iosevka is narrow, half an em a character, so a line of code stays short
-   on a wide stage. Its capitals run taller than the body face's: 0.735 of
-   the em against 0.668, with an x-height of 0.52. 0.52 * 0.668 / 0.735 is
-   the aspect value that levels the caps, so identifiers sit in a line of
-   prose at its height. A change of either face is a change of one number. */
+   Atkinson Hyperlegible Mono is the body face's own monospace, so it shares
+   its x-height and cap height and an identifier sits in a line of prose at
+   its height without adjustment. At 0.632 of the em a character, it runs
+   wide enough to read from the back of a room; -0.02em of tracking takes
+   back 3% of the line and still leaves `WW` apart at the heavier weight.
+   Every character moves by the same amount, so columns stay aligned. */
+.reveal .slides :is(code, pre) {
+  letter-spacing: -0.02em;
+}
+
 .reveal .slides code {
-  font-size-adjust: 0.473;
   font-family: var(--r-code-font), ui-monospace, monospace;
   font-variant-ligatures: none;
   word-break: break-word;
@@ -322,7 +326,7 @@ html.reveal-print .reveal .slides section:not(.stack) {
 .reveal .slides th code,
 .reveal .slides td code {
   font-family: inherit;
-  font-size-adjust: none;
+  letter-spacing: inherit;
 }
 
 /* ---------------------------------------------------------------------------
@@ -372,8 +376,8 @@ html.reveal-print .reveal .slides section:not(.stack) {
    Animotion centers a code block with auto inline margins, which also shrinks
    it to its longest line. Every other block on a slide starts at the same left
    edge, so this one does too. Its 0.55em would be 13px on this stage, so the
-   block is set at the content size instead: Iosevka is narrow enough that a
-   line of code still fits a column at the size of the prose around it.
+   block is set at the content size instead, which still fits about 70
+   characters across the stage.
    --------------------------------------------------------------------------- */
 
 .reveal .slides pre {

@@ -81,16 +81,16 @@ to the appropriate semantic role.
 
 ### Rule
 
-Use Fredoka for titles, Atkinson Hyperlegible Next for prose, and Iosevka for
-code and inline identifiers. Choose sizes and spacing from the scales in
-`src/styles/overrides.css`.
+Use Fredoka for titles, Atkinson Hyperlegible Next for prose, and Atkinson
+Hyperlegible Mono for code and inline identifiers. Choose sizes and spacing from
+the scales in `src/styles/overrides.css`.
 
 ### Reason
 
-Each face has one responsibility. Atkinson was drawn for low vision readers.
-Iosevka is narrow, so a line of code fits a wide stage without shrinking. A
-short type and spacing scale keeps slides consistent and prevents local
-adjustments from becoming a second design system.
+Each face has one responsibility. Atkinson was drawn for low vision readers, and
+its monospace shares the prose face's proportions, so an identifier sits in a
+line of prose at its height. A short type and spacing scale keeps slides
+consistent and prevents local adjustments from becoming a second design system.
 
 ### Implementation
 

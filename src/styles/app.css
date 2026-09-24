@@ -8,9 +8,9 @@
 @import "@fontsource/atkinson-hyperlegible-next/400.css";
 @import "@fontsource/atkinson-hyperlegible-next/400-italic.css";
 @import "@fontsource/atkinson-hyperlegible-next/700.css";
-@import "@fontsource/iosevka/400.css";
+@import "@fontsource/atkinson-hyperlegible-mono/400.css";
 /* The weight an inline identifier is set in. */
-@import "@fontsource/iosevka/600.css";
+@import "@fontsource/atkinson-hyperlegible-mono/600.css";
 
 @import "@animotion/core/theme" layer(presentation);
 
@@ -44,7 +44,7 @@
        prose element, so this is where the content tier of the scale lands. */
     --r-main-font-size: var(--deck-text-content);
     --r-main-color: var(--deck-ink);
-    --r-code-font: "Iosevka";
+    --r-code-font: "Atkinson Hyperlegible Mono";
     --r-link-color: var(--deck-link);
     --ease: linear(
       0 0%,
