@@ -1,20 +1,33 @@
-<h2>Put two options side by side</h2>
+<script lang="ts">
+  import { Slide } from "@animotion/core";
+</script>
 
-<div class="cols even">
-  <div class="row">
-    <h3>Paragraph</h3>
-    <p>
-      Dense prose asks the room to <em>read</em> while the speaker
-      <em>talks</em>, and the room <strong>cannot do both</strong> at once.
-    </p>
-  </div>
+<Slide>
+  <h2>Reveal a list one point at a time</h2>
 
   <div class="row">
-    <h3>List</h3>
     <ul>
-      <li>Short lines</li>
-      <li>One idea each</li>
-      <li>Read at a glance</li>
+      <li class="fragment">
+        Each point waits for the presenter’s next keypress.
+      </li>
+      <li class="fragment">
+        The room reads the point being made, not the three after it.
+      </li>
+      <li class="fragment">
+        Add <code>class="fragment"</code> to any element to hold it back.
+      </li>
     </ul>
+
+    <p class="fragment">Press the down arrow for a list that dims.</p>
   </div>
-</div>
+</Slide>
+
+<Slide>
+  <h2>Dim the points already made</h2>
+
+  <ul class="dim">
+    <li class="fragment">Add <code>dim</code> to the list.</li>
+    <li class="fragment">Each point fades once the next one arrives.</li>
+    <li class="fragment">The current point keeps its full ink.</li>
+  </ul>
+</Slide>

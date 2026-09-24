@@ -1,12 +1,34 @@
-<script lang="ts" module>
+<script lang="ts">
+  import { Code } from "@animotion/core";
+  import { codeTheme } from "$lib/theme";
+
+  // Written apart so the Svelte parser does not end this script at the string.
+  const close = "</" + "script>";
+
+  const source = `<script lang="ts" module>
   import { defineProps } from "@animotion/core";
 
-  export const props = defineProps({ class: "divider" });
+  export const props = defineProps({ class: "statement" });
+${close}
+
+<p>Give one sentence the whole slide.</p>
+<p>Use a statement for a thesis or a quote.</p>`;
 </script>
 
-<p class="numeral">3</p>
+<h2>A slide is one Svelte file</h2>
 
 <div class="row">
-  <h2>Evidence</h2>
-  <p>Diagrams, screenshots, and live sites show what the words claim.</p>
+  <p>
+    Each slide is a <code>slide.svelte</code> in a numbered folder under
+    <code>src/slides</code>. The deck plays them in numeric order, so leave gaps
+    for the slides you add later.
+  </p>
+
+  <Code
+    lang="svelte"
+    theme={codeTheme}
+    code={source}
+    autoIndent={false}
+    options={{ containerStyle: false }}
+  />
 </div>

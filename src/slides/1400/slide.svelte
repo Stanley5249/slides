@@ -1,71 +1,132 @@
-<script lang="ts">
-  import { Slide } from "@animotion/core";
-  import { Mermaid } from "$lib";
+<script lang="ts" module>
+  import { defineProps } from "@animotion/core";
 
-  const workflow = `flowchart LR
-		Write[Write slides] --> Check[just ci]
-		Check --> Present
-		Check --> Fix
-		Fix --> Write`;
-
-  const stages = Array.from(
-    { length: 15 },
-    (_, i) => `N${i}[Stage ${i}] --> N${i + 1}[Stage ${i + 1}]`,
-  );
-  const wide = `flowchart LR\n\t\t${stages.join("\n\t\t")}`;
-
-  const broken = `flowchart LR
-		Start --> --> Middle
-		Middle -->[[[ End`;
+  // The preview pane is taller than the listing at every step, so the block
+  // keeps one height and can sit centered without moving as lines arrive.
+  export const props = defineProps({ class: "middle" });
 </script>
 
-<Slide class="middle">
-  <h2>A diagram should look native to the deck</h2>
+<script lang="ts">
+  import { Spring } from "svelte/motion";
+  import { Action, Code } from "@animotion/core";
+  import { restart } from "$lib/restart";
+  import { codeTheme } from "$lib/theme";
 
-  <div class="cols narrow-first">
-    <div class="row">
-      <p>
-        The diagram uses the same color roles as the surrounding slide. Mermaid
-        reads those roles from the document when it renders.
-      </p>
-      <p>Select the diagram to inspect it in the viewer.</p>
-    </div>
+  let code: ReturnType<typeof Code>;
+  // A spring keeps its speed when the target moves, so a step taken while the
+  // dot is still travelling turns it in flight instead of stopping it first.
+  const dot = new Spring(0, { stiffness: 0.1, damping: 0.85 });
 
-    <figure>
-      <Mermaid code={workflow} label="Open the workflow diagram" />
-      <figcaption>Write, check, fix, and present.</figcaption>
-    </figure>
+  // Each step is the whole picture it shows, so any step can be shown from
+  // any other, in either direction.
+  const steps = [
+    {
+      source: `
+        async function animate() {
+        }
+      `,
+      lines: "*",
+      x: 0,
+    },
+    {
+      source: `
+        async function animate() {
+          await dot.to({ x: 400 })
+        }
+      `,
+      lines: "2",
+      x: 400,
+    },
+    {
+      source: `
+        async function animate() {
+          await dot.to({ x: 400 })
+          await dot.to({ x: 0 })
+        }
+      `,
+      lines: "3",
+      x: 0,
+    },
+  ];
+
+  // The listing and the dot start together, so the line and what it does
+  // arrive as one. The listing selects only once its new line exists.
+  function show(step: number) {
+    const { source, lines, x } = steps[step];
+    return Promise.all([
+      code.update`${source}`.then(() => code.selectLines`${lines}`),
+      dot.set(x),
+    ]);
+  }
+
+  // Opening the slide again puts the dot home at once rather than replaying
+  // the way back.
+  function reset() {
+    void dot.set(0, { instant: true });
+    return show(0);
+  }
+</script>
+
+<h2>Step through code</h2>
+
+<div class="cols even">
+  <div {@attach restart(reset)}>
+    <Code
+      bind:this={code}
+      lang="ts"
+      theme={codeTheme}
+      code={steps[0].source}
+      options={{
+        duration: 600,
+        stagger: 0.3,
+        containerStyle: false,
+        // Lines that make room move at once, and the new line follows close
+        // behind instead of waiting out most of the move.
+        delayMove: 0,
+        delayEnter: 0.2,
+      }}
+    />
   </div>
-</Slide>
 
-<Slide class="middle">
-  <h2>Wide diagrams need a closer view</h2>
-
-  <div class="row">
-    <p>
-      The slide keeps the full diagram visible as a preview. The viewer opens a
-      fitted version that the audience can inspect by dragging.
-    </p>
-
-    <figure>
-      <Mermaid code={wide} label="Open the wide diagram" />
-      <figcaption>Sixteen stages across, one click away.</figcaption>
-    </figure>
+  <div class="preview">
+    <svg viewBox="-40 -40 480 80" aria-hidden="true">
+      <line x1="0" x2="400" />
+      <circle cx={dot.current} r="32" />
+    </svg>
+    <p><code>x = {Math.round(dot.current)}</code></p>
   </div>
-</Slide>
+</div>
 
-<Slide class="middle">
-  <h2>Rendering errors should be impossible to miss</h2>
+<Action undo={() => show(0)} actions={[() => show(1), () => show(2)]} />
 
-  <div class="cols">
-    <Mermaid code={broken} label="Open the broken diagram" />
+<style>
+  /* What the code draws, in a pane of its own beside it. The pane is an
+     output, not evidence, so it takes the panel surface the viewers and error
+     reports use. The readout ties the highlighted line to the value it sets. */
+  .preview {
+    display: grid;
+    gap: var(--deck-gap-tight);
+    width: 100%;
+    padding: var(--deck-gap);
+    background: var(--deck-panel);
+    border: 1px solid var(--deck-rule);
+    border-radius: 0.75rem;
+  }
 
-    <div class="row">
-      <p>
-        A failed diagram displays its full error instead of leaving an empty
-        space that could pass unnoticed.
-      </p>
-      <p>The visible panel makes the problem clear before the talk begins.</p>
-    </div>
-  </div>
-</Slide>
+  svg {
+    width: 100%;
+  }
+
+  line {
+    stroke: var(--deck-rule-strong);
+    stroke-width: 2;
+  }
+
+  circle {
+    fill: var(--deck-heading);
+  }
+
+  p {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

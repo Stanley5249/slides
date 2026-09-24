@@ -1,12 +1,20 @@
-<script lang="ts" module>
-  import { defineProps } from "@animotion/core";
+<h2>Put two options side by side</h2>
 
-  export const props = defineProps({ class: "metric" });
-</script>
+<div class="cols even">
+  <div class="row">
+    <h3>Paragraph</h3>
+    <p>
+      Dense prose asks the room to <em>read</em> while the speaker
+      <em>talks</em>, and the room <strong>cannot do both</strong> at once.
+    </p>
+  </div>
 
-<p>1280 × 720</p>
-
-<p>
-  Give a number its own slide when the talk turns on it. This one is the stage
-  every slide is laid out on before Reveal scales it to the projector.
-</p>
+  <div class="row">
+    <h3>List</h3>
+    <ul>
+      <li>Short lines</li>
+      <li>One idea each</li>
+      <li>Read at a glance</li>
+    </ul>
+  </div>
+</div>

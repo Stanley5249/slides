@@ -1,33 +1,28 @@
 <script lang="ts">
-  import { Slide } from "@animotion/core";
+  import { Notes, Slide } from "@animotion/core";
 </script>
 
-<Slide>
-  <h2>Reveal a list one point at a time</h2>
+<Slide class="statement">
+  <p>Give one sentence the whole slide when the claim is the point.</p>
 
-  <div class="row">
-    <ul>
-      <li class="fragment">
-        Each point waits for the presenter’s next keypress.
-      </li>
-      <li class="fragment">
-        The room reads the point being made, not the three after it.
-      </li>
-      <li class="fragment">
-        Add <code>class="fragment"</code> to any element to hold it back.
-      </li>
-    </ul>
-
-    <p class="fragment">Press the down arrow for a list that dims.</p>
-  </div>
+  <p>Use a statement for a thesis, a quote, or a question for the room.</p>
 </Slide>
 
-<Slide>
-  <h2>Dim the points already made</h2>
+<Slide class="statement">
+  <figure>
+    <blockquote>
+      <p>
+        Perfection is achieved, not when there is nothing more to add, but when
+        there is nothing left to take away.
+      </p>
+    </blockquote>
+    <figcaption>
+      Antoine de Saint-Exupéry, <cite>Wind, Sand and Stars</cite>
+    </figcaption>
+  </figure>
 
-  <ul class="dim">
-    <li class="fragment">Add <code>dim</code> to the list.</li>
-    <li class="fragment">Each point fades once the next one arrives.</li>
-    <li class="fragment">The current point keeps its full ink.</li>
-  </ul>
+  <Notes>
+    A quote is a statement with a source. Wrap the words in a blockquote inside
+    a figure, and credit the source in the figcaption.
+  </Notes>
 </Slide>

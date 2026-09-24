@@ -1,46 +1,64 @@
 <script lang="ts">
-  import { asset } from "$app/paths";
-  import { Slide } from "@animotion/core";
-  import { Shot } from "$lib";
+  import { flip } from "svelte/animate";
+  import { prefersReducedMotion } from "svelte/motion";
+  import { Action } from "@animotion/core";
+  import { restart } from "$lib/restart";
+
+  // Each step is the whole order it shows, so any step can be shown from any
+  // other, in either direction.
+  const steps = [
+    [1, 2, 3, 4],
+    [4, 3, 2, 1],
+    [2, 1, 4, 3],
+    [1, 2, 3, 4],
+  ];
+
+  let items = $state(steps[0]);
+
+  // FLIP measures each tile where it is drawn right now, so a step taken
+  // mid-move turns the tiles in flight rather than snapping them to the end.
+  const duration = $derived(prefersReducedMotion.current ? 0 : 600);
+
+  function show(step: number) {
+    items = steps[step];
+  }
 </script>
 
-<Slide class="middle">
-  <h2>Use screenshots as evidence, not decoration</h2>
+<h2>Move items to their new order</h2>
 
-  <div class="cols narrow-first">
-    <div class="row">
-      <p>
-        <code>Shot</code> pairs the image with alternative text and an optional caption.
-        Select the image to inspect it in the same viewer as a diagram.
-      </p>
-      <p>
-        The screenshot needs no extra frame because its content is the focus.
-      </p>
-    </div>
-
-    <Shot
-      src={asset("/placeholder-window.svg")}
-      alt="An empty application window standing in for a screenshot"
-      caption="Replace this with a capture of the app you are showing."
-    />
+<div class="row" {@attach restart(() => show(0))}>
+  <div class="strip">
+    {#each items as item (item)}
+      <span class="tile" animate:flip={{ duration }}>{item}</span>
+    {/each}
   </div>
-</Slide>
 
-<Slide class="middle">
-  <h2>Missing evidence should remain visible</h2>
+  <p>
+    Each item slides from its old place to its new one, so the room sees what
+    moved instead of spotting the difference.
+  </p>
+</div>
 
-  <div class="cols">
-    <Shot
-      src={asset("/not-written-yet.png")}
-      alt="The screenshot for this slide"
-    />
+<Action
+  undo={() => show(0)}
+  actions={[() => show(1), () => show(2), () => show(3)]}
+/>
 
-    <div class="row">
-      <p>
-        When an image is missing, its slot remains visible and reports the path
-        that failed to load.
-      </p>
-      <p>The deck still builds, but the unfinished work cannot hide.</p>
-    </div>
-  </div>
-</Slide>
+<style>
+  .strip {
+    display: flex;
+    gap: var(--deck-gap);
+  }
+
+  /* A numeral and nothing else: the movement is the subject, so the shape
+     around it stays quiet. Two ems of slot, monospace figures inside it, so a
+     reorder moves the glyphs and not the strip. The figures start the slot,
+     so the first one keeps the content edge. */
+  .tile {
+    display: grid;
+    place-content: center start;
+    min-width: 2em;
+    font-size: var(--deck-text-title);
+    font-family: var(--r-code-font), ui-monospace, monospace;
+  }
+</style>

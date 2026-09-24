@@ -1,33 +1,71 @@
 <script lang="ts">
-  import { Notes, Slide } from "@animotion/core";
+  import { Slide } from "@animotion/core";
+  import { Mermaid } from "$lib";
+
+  const workflow = `flowchart LR
+		Write[Write slides] --> Check[just ci]
+		Check --> Present
+		Check --> Fix
+		Fix --> Write`;
+
+  const stages = Array.from(
+    { length: 15 },
+    (_, i) => `N${i}[Stage ${i}] --> N${i + 1}[Stage ${i + 1}]`,
+  );
+  const wide = `flowchart LR\n\t\t${stages.join("\n\t\t")}`;
+
+  const broken = `flowchart LR
+		Start --> --> Middle
+		Middle -->[[[ End`;
 </script>
 
-<Slide>
-  <h2>Start a deck from here</h2>
+<Slide class="middle">
+  <h2>A diagram should look native to the deck</h2>
 
-  <div class="row">
-    <ul>
-      <li><code>docs/design.md</code> gives each rule and its reason.</li>
-      <li>
-        <code>docs/components</code> documents Link, Mermaid, Shot, Tex, and Zoom.
-      </li>
-      <li><code>just ci</code> checks the deck before a talk.</li>
-    </ul>
+  <div class="cols narrow-first">
+    <div class="row">
+      <p>
+        The diagram uses the same color roles as the surrounding slide. Mermaid
+        reads those roles from the document when it renders.
+      </p>
+      <p>Select the diagram to inspect it in the viewer.</p>
+    </div>
 
-    <p>Press the down arrow for a backup slide.</p>
+    <figure>
+      <Mermaid code={workflow} label="Open the workflow diagram" />
+      <figcaption>Write, check, fix, and present.</figcaption>
+    </figure>
   </div>
 </Slide>
 
-<Slide>
-  <h2>Keep backup slides below the closing slide</h2>
+<Slide class="middle">
+  <h2>Wide diagrams need a closer view</h2>
 
-  <p>
-    A vertical stack holds answers to likely questions. The main path skips it,
-    and the down arrow reaches it when someone asks.
-  </p>
+  <div class="row">
+    <p>
+      The slide keeps the full diagram visible as a preview. The viewer opens a
+      fitted version that the audience can inspect by dragging.
+    </p>
 
-  <Notes>
-    Backup slides are part of the deck but not the talk. Stack them under the
-    last slide so the right arrow never lands on one by accident.
-  </Notes>
+    <figure>
+      <Mermaid code={wide} label="Open the wide diagram" />
+      <figcaption>Sixteen stages across, one click away.</figcaption>
+    </figure>
+  </div>
+</Slide>
+
+<Slide class="middle">
+  <h2>Rendering errors should be impossible to miss</h2>
+
+  <div class="cols">
+    <Mermaid code={broken} label="Open the broken diagram" />
+
+    <div class="row">
+      <p>
+        A failed diagram displays its full error instead of leaving an empty
+        space that could pass unnoticed.
+      </p>
+      <p>The visible panel makes the problem clear before the talk begins.</p>
+    </div>
+  </div>
 </Slide>
