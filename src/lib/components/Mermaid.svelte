@@ -4,6 +4,7 @@
   import { tick } from "svelte";
   import Check from "lucide-svelte/icons/check";
   import Copy from "lucide-svelte/icons/copy";
+  import TriangleAlert from "lucide-svelte/icons/triangle-alert";
   import Zoom from "$lib/components/Zoom.svelte";
   import { renderMermaid } from "$lib/mermaid";
 
@@ -82,6 +83,18 @@
     return viewBoxWidth > 0 ? `${viewBoxWidth}px` : "max-content";
   }
 
+  // Mermaid's parser points at a fault with a line of dashes and a caret under
+  // a line of source. Those two lines keep their columns and scroll sideways
+  // together; every other line wraps to the slot.
+  function messageLines(message: string) {
+    const lines = message.split("\n");
+    const caret = (line: string | undefined) => /^-*\^\s*$/.test(line ?? "");
+    return lines.map((text, i) => ({
+      text,
+      exact: caret(text) || caret(lines[i + 1]),
+    }));
+  }
+
   async function copyError() {
     if (renderState.kind !== "failed") return;
     await navigator.clipboard.writeText(renderState.message);
@@ -111,26 +124,40 @@
     {/snippet}
   </Zoom>
 {:else if renderState.kind === "failed"}
-  <div class={`error ${className}`}>
-    <div class="error-head">
-      <span>Mermaid error</span>
+  <div class={`slot failed ${className}`}>
+    <div class="head">
+      <TriangleAlert size={20} strokeWidth={2} />
+      <p>Mermaid could not render this diagram</p>
       <button
         type="button"
+        class="copy"
         onclick={copyError}
         aria-label={copied ? "Message copied" : "Copy the message"}
         title="Copy the message"
       >
         {#if copied}
-          <span class="check"><Check size={18} strokeWidth={2.25} /></span>
+          <span class="check"><Check size={20} strokeWidth={2} /></span>
         {:else}
-          <Copy size={18} strokeWidth={2.25} />
+          <Copy size={20} strokeWidth={2} />
         {/if}
       </button>
     </div>
-    <pre class="error-body">{renderState.message}</pre>
+    <!-- Focusable so the arrow keys scroll the message rather than the deck, and exempt from
+         Reveal's swipe so scrolling it on a touch screen stays on the slide. -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions -->
+    <pre
+      class="message"
+      tabindex="0"
+      aria-label="Mermaid error message"
+      data-prevent-swipe
+      onkeydown={(event) =>
+        event.stopPropagation()}>{#each messageLines(renderState.message) as line, i (i)}<span
+          class="line"
+          class:exact={line.exact}>{line.text}</span
+        >{/each}</pre>
   </div>
 {:else}
-  <div class={`loading ${className}`}>Rendering diagram…</div>
+  <div class={`slot ${className}`}><p>Rendering diagram…</p></div>
 {/if}
 
 <style>
@@ -154,51 +181,98 @@
     max-height: inherit;
   }
 
-  .loading {
+  /* A diagram that is not drawn holds its place the way a missing screenshot
+     does: a dashed slot in quiet ink, so it reads as unfinished work rather
+     than as content. */
+  .slot {
     display: grid;
-    min-height: var(--deck-slot-min);
-    place-items: center;
-    font-size: 1rem;
-  }
-
-  /* The canvas with a hairline, one step above its ground. A failure is a
-     panel to read, not a subject to look at, so it keeps its edge. */
-  .error {
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    overflow: hidden;
-    background: var(--deck-canvas);
-    border: 1px solid var(--deck-rule);
-    border-radius: 0.75rem;
-    box-shadow: 0 0.5rem 1.5rem
-      color-mix(in srgb, var(--deck-veil) 56%, transparent);
+    min-height: var(--deck-slot-min);
+    gap: 0.75rem;
+    place-content: center;
+    padding: 1rem;
+    color: var(--deck-ink-quiet);
+    font-size: var(--deck-text-label);
+    border: 1px dashed var(--deck-rule-strong);
   }
 
-  .error-head {
+  /* A failure is words to read, so the slot fits them rather than a picture's
+     shape: one line names the failure, and the message takes the full width
+     under it. */
+  .failed {
+    place-content: start stretch;
+    padding-top: 0.5rem;
+  }
+
+  /* The error role marks the one line that says something failed. The
+     message under it stays in quiet ink, so the slot stays one family with a
+     missing screenshot. */
+  .head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.75rem 0.75rem 0.75rem 1.25rem;
+    gap: 0.5rem;
     color: var(--deck-bad);
-    font-weight: 600;
-    font-size: 1.1rem;
-    background: var(--deck-panel);
-    border-bottom: 1px solid var(--deck-rule);
   }
 
-  .error-head button {
+  .head p {
+    min-width: 0;
+  }
+
+  /* The message scrolls past a few lines rather than growing the slot, and
+     sideways only when the source line under the caret outruns the width.
+     A tab is one column to Mermaid when it places the caret, so it is one
+     column here. */
+  .message {
+    max-height: 7.5lh;
+    margin: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+    font-family: var(--r-code-font), ui-monospace, monospace;
+    line-height: 1.5;
+    tab-size: 1;
+    user-select: text;
+    scrollbar-width: thin;
+    scrollbar-color: var(--deck-rule-strong) transparent;
+  }
+
+  .message:focus-visible {
+    outline: var(--deck-focus-ring) solid var(--deck-focus);
+    outline-offset: 2px;
+  }
+
+  .line {
+    display: block;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .line.exact {
+    width: max-content;
+    white-space: pre;
+  }
+
+  .copy {
     display: grid;
+    margin-left: auto;
     width: 2.25rem;
     height: 2.25rem;
     place-items: center;
     padding: 0;
-    color: var(--deck-ink);
-    background: var(--deck-hover);
-    border: 1px solid var(--deck-rule);
+    color: var(--deck-ink-quiet);
+    background: none;
+    border: 0;
     border-radius: 0.5rem;
     cursor: pointer;
+  }
+
+  .copy:hover {
+    color: var(--deck-ink);
+    background: var(--deck-hover);
+  }
+
+  .copy:focus-visible {
+    outline: var(--deck-focus-ring) solid var(--deck-focus);
+    outline-offset: 2px;
   }
 
   .check {
@@ -218,31 +292,5 @@
     .check {
       animation: none;
     }
-  }
-
-  /* One shade further from the canvas than the resting fill, in whichever
-     direction the flavor runs. */
-  .error-head button:hover {
-    background: color-mix(in srgb, var(--deck-hover) 88%, var(--deck-ink));
-  }
-
-  .error-head button:focus-visible {
-    outline: var(--deck-focus-ring) solid var(--deck-focus);
-    outline-offset: var(--deck-focus-ring);
-  }
-
-  .error-body {
-    max-height: 24rem;
-    margin: 0;
-    padding: 1.25rem;
-    overflow: auto;
-    color: var(--deck-ink);
-    font-size: 0.95rem;
-    font-family: var(--r-code-font), ui-monospace, monospace;
-    line-height: 1.5;
-    text-align: left;
-    white-space: pre-wrap;
-    user-select: text;
-    tab-size: 2;
   }
 </style>
