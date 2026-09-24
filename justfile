@@ -51,10 +51,6 @@ lint: _sync
 [parallel]
 check: typecheck lint
 
-# Run the tests
-test:
-    bun test
-
 # Remove build output
 [unix]
 clean:
