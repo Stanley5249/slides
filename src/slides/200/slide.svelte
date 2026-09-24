@@ -2,8 +2,8 @@
 
 <ol>
   <li>
-    <strong>Words</strong>: statements, quotes, lists, steps, comparisons,
-    tables, figures, and math.
+    <strong>Words</strong>: emphasis, statements, quotes, lists, steps,
+    comparisons, tables, figures, and math.
   </li>
   <li>
     <strong>Code and motion</strong>: source, walkthroughs, and reordering.
