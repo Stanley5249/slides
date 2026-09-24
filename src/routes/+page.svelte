@@ -1,11 +1,6 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import { Presentation, Slides } from "@animotion/core";
-
-  // Reveal does not read the preference itself. The server has no media to
-  // ask, which does not matter, because Reveal only starts in the browser.
-  const reducedMotion =
-    browser && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  import { prefersReducedMotion } from "svelte/motion";
 </script>
 
 <Presentation
@@ -19,8 +14,11 @@
     // recolors them. The counter is the one piece of chrome it ships off.
     slideNumber: "h.v",
     // A slide change is the presenter's own action and explains nothing, so it
-    // cuts through a short fade rather than sliding the stage sideways.
-    transition: reducedMotion ? "none" : "fade",
+    // cuts through a short fade rather than sliding the stage sideways. Reveal
+    // does not read the reduced-motion preference itself. The server has no
+    // media to ask, which does not matter, because Reveal only starts in the
+    // browser.
+    transition: prefersReducedMotion.current ? "none" : "fade",
     transitionSpeed: "fast",
     // A background iframe is otherwise only fetched on the way into its slide,
     // so opening the deck straight at one shows an empty stage. A talk wants

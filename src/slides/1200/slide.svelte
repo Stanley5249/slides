@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import { flip } from "svelte/animate";
+  import { prefersReducedMotion } from "svelte/motion";
   import { Action } from "@animotion/core";
   import { restart } from "$lib/restart";
 
@@ -17,8 +17,7 @@
 
   // FLIP measures each tile where it is drawn right now, so a step taken
   // mid-move turns the tiles in flight rather than snapping them to the end.
-  const duration =
-    browser && matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 600;
+  const duration = $derived(prefersReducedMotion.current ? 0 : 600);
 
   function show(step: number) {
     items = steps[step];
