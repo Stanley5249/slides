@@ -188,7 +188,7 @@
     display: grid;
     width: 100%;
     min-height: var(--deck-slot-min);
-    gap: 0.75rem;
+    gap: 0.5rem;
     place-content: center;
     padding: 1rem;
     color: var(--deck-ink-quiet);
@@ -221,14 +221,15 @@
   /* The message scrolls past a few lines rather than growing the slot, and
      sideways only when the source line under the caret outruns the width.
      A tab is one column to Mermaid when it places the caret, so it is one
-     column here. */
-  .message {
+     column here. Scoped under the slot so it outranks the deck's own
+     `.reveal .slides pre`, which would otherwise set the line height. */
+  .failed .message {
     max-height: 7.5lh;
     margin: 0;
     overflow: auto;
     overscroll-behavior: contain;
     font-family: var(--r-code-font), ui-monospace, monospace;
-    line-height: 1.5;
+    line-height: 1.4;
     tab-size: 1;
     user-select: text;
     scrollbar-width: thin;
