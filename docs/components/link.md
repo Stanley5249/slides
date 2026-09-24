@@ -1,9 +1,11 @@
 # Link
 
-`Link` sets a link with an optional icon before its label. The label carries the
-link color and gains an underline only on hover or keyboard focus, because the
-color already says it is a link. A web address opens in another tab, so the deck
-stays on the slide the presenter was showing.
+`Link` sets a link with an optional icon before its label. The label stays in
+ink and the icon carries the link color, so the link reads as text first. With
+an icon, the label gains an underline only on hover or keyboard focus, because
+the icon already marks it. Without one, nothing else marks the link, so the
+underline stays. A web address opens in another tab, so the deck stays on the
+slide the presenter was showing.
 
 ## Usage
 
