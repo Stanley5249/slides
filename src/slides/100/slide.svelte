@@ -1,13 +1,14 @@
 <script lang="ts">
   import { Notes } from "@animotion/core";
   import { GitHubMark, Link } from "$lib";
+  import { title } from "../deck";
 </script>
 
-<h1>Build slides for the back row</h1>
+<h1>{title}</h1>
 
 <p>
-  A Reveal.js and Animotion template for technical talks. Each slide after this
-  one is a kind of slide, and it says when to use it.
+  For technical talks, built on Reveal.js and Animotion. The rest of this deck
+  shows each slide type and when to use it.
 </p>
 
 <p class="byline">
