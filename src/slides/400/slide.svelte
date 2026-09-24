@@ -7,13 +7,13 @@
 
 <div class="row">
   <p>
-    Bold is the word the speaker leans on: the room <strong>cannot</strong> read and
-    listen at once.
+    Bold marks the one word the speaker stresses, such as <strong>never</strong> in
+    a warning.
   </p>
-  <p>Italics shift the voice, for a <em>term</em> or a title.</p>
-  <p>An identifier such as <code>show(step)</code> keeps a face of its own.</p>
+  <p>Italics mark a <em>term</em> or a title.</p>
+  <p>Code such as <code>show(step)</code> uses a monospace font.</p>
   <p>
-    A link sits in the sentence, like the
+    A link stays inside the sentence, like the
     <Link
       href="https://github.com/Stanley5249/slides/blob/main/docs/design.md"
       icon={BookOpen}

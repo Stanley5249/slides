@@ -11,7 +11,7 @@
         Each point waits for the presenter’s next keypress.
       </li>
       <li class="fragment">
-        The room reads the point being made, not the three after it.
+        The audience reads the current point, not the ones after it.
       </li>
       <li class="fragment">
         Add <code>class="fragment"</code> to any element to hold it back.

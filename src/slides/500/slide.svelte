@@ -5,7 +5,9 @@
 <Slide class="statement">
   <p>Give one sentence the whole slide when the claim is the point.</p>
 
-  <p>Use a statement for a thesis, a quote, or a question for the room.</p>
+  <p>Use a statement for a thesis, a quote, or a question for the audience.</p>
+
+  <Notes>Press the down arrow for a quote.</Notes>
 </Slide>
 
 <Slide class="statement">

@@ -12,7 +12,7 @@
 
   <p>
     Reveal scales the stage by <Tex tex="s" />, where <Tex tex="W" /> and
-    <Tex tex="H" /> are the room the window leaves after its margin. The smaller ratio
-    wins, so the whole slide always fits.
+    <Tex tex="H" /> are the width and height left in the window after its margin.
+    The smaller ratio wins, so the whole slide always fits.
   </p>
 </div>

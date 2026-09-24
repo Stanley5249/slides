@@ -7,6 +7,6 @@
 <p>1280 × 720</p>
 
 <p>
-  Give a number its own slide when the talk turns on it. This one is the stage
-  every slide is laid out on before Reveal scales it to the projector.
+  Give a number its own slide when the talk depends on it. This one is the stage
+  size every slide is designed at, before Reveal scales it to the screen.
 </p>

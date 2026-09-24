@@ -1,9 +1,9 @@
-<h2>An outline shows the room where the talk is going</h2>
+<h2>Show the audience where the talk is going</h2>
 
 <ol>
   <li>
     <strong>Words</strong>: emphasis, statements, quotes, lists, steps,
-    comparisons, tables, figures, and math.
+    comparisons, tables, numbers, and math.
   </li>
   <li>
     <strong>Code and motion</strong>: source, walkthroughs, and reordering.

@@ -27,7 +27,7 @@
 </Slide>
 
 <Slide class="middle">
-  <h2>Missing evidence should remain visible</h2>
+  <h2>Show a missing screenshot</h2>
 
   <div class="cols">
     <Shot

@@ -34,8 +34,8 @@
   </div>
 
   <p>
-    Each item slides from its old place to its new one, so the room sees what
-    moved instead of spotting the difference.
+    Each item slides from its old place to its new one, so the audience sees
+    what moved instead of hunting for the difference.
   </p>
 </div>
 

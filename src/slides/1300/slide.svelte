@@ -15,11 +15,12 @@ ${close}
 <p>Use a statement for a thesis or a quote.</p>`;
 </script>
 
-<h2>A slide is one Svelte file</h2>
+<h2>Show a block of code</h2>
 
 <div class="row">
   <p>
-    Each slide is a <code>slide.svelte</code> in a numbered folder under
+    The code below is a whole slide: a <code>slide.svelte</code> in a numbered
+    folder under
     <code>src/slides</code>. The deck plays them in numeric order, so leave gaps
     for the slides you add later.
   </p>

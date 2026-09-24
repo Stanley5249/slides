@@ -20,7 +20,7 @@
 </script>
 
 <Slide class="middle">
-  <h2>A diagram should look native to the deck</h2>
+  <h2>Draw diagrams in the deck's colors</h2>
 
   <div class="cols narrow-first">
     <div class="row">
@@ -39,12 +39,12 @@
 </Slide>
 
 <Slide class="middle">
-  <h2>Wide diagrams need a closer view</h2>
+  <h2>Zoom into a wide diagram</h2>
 
   <div class="row">
     <p>
-      The slide keeps the full diagram visible as a preview. The viewer opens a
-      fitted version that the audience can inspect by dragging.
+      The slide shows the whole diagram as a preview. Select it to open a larger
+      view you can drag around.
     </p>
 
     <figure>
@@ -55,7 +55,7 @@
 </Slide>
 
 <Slide class="middle">
-  <h2>Rendering errors should be impossible to miss</h2>
+  <h2>Show a diagram that fails to render</h2>
 
   <div class="cols">
     <Mermaid code={broken} label="Open the broken diagram" />

@@ -2,8 +2,8 @@
 
 <div class="cols narrow-first">
   <p>
-    Tables use horizontal rules only. Mark a cell <code>numeric</code> to set its
-    figures flush right in one width.
+    Tables use horizontal rules only. Add <code>numeric</code> to a cell to right-align
+    its digits at equal widths.
   </p>
 
   <table>

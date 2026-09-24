@@ -4,8 +4,8 @@
   <div class="row">
     <h3>Paragraph</h3>
     <p>
-      Dense prose asks the room to <em>read</em> while the speaker
-      <em>talks</em>, and the room <strong>cannot do both</strong> at once.
+      Dense prose asks the audience to <em>read</em> while the speaker
+      <em>talks</em>, and <strong>nobody can do both</strong> at once.
     </p>
   </div>
 
