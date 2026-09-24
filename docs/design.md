@@ -96,7 +96,7 @@ consistent and prevents local adjustments from becoming a second design system.
 
 Reveal renders a fixed stage and scales it to the window, so stage pixels remain
 proportional when projected. Titles and prose use limited line widths to reduce
-eye movement across a wide screen. Inline identifiers use face and weight
+eye movement across a wide screen. Inline identifiers use their face alone
 instead of badges or filled backgrounds.
 
 ## Layout

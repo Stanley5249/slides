@@ -199,14 +199,15 @@ html.reveal-print .reveal .slides section:not(.stack) {
   color: var(--deck-em);
 }
 
-/* Identifiers are the nouns of a technical talk, so they carry a weight and a
-   face of their own. Still no pill and no plate: the mark is on the word.
+/* Identifiers are the nouns of a technical talk, so they carry a face of
+   their own, at the weight of the prose around them so they never read as
+   bold. Still no pill and no plate: the mark is on the word.
 
    Atkinson Hyperlegible Mono is the body face's own monospace, so it shares
    its x-height and cap height and an identifier sits in a line of prose at
    its height without adjustment. At 0.632 of the em a character, it runs
    wide enough to read from the back of a room; -0.02em of tracking takes
-   back 3% of the line and still leaves `WW` apart at the heavier weight.
+   back 3% of the line and still leaves `WW` apart.
    Every character moves by the same amount, so columns stay aligned. */
 .reveal .slides :is(code, pre) {
   letter-spacing: -0.02em;
@@ -218,11 +219,10 @@ html.reveal-print .reveal .slides section:not(.stack) {
   word-break: break-word;
 }
 
-/* Inline only. A highlighted block keeps the weights and colors Shiki gives it.
-   Nothing upstream sets either property on an inline identifier, so the child
-   selector carries enough weight on its own. */
+/* Inline only. A highlighted block keeps the colors Shiki gives it. Nothing
+   upstream sets a color on an inline identifier, so the child selector
+   carries enough weight on its own. */
 .reveal .slides :not(pre) > code {
-  font-weight: 600;
   color: var(--deck-code);
 }
 

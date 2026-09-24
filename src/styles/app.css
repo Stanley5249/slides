@@ -9,8 +9,6 @@
 @import "@fontsource/atkinson-hyperlegible-next/400-italic.css";
 @import "@fontsource/atkinson-hyperlegible-next/700.css";
 @import "@fontsource/atkinson-hyperlegible-mono/400.css";
-/* The weight an inline identifier is set in. */
-@import "@fontsource/atkinson-hyperlegible-mono/600.css";
 
 @import "@animotion/core/theme" layer(presentation);
 
