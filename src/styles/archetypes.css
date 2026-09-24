@@ -49,7 +49,7 @@
   color: var(--deck-heading);
   font-weight: 600;
   font-size: 480px;
-  font-family: var(--r-heading-font), sans-serif;
+  font-family: var(--deck-heading-face);
   line-height: 0.8;
 }
 
@@ -65,7 +65,7 @@
   color: var(--deck-ink);
   font-weight: 600;
   font-size: var(--deck-text-title);
-  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  font-family: var(--deck-heading-face);
   line-height: 1.1;
   text-wrap: balance;
 }
@@ -74,7 +74,7 @@
   color: var(--deck-heading);
   font-weight: 600;
   font-size: 176px;
-  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  font-family: var(--deck-heading-face);
   line-height: 1;
   white-space: nowrap;
 }
@@ -101,7 +101,7 @@
   color: var(--deck-ink);
   font-weight: 600;
   font-size: var(--deck-text-heading);
-  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  font-family: var(--deck-heading-face);
   line-height: 1.2;
   text-wrap: balance;
 }

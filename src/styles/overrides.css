@@ -57,6 +57,11 @@
   --deck-slot-min: 8rem;
 }
 
+/* The face and fallbacks of every block that speaks as a heading. */
+:root {
+  --deck-heading-face: var(--r-heading-font), var(--r-main-font), sans-serif;
+}
+
 /* One ring for anything focusable on a slide. `:where` keeps it at the weight
    of the pseudo-class alone, so a component can still move its own ring. */
 :where(.reveal .slides) :focus-visible {
@@ -161,7 +166,7 @@ html.reveal-print .reveal .slides section:not(.stack) {
   color: var(--deck-heading);
   font-weight: 600;
   font-size: var(--deck-text-heading);
-  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  font-family: var(--deck-heading-face);
   line-height: 1.1;
   text-wrap: balance;
 }
@@ -183,7 +188,7 @@ html.reveal-print .reveal .slides section:not(.stack) {
   color: var(--deck-ink);
   font-weight: 600;
   font-size: var(--deck-text-content);
-  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  font-family: var(--deck-heading-face);
   line-height: 1.2;
 }
 

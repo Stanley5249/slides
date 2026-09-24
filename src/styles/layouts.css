@@ -87,7 +87,7 @@
   color: var(--deck-ink-quiet);
   font-weight: 600;
   font-size: var(--deck-text-heading);
-  font-family: var(--r-heading-font), var(--r-main-font), sans-serif;
+  font-family: var(--deck-heading-face);
   line-height: 1;
   content: counter(step);
 }
