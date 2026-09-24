@@ -36,10 +36,9 @@
 
 <style>
   /* The words stay in ink and the icon carries the color, so a link reads as
-     text first and names its destination by its mark. Mauve is the title's
-     color, and a link is the one other thing on a slide that earns it. The
-     selector repeats the deck's so it outweighs the accent overrides.css gives
-     every link. */
+     text first and names its destination by its mark. The selector repeats
+     the deck's so it outweighs the link color overrides.css gives every
+     link. */
   :global(.reveal .slides) a.link {
     display: inline-flex;
     gap: 0.35em;
@@ -50,7 +49,7 @@
 
   .link :global(svg) {
     flex: none;
-    color: var(--deck-heading);
+    color: var(--deck-icon);
   }
 
   /* Without an icon nothing else marks the link, so the underline stays. */
@@ -58,7 +57,7 @@
   .link:hover span,
   .link:focus-visible span {
     text-decoration: underline;
-    text-decoration-color: var(--deck-heading);
+    text-decoration-color: var(--deck-link);
     text-decoration-thickness: 2px;
     text-underline-offset: 0.2em;
   }

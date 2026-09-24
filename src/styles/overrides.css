@@ -186,13 +186,21 @@ html.reveal-print .reveal .slides section:not(.stack) {
 }
 
 .reveal .slides a {
-  color: var(--deck-accent);
+  color: var(--deck-link);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.15em;
 }
 
+.reveal .slides strong {
+  color: var(--deck-strong);
+}
+
+.reveal .slides em {
+  color: var(--deck-em);
+}
+
 /* Identifiers are the nouns of a technical talk, so they carry a weight and a
-   color of their own. Still no pill and no plate: the mark is on the word.
+   face of their own. Still no pill and no plate: the mark is on the word.
 
    Iosevka is narrow, half an em a character, so a line of code stays short
    on a wide stage. Its capitals run taller than the body face's: 0.735 of
@@ -401,7 +409,7 @@ html.reveal-print .reveal .slides section:not(.stack) {
 
 .reveal-viewport .reveal .controls .enabled:hover,
 .reveal-viewport .reveal .controls .enabled.fragmented:hover {
-  color: var(--deck-accent);
+  color: var(--deck-link);
 }
 
 /* Bottom right belongs to the arrows, so the counter takes the opposite corner.

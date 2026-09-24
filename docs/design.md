@@ -41,8 +41,12 @@ Catppuccin palette tokens directly.
 | `--deck-ink-quiet`                       | Captions, table headings, slide counter |
 | `--deck-mark`                            | Bullets, chevrons, and diagram lines    |
 | `--deck-rule`, `--deck-rule-strong`      | Separators and table structure          |
+| `--deck-primary`, `--deck-secondary`     | The two accents styles draw from        |
 | `--deck-heading`                         | Slide titles                            |
-| `--deck-accent`                          | Links and the current state             |
+| `--deck-icon`                            | Icons beside words                      |
+| `--deck-link`                            | Links and the current state             |
+| `--deck-strong`, `--deck-em`             | Emphasis in prose                       |
+| `--deck-code`                            | Inline identifiers                      |
 | `--deck-focus`                           | Focus ring                              |
 | `--deck-ok`, `--deck-warn`, `--deck-bad` | Meaning attached to the underlying data |
 
@@ -54,21 +58,21 @@ present in text or structure instead of carrying meaning alone.
 
 ### Implementation
 
-Every accent is the palette color itself, darkened by the smallest percentage
-that meets its contrast bar and left at full strength where it already clears
-one. Only the bare name is Catppuccin, so the percentage beside each role in
-`src/styles/theme.css` is the exact size of the concession. Latte needs it
-because its accents are drawn as marks on a light surface rather than as text on
-one; the three dark flavors take every accent unaided.
+Roles come in two layers. The palette roles pick Catppuccin colors; the style
+roles point at palette roles. A deck recolors one kind of text by pointing its
+style at another palette role.
 
-The bar is 3:1. Every type size on a slide except the 18px label is WCAG large
-text, where AA asks for 3:1 rather than 4.5:1. The one accent that appears at
-label size is a link in a figcaption, so the accent alone answers to 4.5:1.
+Text takes two accents: mauve as the primary and peach as the secondary. Purple
+and orange sit across the wheel from each other, so the pair gives a clear
+hierarchy, and every further accent would dilute it. The dark flavors swap the
+primary for lavender, which carries a title on a dark canvas better than mauve.
 
-Latte measures mauve 4.79, red 4.80, accent 4.55, ok 3.10, the identifier role
-3.08 and warn 3.02. Ink, marks and rules carry the reading in every flavor, so
-an accent is never the only thing saying what a slide says. Check a latte deck
-on the projector before a talk and take a dark flavor if the room defeats it.
+Latte is used as shipped, not darkened. Against its base, mauve measures 4.79
+and peach 2.64, which is under the 3:1 WCAG asks of large text. Peach therefore
+only marks words that also carry weight. Ink, marks and rules carry the reading
+in every flavor, so an accent is never the only thing saying what a slide says.
+Check a latte deck on the projector before a talk and take a dark flavor if the
+room defeats it.
 
 A component that reports status sets `data-tone`. The deck maps that attribute
 to the appropriate semantic role.
@@ -92,7 +96,7 @@ adjustments from becoming a second design system.
 
 Reveal renders a fixed stage and scales it to the window, so stage pixels remain
 proportional when projected. Titles and prose use limited line widths to reduce
-eye movement across a wide screen. Inline identifiers use weight and color
+eye movement across a wide screen. Inline identifiers use face and weight
 instead of badges or filled backgrounds.
 
 ## Layout

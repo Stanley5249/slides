@@ -45,7 +45,7 @@
     --r-main-font-size: var(--deck-text-content);
     --r-main-color: var(--deck-ink);
     --r-code-font: "Iosevka";
-    --r-link-color: var(--deck-accent);
+    --r-link-color: var(--deck-link);
     --ease: linear(
       0 0%,
       0.0036 9.62%,
