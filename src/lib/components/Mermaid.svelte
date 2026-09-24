@@ -181,19 +181,10 @@
     max-height: inherit;
   }
 
-  /* A diagram that is not drawn holds its place the way a missing screenshot
-     does: a dashed slot in quiet ink, so it reads as unfinished work rather
-     than as content. */
+  /* A diagram that is not drawn holds its place in the slot from layouts.css,
+     the way a missing screenshot does. */
   .slot {
-    display: grid;
     width: 100%;
-    min-height: var(--deck-slot-min);
-    gap: 0.5rem;
-    place-content: center;
-    padding: 1rem;
-    color: var(--deck-ink-quiet);
-    font-size: var(--deck-text-label);
-    border: 1px dashed var(--deck-rule-strong);
   }
 
   /* A failure is words to read, so the slot fits them rather than a picture's

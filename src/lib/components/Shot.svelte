@@ -23,7 +23,7 @@
 
 <figure class={className} class:missing>
   {#if missing}
-    <div class="placeholder" style:height>
+    <div class="slot placeholder" style:height>
       <ImageOff size={28} strokeWidth={1.75} />
       <p>{alt}</p>
       <code class="path">static{src}</code>
@@ -73,23 +73,11 @@
     max-height: 80vh;
   }
 
-  /* Dashed, so an empty slot reads as a slot rather than as content. The strong rule draws it,
-     because the box is the whole element here and a projector loses a hairline. */
+  /* The slot from layouts.css, in the shape of the 16:9 capture it stands in for. */
   .placeholder {
-    display: grid;
-    min-height: var(--deck-slot-min);
     aspect-ratio: 16 / 9;
-    gap: 0.5rem;
-    place-content: center;
     place-items: center;
-    padding: 1rem;
-    color: var(--deck-ink-quiet);
     text-align: center;
-    border: 1px dashed var(--deck-rule-strong);
-  }
-
-  .placeholder p {
-    font-size: var(--deck-text-label);
   }
 
   /* The path is words an author has to read, so it keeps the quiet ink and the label size. A mark
@@ -98,7 +86,6 @@
      not. */
   .placeholder .path {
     padding: 0;
-    font-size: var(--deck-text-label);
     background: none;
   }
 </style>

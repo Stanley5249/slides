@@ -91,3 +91,24 @@
   line-height: 1;
   content: counter(step);
 }
+
+/* ---------------------------------------------------------------------------
+   Slot
+
+   The place a picture or diagram holds before it is drawn: a dashed box in
+   quiet ink, so it reads as unfinished work rather than as content. The strong
+   rule draws it, because the box is the whole element and a projector loses a
+   hairline. `:where` leaves the weight at the class alone, so the component
+   that draws a slot can still reshape it.
+   --------------------------------------------------------------------------- */
+
+:where(.reveal .slides) .slot {
+  display: grid;
+  min-height: var(--deck-slot-min);
+  gap: 0.5rem;
+  place-content: center;
+  padding: 1rem;
+  color: var(--deck-ink-quiet);
+  font-size: var(--deck-text-label);
+  border: 1px dashed var(--deck-rule-strong);
+}
