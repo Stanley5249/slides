@@ -201,7 +201,7 @@ html.reveal-print .reveal .slides section:not(.stack) {
 
 /* Identifiers are the nouns of a technical talk, so they carry a face of
    their own, at the weight of the prose around them so they never read as
-   bold. Still no pill and no plate: the mark is on the word.
+   bold.
 
    Atkinson Hyperlegible Mono is the body face's own monospace, so it shares
    its x-height and cap height and an identifier sits in a line of prose at
@@ -219,11 +219,17 @@ html.reveal-print .reveal .slides section:not(.stack) {
   word-break: break-word;
 }
 
-/* Inline only. A highlighted block keeps the colors Shiki gives it. Nothing
-   upstream sets a color on an inline identifier, so the child selector
-   carries enough weight on its own. */
+/* Inline only. The face alone barely parts an identifier from italics in
+   the same family, so it also sits on the panel surface, one step off the
+   canvas. A block needs no plate: its lines and highlighting already say
+   code, and the plate would cost it width. Nothing upstream sets these on
+   an inline identifier, so the child selector carries enough weight. */
 .reveal .slides :not(pre) > code {
+  padding: 0.08em 0.28em;
   color: var(--deck-code);
+  background: var(--deck-code-ground);
+  border-radius: 0.25em;
+  box-decoration-break: clone;
 }
 
 /* ---------------------------------------------------------------------------
@@ -325,8 +331,10 @@ html.reveal-print .reveal .slides section:not(.stack) {
    inside a cell it reads as the cell it is in. */
 .reveal .slides th code,
 .reveal .slides td code {
+  padding: 0;
   font-family: inherit;
   letter-spacing: inherit;
+  background: none;
 }
 
 /* ---------------------------------------------------------------------------

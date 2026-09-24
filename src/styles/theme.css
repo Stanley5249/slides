@@ -50,8 +50,9 @@
   --deck-link: var(--deck-primary);
   --deck-strong: var(--deck-secondary);
   --deck-em: var(--deck-ink);
-  /* An identifier already stands apart by its face and weight. */
+  /* An identifier stands apart by its face and the plate under it. */
   --deck-code: var(--deck-ink);
+  --deck-code-ground: var(--deck-panel);
   --deck-focus: var(--deck-primary);
 }
 

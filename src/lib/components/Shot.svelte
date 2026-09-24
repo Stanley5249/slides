@@ -26,7 +26,7 @@
     <div class="placeholder" style:height>
       <ImageOff size={28} strokeWidth={1.75} />
       <p>{alt}</p>
-      <code>static{src}</code>
+      <code class="path">static{src}</code>
     </div>
   {:else}
     <Zoom label={alt}>
@@ -93,8 +93,12 @@
   }
 
   /* The path is words an author has to read, so it keeps the quiet ink and the label size. A mark
-     would dim it below the ratio text has to clear. */
-  .placeholder code {
+     would dim it below the ratio text has to clear. The dashed slot already frames it, so it takes
+     no plate. The class outweighs the deck's inline code rule, which Svelte's scoping alone does
+     not. */
+  .placeholder .path {
+    padding: 0;
     font-size: var(--deck-text-label);
+    background: none;
   }
 </style>

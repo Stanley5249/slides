@@ -46,7 +46,7 @@ Catppuccin palette tokens directly.
 | `--deck-icon`                            | Icons beside words                      |
 | `--deck-link`                            | Links and the current state             |
 | `--deck-strong`, `--deck-em`             | Emphasis in prose                       |
-| `--deck-code`                            | Inline identifiers                      |
+| `--deck-code`, `--deck-code-ground`      | Inline identifiers and their plate      |
 | `--deck-focus`                           | Focus ring                              |
 | `--deck-ok`, `--deck-warn`, `--deck-bad` | Meaning attached to the underlying data |
 
@@ -96,8 +96,9 @@ consistent and prevents local adjustments from becoming a second design system.
 
 Reveal renders a fixed stage and scales it to the window, so stage pixels remain
 proportional when projected. Titles and prose use limited line widths to reduce
-eye movement across a wide screen. Inline identifiers use their face alone
-instead of badges or filled backgrounds.
+eye movement across a wide screen. Inline identifiers sit on a panel-colored
+plate, because a monospace from the prose family is hard to tell from italics.
+Code blocks take no plate: their lines and highlighting already say code.
 
 ## Layout
 
