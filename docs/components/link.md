@@ -22,6 +22,11 @@ slide the presenter was showing.
 <Link href="https://animotion.pages.dev/docs" icon={BookOpen}>Docs</Link>
 ```
 
+## Writing
+
+Set a link inside the sentence, as the noun it names. Do not introduce it with a
+colon or a label such as "Link:", because the icon already says it is a link.
+
 ## Properties
 
 The `Props` type in the component carries the signature. `icon` takes any

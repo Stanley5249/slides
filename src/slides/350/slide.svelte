@@ -13,12 +13,12 @@
   <p>Italics shift the voice, for a <em>term</em> or a title.</p>
   <p>An identifier such as <code>show(step)</code> keeps a face of its own.</p>
   <p>
-    A link names where to go next:
+    A link sits in the sentence, like the
     <Link
       href="https://github.com/Stanley5249/slides/blob/main/docs/design.md"
       icon={BookOpen}
     >
-      the design notes
-    </Link>.
+      design notes
+    </Link>, and its icon marks it.
   </p>
 </div>
