@@ -44,26 +44,28 @@ function refusal(headers: Headers) {
   return undefined;
 }
 
-const urls = await findEmbeds();
-if (urls.size === 0) {
-  console.log("No embedded sites in build/. Run `just build` first.");
-}
-
-let failed = false;
-for (const url of urls) {
+// Only the headers are read, so the body is dropped unread. A HEAD request
+// would skip it too, but some sites answer HEAD with other headers.
+async function check(url: string) {
   try {
-    const response = await fetch(url, { redirect: "follow" });
+    const response = await fetch(url);
+    await response.body?.cancel();
     const reason = response.ok
       ? refusal(response.headers)
       : `HTTP ${response.status}`;
-    if (reason) failed = true;
-    console.log(
-      `${reason ? "refused" : "ok     "}  ${url}${reason ? `  (${reason})` : ""}`,
-    );
+    return {
+      failed: Boolean(reason),
+      line: `${reason ? "refused" : "ok     "}  ${url}${reason ? `  (${reason})` : ""}`,
+    };
   } catch (error) {
-    failed = true;
-    console.log(`failed   ${url}  (${String(error)})`);
+    return { failed: true, line: `failed   ${url}  (${String(error)})` };
   }
 }
 
-process.exit(failed ? 1 : 0);
+const urls = await findEmbeds();
+if (urls.size === 0) console.log("No embedded sites in build/.");
+
+const results = await Promise.all(Array.from(urls, check));
+for (const { line } of results) console.log(line);
+
+process.exit(results.some((result) => result.failed) ? 1 : 0);
