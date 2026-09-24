@@ -69,5 +69,6 @@ lock-check:
 [parallel]
 _ci-check: fmt-check typecheck lint
 
+# `embeds` depends on `build` as well, and just runs a recipe once per call.
 # The gate a change has to pass
-ci: lock-check _ci-check build
+ci: lock-check _ci-check build embeds
