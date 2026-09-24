@@ -9,80 +9,80 @@
 <script lang="ts">
   import { Action, Code } from "@animotion/core";
   import { tween } from "@animotion/motion";
+  import { restart } from "$lib/restart";
   import { codeTheme } from "$lib/theme";
 
   let code: ReturnType<typeof Code>;
   let dot = tween({ x: 0 });
 
-  // Every step sets the whole state it shows, so stepping back replays the
-  // previous step and lands on the same picture.
-  async function there() {
-    await code.update`
-      async function animate() {
-        await dot.to({ x: 400 })
-      }
-    `;
-    await code.selectLines`2`;
-    await dot.to({ x: 400 });
+  // Each step is the whole picture it shows, so any step can be shown from
+  // any other, in either direction.
+  const steps = [
+    {
+      source: `
+        async function animate() {
+        }
+      `,
+      lines: "*",
+      x: 0,
+    },
+    {
+      source: `
+        async function animate() {
+          await dot.to({ x: 400 })
+        }
+      `,
+      lines: "2",
+      x: 400,
+    },
+    {
+      source: `
+        async function animate() {
+          await dot.to({ x: 400 })
+          await dot.to({ x: 0 })
+        }
+      `,
+      lines: "3",
+      x: 0,
+    },
+  ];
+
+  // The listing and the dot start together, so the line and what it does
+  // arrive as one. The listing selects only once its new line exists.
+  function show(step: number) {
+    const { source, lines, x } = steps[step];
+    return Promise.all([
+      code.update`${source}`.then(() => code.selectLines`${lines}`),
+      dot.to({ x }),
+    ]);
   }
 
-  async function back() {
-    await code.update`
-      async function animate() {
-        await dot.to({ x: 400 })
-        await dot.to({ x: 0 })
-      }
-    `;
-    await code.selectLines`3`;
-    await dot.to({ x: 0 });
-  }
-
-  async function review() {
-    await code.update`
-      async function animate() {
-        await dot.to({ x: 400 })
-        await dot.to({ x: 0 })
-      }
-    `;
-    await code.selectLines`*`;
-    await dot.to({ x: 0 });
-  }
-
-  async function reset() {
-    await code.update`
-      async function animate() {
-      }
-    `;
-    await code.selectLines`*`;
+  // Opening the slide again puts the dot home at once rather than replaying
+  // the way back.
+  function reset() {
     dot.reset();
-  }
-
-  // A slide keeps its state after the deck moves on, so coming back forward
-  // would show the last step with none of its fragments. Start over whenever
-  // the slide opens before any step is taken. Coming back from the next slide
-  // opens it on the last step, which replays `review`.
-  function restart(listing: HTMLElement) {
-    const slide = listing.closest("section");
-    if (!slide) return;
-
-    const open = () => {
-      if (!slide.querySelector(".fragment.visible")) void reset();
-    };
-    slide.addEventListener("in", open);
-    return () => slide.removeEventListener("in", open);
+    return show(0);
   }
 </script>
 
 <h2>Step through code</h2>
 
 <div class="cols even">
-  <div {@attach restart}>
+  <div {@attach restart(reset)}>
     <Code
       bind:this={code}
       lang="ts"
       theme={codeTheme}
-      code={"async function animate() {\n}"}
-      options={{ duration: 600, stagger: 0.3, containerStyle: false }}
+      code={steps[0].source}
+      options={{
+        duration: 600,
+        stagger: 0.3,
+        containerStyle: false,
+        // Lines that make room move at once, and the new line follows close
+        // behind instead of waiting out most of the move.
+        delayMove: 0,
+        delayEnter: 0.2,
+      }}
     />
   </div>
 
@@ -95,7 +95,7 @@
   </div>
 </div>
 
-<Action undo={reset} actions={[there, back, review]} />
+<Action undo={() => show(0)} actions={[() => show(1), () => show(2)]} />
 
 <style>
   /* What the code draws, in a pane of its own beside it. The pane is an
