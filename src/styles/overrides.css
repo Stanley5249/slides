@@ -157,8 +157,8 @@ html.reveal-print .reveal .slides section:not(.stack) {
    Type
 
    Four sizes: 76 for the deck title, 44 for a slide title, 24 for everything
-   read as content, 18 for what labels it. Monospace is matched to the body face
-   by x-height rather than given a size of its own.
+   read as content, 18 for what labels it. Monospace shares the body face's
+   x-height, so it takes no size of its own.
    --------------------------------------------------------------------------- */
 
 .reveal .slides h1,
