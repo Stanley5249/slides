@@ -9,8 +9,7 @@
 - Define standard commands in the root `justfile`. Use `just` recipes and run
   project binaries with `bun run <binary>`.
 - Get the user's approval before using CDP or other automation tools. After
-  approval, use
-  `bunx chrome-devtools --no-usage-statistics --no-performance-crux` for CDP.
+  approval, load the `browser` skill.
 - When browser automation is approved for a visual or interaction change,
   capture a targeted screenshot after the relevant interaction.
 
