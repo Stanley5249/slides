@@ -53,6 +53,13 @@
         }
       }
     },
+    "YAML": {
+      "formatter": {
+        "language_server": {
+          "name": "oxfmt"
+        }
+      }
+    },
     "Markdown": {
       "formatter": {
         "language_server": {
