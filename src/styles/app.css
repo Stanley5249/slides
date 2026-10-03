@@ -20,6 +20,7 @@
 
 @import "./theme.css" layer(presentation);
 @import "./overrides.css";
+@import "./chrome.css";
 @import "./layouts.css";
 @import "./archetypes.css";
 

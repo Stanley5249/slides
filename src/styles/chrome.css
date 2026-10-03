@@ -1,0 +1,60 @@
+/* ---------------------------------------------------------------------------
+   Reveal chrome
+
+   A quiet progress rule, slide number, and arrows. Reveal keeps everything else,
+   including the navigation itself: the arrows here are recolored, never
+   replaced. These sit outside the scaled stage, so their sizes are real pixels,
+   and all three tie with a rule in reveal.css, hence the extra class on each.
+   Deliberately unlayered to override reveal.css rules directly.
+   --------------------------------------------------------------------------- */
+
+/* Reveal colors the filled part from `color` and leaves the track a hardcoded
+   black at 20%, which is invisible on a dark flavor. */
+.reveal-viewport .reveal .progress {
+  color: var(--deck-rule-strong);
+  background-color: var(--deck-rule);
+}
+
+/* Reveal recolors the arrows once it decides the background is light or dark,
+   which is a class further than the first selector here reaches. */
+.reveal-viewport .reveal .controls,
+.reveal-viewport
+  .reveal:is(.has-light-background, .has-dark-background)
+  .controls {
+  color: var(--deck-mark);
+}
+
+.reveal-viewport .reveal .controls .enabled:hover,
+.reveal-viewport .reveal .controls .enabled.fragmented:hover {
+  color: var(--deck-link);
+}
+
+/* Bottom right belongs to the arrows, so the counter takes the opposite corner.
+   Reveal builds it out of links when history is on, and it is a readout rather
+   than somewhere to go. It is set in the body face with figures of one width,
+   so it reads as a number rather than as code and does not jitter as it
+   counts. */
+.reveal-viewport .reveal .slide-number,
+.reveal-viewport .reveal .slide-number a {
+  right: auto;
+  left: var(--deck-gap-tight);
+  bottom: var(--deck-gap-tight);
+  padding: 0;
+  color: var(--deck-ink-quiet);
+  font-size: var(--deck-text-label);
+  font-family: var(--r-main-font), sans-serif;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  background: none;
+}
+
+/* Reveal writes the parts of "3.2" with whitespace between them and pads the
+   dot with a margin. A flex row drops the whitespace, and the margin goes, so
+   the readout sets as one number. */
+.reveal-viewport .reveal .slide-number a {
+  display: inline-flex;
+}
+
+.reveal-viewport .reveal .slide-number-delimiter {
+  margin: 0;
+}
