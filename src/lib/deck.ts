@@ -1,12 +1,19 @@
 import { title as templateTitle } from "../template/deck";
 
-// Deck branches add content without replacing files maintained on main.
-const slides = import.meta.glob("/src/slides/*/slide.svelte");
-const metadata = import.meta.glob<{ title: string }>("/src/slides/deck.ts", {
-  eager: true,
-});
+// Deck branches select their content explicitly and keep the examples intact.
+export const source = "template" as "template" | "deck";
+const metadata = import.meta.glob<{ title: string } | undefined>(
+  "/src/slides/deck.ts",
+  {
+    eager: true,
+  },
+);
 
-export const hasDeck = Object.keys(slides).length > 0;
-export const title = hasDeck
-  ? (Object.values(metadata).at(0)?.title ?? "Presentation")
-  : templateTitle;
+export const title = (() => {
+  if (source === "template") return templateTitle;
+  const deckTitle = metadata["/src/slides/deck.ts"]?.title;
+  if (!deckTitle) {
+    throw new Error("Deck source requires a title in src/slides/deck.ts.");
+  }
+  return deckTitle;
+})();

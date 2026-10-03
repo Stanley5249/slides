@@ -24,10 +24,10 @@ See the [`justfile`](justfile) for more commands.
 
 Template examples live in `src/template/slides/`. On a local
 `deck/<group>/<name>` branch, add numbered `src/slides/<number>/slide.svelte`
-files and export `title` from `src/slides/deck.ts`. Deck content replaces the
-examples automatically; do not delete or edit the examples to create a talk.
-Keep shared components, styles, and routes on `main`. To update a deck, rebase
-its branch on `main`, then run `just ci`.
+files, export `title` from `src/slides/deck.ts`, and set `source` to `"deck"` in
+`src/lib/deck.ts`. Keep the examples intact; `"template"` selects them. Keep
+shared components, styles, and routes on `main`. To update a deck, rebase its
+branch on `main`, then run `just ci`.
 
 ## Reference
 

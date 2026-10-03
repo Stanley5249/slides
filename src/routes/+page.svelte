@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Presentation, Slides } from "@animotion/core";
   import { prefersReducedMotion } from "svelte/motion";
-  import { hasDeck } from "$lib/deck";
+  import { source } from "$lib/deck";
   import TemplateSlides from "../template/Slides.svelte";
 </script>
 
@@ -25,7 +25,7 @@
   }}
   plugins={{ notes: true }}
 >
-  {#if hasDeck}
+  {#if source === "deck"}
     <Slides />
   {:else}
     <TemplateSlides />
