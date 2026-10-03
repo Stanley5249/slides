@@ -4,8 +4,10 @@
 ink and the icon carries the link color, so the link reads as text first. With
 an icon, the label gains an underline only on hover or keyboard focus, because
 the icon already marks it. Without one, nothing else marks the link, so the
-underline stays. A web address opens in another tab, so the deck stays on the
-slide the presenter was showing.
+underline stays. `Link` opens HTTP(S) addresses in another tab. The shared
+presentation layer also opens external HTTP(S) links in another tab, including
+plain anchors and linked images. Same-origin links and page anchors keep their
+normal behavior; an explicit `target` overrides the shared default.
 
 ## Usage
 
