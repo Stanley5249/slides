@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Notes } from "@animotion/core";
   import { GitHubMark, Link } from "$lib";
-  import { title } from "../deck";
+  import { title } from "../../deck";
 </script>
 
 <h1>{title}</h1>

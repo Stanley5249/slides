@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
-  import { title } from "../slides/deck";
+  import { title } from "$lib/deck";
   import "../styles/app.css";
 
   let { children }: { children: Snippet } = $props();
