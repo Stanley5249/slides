@@ -9,21 +9,24 @@
         "language_server": {
           "name": "oxfmt"
         }
-      }
+      },
+      "language_servers": ["!oxlint", "..."]
     },
     "TypeScript": {
       "formatter": {
         "language_server": {
           "name": "oxfmt"
         }
-      }
+      },
+      "language_servers": ["!oxlint", "..."]
     },
     "Svelte": {
       "formatter": {
         "language_server": {
           "name": "oxfmt"
         }
-      }
+      },
+      "language_servers": ["!oxlint", "..."]
     },
     "JSON": {
       "formatter": {
