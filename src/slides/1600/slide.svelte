@@ -8,5 +8,5 @@
 
 <div class="row">
   <h2>Evidence</h2>
-  <p>Diagrams, screenshots, and live sites show what the words claim.</p>
+  <p>Diagrams, screenshots, and pictures show what the words claim.</p>
 </div>

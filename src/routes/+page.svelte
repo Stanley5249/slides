@@ -20,10 +20,6 @@
     // browser.
     transition: prefersReducedMotion.current ? "none" : "fade",
     transitionSpeed: "fast",
-    // A background iframe is otherwise only fetched on the way into its slide,
-    // so opening the deck straight at one shows an empty stage. A talk wants
-    // the site warm before the presenter arrives either way.
-    preloadIframes: true,
   }}
   plugins={{ notes: true }}
 >

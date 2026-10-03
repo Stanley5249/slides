@@ -9,6 +9,6 @@
     <strong>Code and motion</strong>: source, walkthroughs, and reordering.
   </li>
   <li>
-    <strong>Evidence</strong>: diagrams, screenshots, pictures, and live sites.
+    <strong>Evidence</strong>: diagrams, screenshots, and pictures.
   </li>
 </ol>
