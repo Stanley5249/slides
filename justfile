@@ -6,30 +6,34 @@ set shell := ["pwsh", "-NoLogo", "-NoProfile", "-Command"]
 set default-list
 
 # Install dependencies
-install:
-    bun install
+install *args:
+    bun install {{ args }}
 
 # Run the development server
-dev:
-    bun run vite dev
+dev *args:
+    bun run vite dev {{ args }}
 
 # Build the presentation
-build:
-    bun run vite build
+build *args:
+    bun run vite build {{ args }}
 
 # Serve the built presentation
 prod: build
     bun run build/index.js
 
 # Format every source file, this justfile included
-fmt:
-    bun run oxfmt
-    just --fmt
+[parallel]
+fmt: _fmt-oxfmt _fmt-just
 
 # Verify formatting, this justfile included
-fmt-check:
-    bun run oxfmt --check
-    just --fmt --check
+[parallel]
+fmt-check: (_fmt-oxfmt "--check") (_fmt-just "--check")
+
+_fmt-oxfmt *args:
+    bun run oxfmt {{ args }}
+
+_fmt-just *args:
+    just --fmt {{ args }}
 
 # Check that every embedded site allows a frame
 embeds: build
@@ -40,30 +44,26 @@ _sync:
     bun run svelte-kit sync
 
 # Check types and Svelte diagnostics
-typecheck: _sync
-    bun run svelte-check --incremental
+typecheck *args: _sync
+    bun run svelte-check --incremental {{ args }}
 
 # Report bugs and smells, warnings included
-lint: _sync
-    bun run eslint --cache --cache-strategy content --cache-location .svelte-kit/eslint/ --max-warnings 0
+lint *args: _sync
+    bun run eslint --cache --cache-strategy content --cache-location .svelte-kit/eslint/ --max-warnings 0 {{ args }}
 
 # The fast local gate
 [parallel]
 check: typecheck lint
 
 # Remove build output
-[unix]
-clean:
-    rm -rf build .svelte-kit
-
-# Remove build output
+[confirm("Delete build/ and .svelte-kit/?")]
 [windows]
 clean:
     Remove-Item -Recurse -Force -ErrorAction Ignore build, .svelte-kit
 
 # Install exactly what the lockfile records, and fail if it disagrees
 lock-check:
-    bun install --frozen-lockfile
+    bun install --frozen-lockfile --silent
 
 # Run independent CI checks concurrently
 [parallel]
