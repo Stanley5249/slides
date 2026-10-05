@@ -20,8 +20,7 @@ cannot account for the projector or the room.
 
 The server hook writes the selected flavor class on `<html>`. Catppuccin defines
 its palette on `:root`, so placing the class lower in the document would leave
-root-level custom properties on another flavor. The same flavor constant selects
-the Shiki theme and supplies the colors Mermaid reads.
+root-level custom properties on another flavor.
 
 ## Color roles
 
@@ -70,9 +69,8 @@ primary for lavender, which carries a title on a dark canvas better than mauve.
 Latte is used as shipped, not darkened. Against its base, mauve measures 4.79
 and peach 2.64, which is under the 3:1 WCAG asks of large text. Peach therefore
 only marks words that also carry weight. Ink, marks and rules carry the reading
-in every flavor, so an accent is never the only thing saying what a slide says.
-Check a latte deck on the projector before a talk and take a dark flavor if the
-room defeats it.
+in every flavor. Check a latte deck on the projector before a talk and take a
+dark flavor if the room defeats it.
 
 A component that reports status sets `data-tone`. The deck maps that attribute
 to the appropriate semantic role.
@@ -87,10 +85,10 @@ the scales in `src/styles/overrides.css`.
 
 ### Reason
 
-Each face has one responsibility. Atkinson was drawn for low vision readers, and
-its monospace shares the prose face's proportions, so an identifier sits in a
-line of prose at its height. A short type and spacing scale keeps slides
-consistent and prevents local adjustments from becoming a second design system.
+Atkinson was drawn for low vision readers, and its monospace shares the prose
+face's proportions, so an identifier sits in a line of prose at its height. A
+short type and spacing scale keeps slides consistent and prevents local
+adjustments from becoming a second design system.
 
 ### Implementation
 
@@ -137,8 +135,8 @@ class to center its content in the room under the title instead. Gaps belong to
 `row` and `cols`, not to individual children. Content that is shorter than its
 area leaves empty space below it instead of stretching tables or diagrams.
 
-A listing taller than the stage uses `CodeBlock` from `$lib`. It wraps long
-lines and scrolls inside its own area, so one listing stays on one slide.
+A listing taller than the stage uses `CodeBlock` from `$lib`, which wraps long
+lines and scrolls inside its own area, so the listing stays on one slide.
 
 ## Archetypes
 
@@ -232,13 +230,14 @@ a duration when more than one part of an animation uses it, and record why that
 duration was chosen beside the value.
 
 Reveal shows fragments in document order, and an `Action` is a fragment too. An
-element that must appear after a later step reads that step's state and toggles
-`invisible`, instead of taking `fragment` and arriving before the step.
+element that must appear after a later step toggles `invisible` from that step's
+state instead of taking `fragment`, which would show it before the step.
 
-`Code` drops an update that arrives before its highlighter loads, which happens
-when a stepped slide opens from a URL and Reveal replays its steps at once. Pass
-the current step's source as `code`, so the first render already shows that
-step.
+`Code` ignores `update` until its highlighter has loaded. Opening a stepped
+slide from a URL or a reload can run its actions before then, so the step
+advances while the code stays on its first state. The first render reads the
+`code` prop after the highlighter loads, so pass the current step's source as
+`code`.
 
 ## Accessibility
 
@@ -272,8 +271,8 @@ runtime.
 
 ### Shiki
 
-`codeTheme` in `src/lib/theme.ts` derives the Shiki theme from the deck flavor.
-Code blocks therefore match the selected light or dark presentation.
+`codeTheme` in `src/lib/theme.ts` derives the Shiki theme from the same flavor
+constant that selects the deck's palette, so code blocks match the deck.
 
 An excerpt from a real file may be trimmed so the room can read it. The slide's
 notes say what was left out, so the presenter can answer for the full source.
