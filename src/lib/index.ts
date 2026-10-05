@@ -1,3 +1,4 @@
+export { default as CodeBlock } from "./components/CodeBlock.svelte";
 export { default as GitHubMark } from "./components/GitHubMark.svelte";
 export { default as Link } from "./components/Link.svelte";
 export { default as Mermaid } from "./components/Mermaid.svelte";
