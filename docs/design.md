@@ -235,6 +235,11 @@ Reveal shows fragments in document order, and an `Action` is a fragment too. An
 element that must appear after a later step reads that step's state and toggles
 `invisible`, instead of taking `fragment` and arriving before the step.
 
+`Code` drops an update that arrives before its highlighter loads, which happens
+when a stepped slide opens from a URL and Reveal replays its steps at once. Pass
+the current step's source as `code`, so the first render already shows that
+step.
+
 ## Accessibility
 
 ### Rule
