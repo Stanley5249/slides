@@ -109,6 +109,9 @@ a `cols` variant for two columns, and an `ol` with `steps` for a process whose
 order matters. Split a four-cell comparison across slides when the cells do not
 have an obvious reading order.
 
+When content does not fit, trim words and blank lines first, then move the rest
+to a vertical child slide. Never shrink the type to make room.
+
 ```text
 +----------------------------------------------------+
 | Title                                              |
@@ -133,6 +136,9 @@ sparse slide, such as a figure beside a short paragraph, takes the `middle`
 class to center its content in the room under the title instead. Gaps belong to
 `row` and `cols`, not to individual children. Content that is shorter than its
 area leaves empty space below it instead of stretching tables or diagrams.
+
+A listing taller than the stage uses `CodeBlock` from `$lib`. It wraps long
+lines and scrolls inside its own area, so one listing stays on one slide.
 
 ## Archetypes
 
@@ -211,7 +217,8 @@ and the complete error message instead of leaving an empty area.
 
 Motion starts with a presenter action and explains one state change. Use an
 immediate undo when replaying the change backward adds no information. Respect
-`prefers-reduced-motion`.
+`prefers-reduced-motion`. An element that appears as part of a step holds its
+space while hidden, so its arrival does not move the content around it.
 
 ### Reason
 
@@ -223,6 +230,10 @@ back delays navigation without adding information.
 Reveal owns slide navigation. Animotion owns actions and view transitions. Name
 a duration when more than one part of an animation uses it, and record why that
 duration was chosen beside the value.
+
+Reveal shows fragments in document order, and an `Action` is a fragment too. An
+element that must appear after a later step reads that step's state and toggles
+`invisible`, instead of taking `fragment` and arriving before the step.
 
 ## Accessibility
 
@@ -258,6 +269,9 @@ runtime.
 
 `codeTheme` in `src/lib/theme.ts` derives the Shiki theme from the deck flavor.
 Code blocks therefore match the selected light or dark presentation.
+
+An excerpt from a real file may be trimmed so the room can read it. The slide's
+notes say what was left out, so the presenter can answer for the full source.
 
 ### Screenshots
 
