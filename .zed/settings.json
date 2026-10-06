@@ -1,4 +1,10 @@
 {
+  "file_scan_exclusions": [
+    "...",
+    "**/node_modules",
+    "**/.svelte-kit",
+    "**/build"
+  ],
   "prettier": {
     "allowed": false
   },
