@@ -29,6 +29,12 @@ files, export `title` from `src/slides/deck.ts`, and set `source` to `"deck"` in
 shared components, styles, and routes on `main`. To update a deck, rebase its
 branch on `main`, then run `just ci`.
 
+## Export a PDF
+
+1. Start the development server with `just dev`.
+2. Open <http://localhost:5173/?print-pdf> in Chrome or Edge.
+3. Print with `Ctrl+P`, turn on background graphics, and save as PDF.
+
 ## Reference
 
 - [Design guidance](docs/design.md)
