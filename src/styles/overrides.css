@@ -146,8 +146,10 @@ html.reveal-print .reveal .slides section:not(.stack) {
 
 /* The title slide is the only one with nothing to fill. It carries the same
    `:not(.stack)` as the frame above so the two weigh the same and this one,
-   being later, wins the row template. */
-.reveal .slides > section:first-child:not(.stack) {
+   being later, wins the row template. Print wraps every slide in a `.pdf-page`
+   after a leading stack, so there the title slide is inside the first page. */
+.reveal .slides > section:first-child:not(.stack),
+.reveal .slides > .pdf-page:first-of-type > section:not(.stack) {
   grid-template-rows: none;
   align-content: center;
 }
