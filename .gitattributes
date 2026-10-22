@@ -7,4 +7,4 @@
 *.webp binary
 *.svg text
 
-bun.lock merge=binary linguist-generated=true -diff
+bun.lock merge=binary linguist-language=JSON linguist-generated=true -diff
