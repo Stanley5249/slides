@@ -232,11 +232,10 @@ html.reveal-print .reveal .slides section:not(.stack) {
   word-break: break-word;
 }
 
-/* Inline only. The face alone barely parts an identifier from italics in
-   the same family, so it also sits on the panel surface, one step off the
-   canvas. A block needs no plate: its lines and highlighting already say
-   code, and the plate would cost it width. Nothing upstream sets these on
-   an inline identifier, so the child selector carries enough weight. */
+/* The face alone barely parts an identifier from italics in the same family,
+   so it also sits on the code ground, one step off the canvas. Nothing
+   upstream sets these on an inline identifier, so the child selector carries
+   enough weight. Blocks take the same ground under Code below. */
 .reveal .slides :not(pre) > code {
   padding: 0.08em 0.28em;
   color: var(--deck-code);
@@ -399,10 +398,22 @@ html.reveal-print .reveal .slides section:not(.stack) {
    edge, so this one does too. Its 0.55em would be 13px on this stage, so the
    block is set at the content size instead, which still fits about 70
    characters across the stage.
+
+   A block sits on the code ground that inline code uses, so code reads as one
+   kind of thing and a listing beside prose keeps its own edge from across the
+   room. The padding is narrow because the plate costs the block width.
    --------------------------------------------------------------------------- */
 
 .reveal .slides pre {
   margin-inline: 0;
   font-size: 1em;
   line-height: 1.5;
+}
+
+/* Shiki writes the theme's canvas color inline on the container unless a slide
+   turns `containerStyle` off, so only an important rule shows the ground. */
+.reveal .slides pre.shiki-magic-move-container {
+  padding: 0.5em 0.75em;
+  background: var(--deck-code-ground) !important;
+  border-radius: 0.5rem;
 }

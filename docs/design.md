@@ -29,25 +29,25 @@ root-level custom properties on another flavor.
 Components use semantic roles from `src/styles/theme.css`. They do not use
 Catppuccin palette tokens directly.
 
-| Role                                     | Use                                     |
-| ---------------------------------------- | --------------------------------------- |
-| `--deck-canvas`                          | Slide background                        |
-| `--deck-panel`                           | Dialogs and error reports               |
-| `--deck-veil`                            | Modal backdrop                          |
-| `--deck-hover`                           | Interactive hover state                 |
-| `--deck-scrim`                           | Words set over a full-bleed picture     |
-| `--deck-ink`                             | Body text and table values              |
-| `--deck-ink-quiet`                       | Captions, list markers, slide counter   |
-| `--deck-mark`                            | Bullets, chevrons, and diagram lines    |
-| `--deck-rule`, `--deck-rule-strong`      | Separators and table structure          |
-| `--deck-primary`, `--deck-secondary`     | The two accents styles draw from        |
-| `--deck-heading`                         | Slide titles                            |
-| `--deck-icon`                            | Icons beside words                      |
-| `--deck-link`                            | Links and the current state             |
-| `--deck-strong`, `--deck-em`             | Emphasis in prose                       |
-| `--deck-code`, `--deck-code-ground`      | Inline identifiers and their plate      |
-| `--deck-focus`                           | Focus ring                              |
-| `--deck-ok`, `--deck-warn`, `--deck-bad` | Meaning attached to the underlying data |
+| Role                                     | Use                                       |
+| ---------------------------------------- | ----------------------------------------- |
+| `--deck-canvas`                          | Slide background                          |
+| `--deck-panel`                           | Dialogs and error reports                 |
+| `--deck-veil`                            | Modal backdrop                            |
+| `--deck-hover`                           | Interactive hover state                   |
+| `--deck-scrim`                           | Words set over a full-bleed picture       |
+| `--deck-ink`                             | Body text and table values                |
+| `--deck-ink-quiet`                       | Captions, list markers, slide counter     |
+| `--deck-mark`                            | Bullets, chevrons, and diagram lines      |
+| `--deck-rule`, `--deck-rule-strong`      | Separators and table structure            |
+| `--deck-primary`, `--deck-secondary`     | The two accents styles draw from          |
+| `--deck-heading`                         | Slide titles                              |
+| `--deck-icon`                            | Icons beside words                        |
+| `--deck-link`                            | Links and the current state               |
+| `--deck-strong`, `--deck-em`             | Emphasis in prose                         |
+| `--deck-code`, `--deck-code-ground`      | Code, inline and in blocks, and its plate |
+| `--deck-focus`                           | Focus ring                                |
+| `--deck-ok`, `--deck-warn`, `--deck-bad` | Meaning attached to the underlying data   |
 
 ### Reason
 
@@ -91,9 +91,9 @@ adjustments from becoming a second design system.
 
 Reveal renders a fixed stage and scales it to the window, so stage pixels remain
 proportional when projected. Titles and prose use limited line widths to reduce
-eye movement across a wide screen. Inline identifiers sit on a panel-colored
-plate, because a monospace from the prose family is hard to tell from italics.
-Code blocks take no plate: their lines and highlighting already say code.
+eye movement across a wide screen. Inline identifiers and code blocks sit on the
+same `--deck-code-ground` plate. A monospace from the prose family is hard to
+tell from italics, and a plated block keeps its edge beside prose.
 
 ## Layout
 
