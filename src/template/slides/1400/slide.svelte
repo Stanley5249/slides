@@ -13,6 +13,9 @@
   import { codeTheme } from "#lib/theme.ts";
 
   let code: ReturnType<typeof Code>;
+  // The first render reads this, so a slide opened from a URL starts on the
+  // step Reveal replayed to, which `update` drops before the highlighter loads.
+  let current = $state(0);
   // A spring keeps its speed when the target moves, so a step taken while the
   // dot is still travelling turns it in flight instead of stopping it first.
   const dot = new Spring(0, { stiffness: 0.1, damping: 0.85 });
@@ -52,6 +55,7 @@
   // The listing and the dot start together, so the line and what it does
   // arrive as one. The listing selects only once its new line exists.
   function show(step: number) {
+    current = step;
     const { source, lines, x } = steps[step];
     return Promise.all([
       code.update`${source}`.then(() => code.selectLines`${lines}`),
@@ -75,7 +79,7 @@
       bind:this={code}
       lang="ts"
       theme={codeTheme}
-      code={steps[0].source}
+      code={steps[current].source}
       options={{
         duration: 600,
         stagger: 0.3,
