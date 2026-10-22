@@ -10,10 +10,9 @@
       for (const link of document.querySelectorAll<HTMLAnchorElement>(
         ".reveal .slides a[href]:not([target]):not([download])",
       )) {
-        const url = new URL(link.href);
         if (
-          (url.protocol === "https:" || url.protocol === "http:") &&
-          url.origin !== location.origin
+          (link.protocol === "https:" || link.protocol === "http:") &&
+          link.origin !== location.origin
         ) {
           link.target = "_blank";
           link.relList.add("noopener");

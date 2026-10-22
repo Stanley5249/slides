@@ -20,8 +20,8 @@
    does contest them is `reveal.css`, which is unlayered: a layered rule loses
    to it at any specificity. That is why this file is unlayered too.
 
-   Four selectors here reach the same weight as one in `reveal.css`, and a tie
-   is settled by whichever stylesheet the bundler puts last. Those four carry an
+   Two selectors here reach the same weight as one in `reveal.css`, and a tie
+   is settled by whichever stylesheet the bundler puts last. Those two carry an
    extra `.reveal-viewport` to win outright, and say so. Everything else needs
    only `.reveal .slides`.
 

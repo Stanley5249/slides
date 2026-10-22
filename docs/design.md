@@ -37,7 +37,7 @@ Catppuccin palette tokens directly.
 | `--deck-hover`                           | Interactive hover state                 |
 | `--deck-scrim`                           | Words set over a full-bleed picture     |
 | `--deck-ink`                             | Body text and table values              |
-| `--deck-ink-quiet`                       | Captions, table headings, slide counter |
+| `--deck-ink-quiet`                       | Captions, list markers, slide counter   |
 | `--deck-mark`                            | Bullets, chevrons, and diagram lines    |
 | `--deck-rule`, `--deck-rule-strong`      | Separators and table structure          |
 | `--deck-primary`, `--deck-secondary`     | The two accents styles draw from        |
@@ -71,9 +71,6 @@ and peach 2.64, which is under the 3:1 WCAG asks of large text. Peach therefore
 only marks words that also carry weight. Ink, marks and rules carry the reading
 in every flavor. Check a latte deck on the projector before a talk and take a
 dark flavor if the room defeats it.
-
-A component that reports status sets `data-tone`. The deck maps that attribute
-to the appropriate semantic role.
 
 ## Typography
 
