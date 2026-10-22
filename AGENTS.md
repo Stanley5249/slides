@@ -24,8 +24,7 @@
 
 ## Dependencies
 
-- Choose `svelte-adapter-bun` over `@sveltejs/adapter-bun` for the standalone
-  Bun server.
+- Use `@sveltejs/adapter-bun` for the standalone Bun server.
 - Prefer Bits UI for accessible interactive primitives and `lucide-svelte` for
   interface icons.
 
