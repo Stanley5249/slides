@@ -13,7 +13,7 @@ normal behavior; an explicit `target` overrides the shared default.
 
 ```svelte
 <script lang="ts">
-  import { GitHubMark, Link } from "$lib";
+  import { GitHubMark, Link } from "#lib";
   import BookOpen from "lucide-svelte/icons/book-open";
 </script>
 

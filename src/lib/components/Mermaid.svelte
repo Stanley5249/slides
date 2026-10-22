@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
+  import { browser } from "$app/env";
   import { getPresentation } from "@animotion/core";
   import { tick } from "svelte";
   import Check from "lucide-svelte/icons/check";
   import Copy from "lucide-svelte/icons/copy";
   import Workflow from "lucide-svelte/icons/workflow";
-  import Zoom from "$lib/components/Zoom.svelte";
-  import { renderMermaid } from "$lib/mermaid";
+  import Zoom from "#lib/components/Zoom.svelte";
+  import { renderMermaid } from "#lib/mermaid.ts";
 
   type Props = {
     code: string;

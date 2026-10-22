@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import staticAdapter from "@sveltejs/adapter-static";
 import { sveltekit } from "@sveltejs/kit/vite";
-import bunAdapter from "svelte-adapter-bun";
+import bunAdapter from "@sveltejs/adapter-bun";
 
 const pages = process.env.GITHUB_PAGES === "true";
 const base = (process.env.BASE_PATH ?? "") as "" | `/${string}`;
@@ -13,14 +13,6 @@ export default defineConfig({
     sveltekit({
       adapter: pages ? staticAdapter() : bunAdapter(),
       paths: { base },
-      typescript: {
-        // Tooling under scripts/ is TypeScript too, and type-aware lint needs
-        // it in the program SvelteKit generates.
-        config: (config) => ({
-          ...config,
-          include: [...(config.include as string[]), "../scripts/**/*.ts"],
-        }),
-      },
       prerender: {
         handleHttpError: ({ path, message }) => {
           // This missing file deliberately demonstrates Shot's failure state.

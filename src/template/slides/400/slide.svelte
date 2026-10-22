@@ -1,6 +1,6 @@
 <script lang="ts">
   import BookOpen from "lucide-svelte/icons/book-open";
-  import { Link } from "$lib";
+  import { Link } from "#lib";
 </script>
 
 <h2>Mark a word by what it does</h2>

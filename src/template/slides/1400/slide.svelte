@@ -9,8 +9,8 @@
 <script lang="ts">
   import { Spring } from "svelte/motion";
   import { Action, Code } from "@animotion/core";
-  import { restart } from "$lib/restart";
-  import { codeTheme } from "$lib/theme";
+  import { restart } from "#lib/restart.ts";
+  import { codeTheme } from "#lib/theme.ts";
 
   let code: ReturnType<typeof Code>;
   // A spring keeps its speed when the target moves, so a step taken while the

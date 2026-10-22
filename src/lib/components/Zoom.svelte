@@ -5,8 +5,8 @@
   import Plus from "lucide-svelte/icons/plus";
   import RotateCcw from "lucide-svelte/icons/rotate-ccw";
   import X from "lucide-svelte/icons/x";
-  import { Camera, panKeys } from "$lib/camera.svelte";
-  import { dismissable } from "$lib/dismissable";
+  import { Camera, panKeys } from "#lib/camera.svelte.ts";
+  import { dismissable } from "#lib/dismissable.ts";
 
   type Props = {
     label?: string;

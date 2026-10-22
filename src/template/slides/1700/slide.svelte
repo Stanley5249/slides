@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Slide } from "@animotion/core";
-  import { Mermaid } from "$lib";
+  import { Mermaid } from "#lib";
 
   const workflow = `flowchart LR
 		Write[Write slides] --> Check[just ci]

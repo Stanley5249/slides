@@ -7,7 +7,7 @@ and draws a labelled slot in its place when the file is not there.
 
 ```svelte
 <script lang="ts">
-  import { Shot } from "$lib";
+  import { Shot } from "#lib";
 </script>
 
 <Shot

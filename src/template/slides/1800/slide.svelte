@@ -1,7 +1,12 @@
 <script lang="ts">
   import { asset } from "$app/paths";
   import { Slide } from "@animotion/core";
-  import { Shot } from "$lib";
+  import { Shot } from "#lib";
+
+  // The file is absent on purpose to show the missing state, and `asset` only
+  // accepts files that exist under static/.
+  // @ts-expect-error -- deliberately missing asset
+  const missing = asset("not-written-yet.png");
 </script>
 
 <Slide class="middle">
@@ -19,7 +24,7 @@
     </div>
 
     <Shot
-      src={asset("/placeholder-window.svg")}
+      src={asset("placeholder-window.svg")}
       alt="An empty application window standing in for a screenshot"
       caption="Replace this with a capture of the app you are showing."
     />
@@ -30,10 +35,7 @@
   <h2>Show a missing screenshot</h2>
 
   <div class="cols">
-    <Shot
-      src={asset("/not-written-yet.png")}
-      alt="The screenshot for this slide"
-    />
+    <Shot src={missing} alt="The screenshot for this slide" />
 
     <div class="row">
       <p>

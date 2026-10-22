@@ -2,7 +2,7 @@
   import { flip } from "svelte/animate";
   import { prefersReducedMotion } from "svelte/motion";
   import { Action } from "@animotion/core";
-  import { restart } from "$lib/restart";
+  import { restart } from "#lib/restart.ts";
 
   // Each step is the whole order it shows, so any step can be shown from any
   // other, in either direction.

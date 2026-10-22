@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Code } from "@animotion/core";
   import type { ComponentProps } from "svelte";
-  import { codeTheme } from "$lib/theme";
+  import { codeTheme } from "#lib/theme.ts";
 
   let {
     lang,

@@ -1,5 +1,5 @@
-import type { Handle } from "@sveltejs/kit";
-import { flavor } from "$lib/theme";
+import type { Handle } from "@sveltejs/kit/hooks";
+import { flavor } from "#lib/theme.ts";
 
 /**
  * Writes the flavor onto `<html>` as the page is served.

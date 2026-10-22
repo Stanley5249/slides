@@ -8,7 +8,7 @@ block all work the same way.
 
 ```svelte
 <script lang="ts">
-  import { Zoom } from "$lib";
+  import { Zoom } from "#lib";
 </script>
 
 <Zoom label="Site map" class="mx-auto mt-16">

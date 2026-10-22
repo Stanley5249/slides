@@ -1,6 +1,6 @@
 <script lang="ts">
   import ImageOff from "lucide-svelte/icons/image-off";
-  import Zoom from "$lib/components/Zoom.svelte";
+  import Zoom from "#lib/components/Zoom.svelte";
   import type { Snippet } from "svelte";
 
   type Props = {

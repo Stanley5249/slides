@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Tex } from "$lib";
+  import { Tex } from "#lib";
 </script>
 
 <h2>Set math the way a paper would</h2>

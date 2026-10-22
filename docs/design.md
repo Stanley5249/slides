@@ -135,7 +135,7 @@ class to center its content in the room under the title instead. Gaps belong to
 `row` and `cols`, not to individual children. Content that is shorter than its
 area leaves empty space below it instead of stretching tables or diagrams.
 
-A listing taller than the stage uses `CodeBlock` from `$lib`, which wraps long
+A listing taller than the stage uses `CodeBlock` from `#lib`, which wraps long
 lines and scrolls inside its own area, so the listing stays on one slide.
 
 ## Archetypes

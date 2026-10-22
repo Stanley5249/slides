@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Code } from "@animotion/core";
-  import { codeTheme } from "$lib/theme";
+  import { codeTheme } from "#lib/theme.ts";
 
   // Written apart so the Svelte parser does not end this script at the string.
   const close = "</" + "script>";

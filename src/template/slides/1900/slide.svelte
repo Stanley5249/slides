@@ -4,7 +4,7 @@
 
   export const props = defineProps({
     class: "bleed",
-    image: asset("/earthrise.jpg"),
+    image: asset("earthrise.jpg"),
   });
 </script>
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Presentation, Slides } from "@animotion/core";
   import { prefersReducedMotion } from "svelte/motion";
-  import { source } from "$lib/deck";
+  import { source } from "#lib/deck.ts";
   import TemplateSlides from "../template/Slides.svelte";
 </script>
 

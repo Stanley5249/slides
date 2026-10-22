@@ -8,7 +8,7 @@ than from a CDN that a venue's network may block.
 
 ```svelte
 <script lang="ts">
-  import { Tex } from "$lib";
+  import { Tex } from "#lib";
 </script>
 
 <Tex display tex={String.raw`e^{i\pi} + 1 = 0`} />

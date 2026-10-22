@@ -8,7 +8,7 @@ Mermaid message in place, in a monospace panel with a copy button.
 
 ```svelte
 <script lang="ts">
-  import { Mermaid } from "$lib";
+  import { Mermaid } from "#lib";
 
   const diagram = `flowchart LR
 		Idea --> Build
