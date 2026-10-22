@@ -16,7 +16,7 @@
     "bun-types": "^1.4.3",
     "eslint": "^10.13.0",
     "eslint-plugin-svelte": "^3.23.1",
-    "oxfmt": "^0.70.0",
+    "oxfmt": "^0.74.0",
     "svelte": "^5.57.2",
     "svelte-check": "^4.7.7",
     "typescript": "^6.0.3",
