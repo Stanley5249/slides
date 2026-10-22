@@ -287,9 +287,9 @@ the contrast needed for projection instead of recoloring them in the deck.
 A live site goes one slide below an intro slide that links to it, so the room is
 told before the stage becomes someone else's page. Many sites refuse to load in
 a frame, and the browser shows its own error page without telling the deck. Run
-`just embeds` before a talk: it builds the deck and checks each embedded site's
-`X-Frame-Options` and `frame-ancestors` headers. The intro slide's link is the
-way out when a site still fails on the venue's network.
+`just check-embeds` before a talk: it builds the deck and checks each embedded
+site's `X-Frame-Options` and `frame-ancestors` headers. The intro slide's link
+is the way out when a site still fails on the venue's network.
 
 ## Ownership
 
