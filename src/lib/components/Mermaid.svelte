@@ -46,9 +46,12 @@
 
     void (async () => {
       try {
-        const svg = await renderMermaid(code, `mermaid-${instanceId}`);
+        const { svg, width } = await renderMermaid(
+          code,
+          `mermaid-${instanceId}`,
+        );
         if (render.cancelled) return;
-        renderState = { kind: "ready", svg, width: naturalWidth(svg) };
+        renderState = { kind: "ready", svg, width: `${width}px` };
       } catch (error) {
         if (render.cancelled) return;
         renderState = {
@@ -75,15 +78,7 @@
     };
   });
 
-  // Mermaid ships the SVG at width="100%", which has no definite basis in a shrink-to-fit parent and
-  // collapses every diagram to the same width. The viewBox carries the real one; max-content is the
-  // fallback because it fails visibly wide rather than invisibly narrow.
-  function naturalWidth(svg: string) {
-    const viewBoxWidth = Number(/viewBox="\S+ \S+ (\S+) /.exec(svg)?.[1]);
-    return viewBoxWidth > 0 ? `${viewBoxWidth}px` : "max-content";
-  }
-
-  // Mermaid's parser points at a fault with a line of dashes and a caret under
+  // The parser points at a fault with a line of dashes and a caret under
   // a line of source. Those two lines keep their columns and scroll sideways
   // together; every other line wraps to the slot.
   function messageLines(message: string) {
@@ -107,16 +102,16 @@
 {#if renderState.kind === "ready"}
   {@const { svg, width } = renderState}
   {#snippet plate(source: string, capped: boolean)}
-    <!-- The markup is an SVG Mermaid rendered under its strict security level,
-         from a diagram source the deck itself holds. -->
+    <!-- The markup is an SVG Pele rendered with its text escaped, from a
+         diagram source the deck itself holds. -->
     <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     <span class="diagram" class:capped style:width>{@html source}</span>
   {/snippet}
   <Zoom {label} class={className}>
     {@render plate(svg, true)}
     {#snippet zoomed()}
-      <!-- Its own ID namespace: two copies of one string would define the same marker IDs, and
-           every url(#id) in both would resolve to whichever came first. -->
+      <!-- Its own ID namespace: two copies of one string would define the same title and
+           description IDs, and the zoomed copy would be labelled by the preview's. -->
       {@render plate(
         svg.replaceAll(`mermaid-${instanceId}`, `mermaid-${instanceId}-zoom`),
         false,
@@ -127,7 +122,7 @@
   <div class={`slot failed ${className}`}>
     <div class="head">
       <Workflow size={20} strokeWidth={2} />
-      <p>Mermaid could not render this diagram</p>
+      <p>Could not render this diagram</p>
       <button
         type="button"
         class="copy"
@@ -148,7 +143,7 @@
     <pre
       class="message"
       tabindex="0"
-      aria-label="Mermaid error message"
+      aria-label="Diagram error message"
       data-prevent-swipe
       onkeydown={(event) =>
         event.stopPropagation()}>{#each messageLines(renderState.message) as line, i (i)}<span
@@ -171,6 +166,30 @@
   .capped {
     max-width: 100%;
     max-height: 24rem;
+  }
+
+  /* Pele reads its colors from these properties at paint time, so a diagram
+     is drawn in the deck's own roles and reads as part of the slide rather
+     than as a picture pasted onto it. */
+  .diagram {
+    --pele-bg: var(--deck-canvas);
+    --pele-fg: var(--deck-ink);
+    --pele-muted: var(--deck-ink-quiet);
+    --pele-line: var(--deck-mark);
+    --pele-surface: var(--deck-panel);
+    --pele-surface-alt: var(--deck-canvas);
+    --pele-border: var(--deck-rule-strong);
+    --pele-accent: var(--deck-focus);
+    --pele-error: var(--deck-bad);
+  }
+
+  /* Pele draws edges and borders at 1px, which a projector loses. */
+  .diagram :global(.pele-edge path:not(.pele-marker)) {
+    stroke-width: 2px;
+  }
+
+  .diagram :global(.pele-node :is(rect, polygon, circle, path)) {
+    stroke-width: 1.5px;
   }
 
   .diagram :global(svg) {
@@ -211,7 +230,7 @@
 
   /* The message scrolls past a few lines rather than growing the slot, and
      sideways only when the source line under the caret outruns the width.
-     A tab is one column to Mermaid when it places the caret, so it is one
+     A tab is one column to the parser when it places the caret, so it is one
      column here. Scoped under the slot so it outranks the deck's own
      `.reveal .slides pre`, which would otherwise set the line height. */
   .failed .message {

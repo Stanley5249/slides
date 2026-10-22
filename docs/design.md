@@ -268,9 +268,9 @@ behavior.
 
 ### Mermaid
 
-`src/lib/mermaid.ts` reads the current semantic color roles before each render.
-Existing diagrams are not redrawn because the deck flavor does not change at
-runtime.
+`Mermaid.svelte` maps the semantic color roles onto Pele's `--pele-*`
+properties, which the SVG resolves at paint time, so a diagram follows the deck
+flavor without a redraw.
 
 ### Shiki
 

@@ -29,8 +29,8 @@ panel when it does not.
 
 ## Notes
 
-Mermaid is loaded only in the browser, renders under strict security mode, and
-its renders are serialized. It is themed from the deck's role tokens, read live
-from the document, so a diagram is drawn in the deck's own colors.
+Diagrams are drawn by [Pele](https://pele.run), loaded only in the browser after
+the deck's fonts, because it measures labels to size nodes. Pele escapes label
+text, and its colors come from the deck's role tokens through CSS properties.
 
 One render feeds both the preview and the enlarged copy.

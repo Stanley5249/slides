@@ -370,14 +370,6 @@ html.reveal-print .reveal .slides section:not(.stack) {
   height: auto;
 }
 
-/* Mermaid sizes each node box from the label it measured at its own metrics, so
-   the label has to be handed back the font the box was laid out with. The
-   paragraph rule above would otherwise reach inside the SVG and reflow it. */
-.reveal .slides foreignObject p {
-  max-width: none;
-  font: inherit;
-}
-
 /* Centered under the picture it belongs to, not under the slide. The figure is
    sized to its content, so the caption centers on the subject rather than
    drifting off it. */

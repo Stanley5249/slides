@@ -25,8 +25,8 @@
   <div class="cols narrow-first">
     <div class="row">
       <p>
-        The diagram uses the same color roles as the surrounding slide. Mermaid
-        reads those roles from the document when it renders.
+        The diagram uses the same color roles as the surrounding slide, through
+        CSS properties the drawing reads as it paints.
       </p>
       <p>Select the diagram to inspect it in the viewer.</p>
     </div>
