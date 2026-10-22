@@ -24,8 +24,7 @@
   color: var(--deck-mark);
 }
 
-.reveal-viewport .reveal .controls .enabled:hover,
-.reveal-viewport .reveal .controls .enabled.fragmented:hover {
+.reveal-viewport .reveal .controls .enabled:hover {
   color: var(--deck-link);
 }
 
