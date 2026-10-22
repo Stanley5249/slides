@@ -24,20 +24,17 @@ jobs:
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: Set up Just
-        uses: extractions/setup-just@v4
-
       - name: Configure Pages
         uses: actions/configure-pages@v6
 
       - name: Install dependencies
-        run: just lock-check
+        run: bun install --frozen-lockfile
 
       - name: Build static site
         env:
           GITHUB_PAGES: "true"
           BASE_PATH: /${{ github.event.repository.name }}
-        run: just build
+        run: bun run --bun vite build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
