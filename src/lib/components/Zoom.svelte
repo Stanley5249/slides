@@ -43,7 +43,6 @@
     if (!dialog) return;
     open = true;
     dialog.showModal();
-    camera.smooth = false;
     await fitView();
   }
 
@@ -64,9 +63,6 @@
   }
 
   function handleKeydown(event: KeyboardEvent) {
-    // Reveal listens on document, so the deck must not navigate while the viewer is open.
-    event.stopPropagation();
-
     const pan = panKeys[event.key];
     if (
       event.ctrlKey &&
@@ -98,6 +94,7 @@
   bind:this={dialog}
   class="viewer"
   onclose={handleDialogClose}
+  // Reveal listens on document, so the deck must not navigate while the viewer is open.
   onkeydown={(event) => event.stopPropagation()}
   {@attach dismissable(".viewport, .canvas")}
 >
