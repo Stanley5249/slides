@@ -213,12 +213,14 @@ and the complete error message instead of leaving an empty area.
 Motion starts with a presenter action and explains one state change. Use an
 immediate undo when replaying the change backward adds no information. Respect
 `prefers-reduced-motion`. An element that appears as part of a step holds its
-space while hidden, so its arrival does not move the content around it.
+space while hidden, so its arrival does not move the content around it. A
+stepped listing carries a one-line caption that names what the step changes.
 
 ### Reason
 
 The presenter controls the speaking pace. Replaying an explanation while moving
-back delays navigation without adding information.
+back delays navigation without adding information. The caption tells the room
+what changed before it reads the code.
 
 ### Implementation
 
