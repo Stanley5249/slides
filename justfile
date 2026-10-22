@@ -64,6 +64,5 @@ clean:
 lock-check *args:
     bun install --frozen-lockfile --silent {{ args }}
 
-# `check-embeds` depends on `build` as well, and just runs a recipe once per call.
 # The gate a change has to pass
-ci: lock-check check build check-embeds
+ci: lock-check check check-embeds

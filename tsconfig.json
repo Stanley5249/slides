@@ -4,7 +4,6 @@
   // the program.
   "include": ["src", "scripts", "*"],
   "compilerOptions": {
-    "strict": true,
-    "skipLibCheck": true
+    "strict": true
   }
 }

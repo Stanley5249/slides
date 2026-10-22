@@ -17,15 +17,9 @@ export default defineConfig(
   tseslint.configs.stylisticTypeChecked,
   svelte.configs.recommended,
   {
-    // This config file is the only plain JavaScript in the project, and it is
-    // outside the TypeScript program.
-    files: ["**/*.js"],
-    extends: [tseslint.configs.disableTypeChecked],
-  },
-  {
     // Type-aware rules need a program. `projectService` finds it from
-    // tsconfig.json, which already includes the Svelte files.
-    files: ["**/*.ts", "**/*.svelte", "**/*.svelte.ts"],
+    // tsconfig.json, which already includes the Svelte files and this config.
+    files: ["**/*.js", "**/*.ts", "**/*.svelte", "**/*.svelte.ts"],
     languageOptions: {
       parserOptions: { projectService: true, extraFileExtensions: [".svelte"] },
     },
