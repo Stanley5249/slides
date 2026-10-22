@@ -104,6 +104,10 @@ a `cols` variant for two columns, and an `ol` with `steps` for a process whose
 order matters. Split a four-cell comparison across slides when the cells do not
 have an obvious reading order.
 
+Title a deck slide with a noun phrase that names its topic, and state the claim
+as a sentence in the content. The template's titles are imperatives instead,
+because each of its slides teaches a technique.
+
 When content does not fit, trim words and blank lines first, then move the rest
 to a vertical child slide. Never shrink the type to make room.
 
