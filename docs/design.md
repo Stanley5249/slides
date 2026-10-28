@@ -129,7 +129,7 @@ Build a slide from its content outward:
 4. For an interactive slide, write its state and the moves between states before drawing it. The drawing shows the current state and nothing else.
 5. Draw SVG only for real geometry, such as a chip floor plan or a timeline. Layout classes place everything else, labels and controls included.
 
-A slide's own `<style>` takes sizes and gaps from the scales and leaves placement to the layout classes. `just check-styles` flags a position, font size, gap, or column width that a slide chooses for itself.
+A slide's own `<style>` takes sizes and gaps from the scales and leaves placement to the layout classes. `just lint-styles` runs stylelint, which flags a position, font size, gap, or column width that a slide chooses for itself.
 
 ### Reason
 
@@ -137,7 +137,7 @@ The layout classes and scales make most layout decisions once, for every slide. 
 
 ### Implementation
 
-A declaration the check flags but the slide needs, such as a marker placed along an SVG track, takes a `/* check-styles: allow <reason> */` comment on its own line above the declaration or after it on the same line. Inline styles take no exception, so such a declaration moves into the `<style>` block. A deck that predates a rule records its debt with `just check-styles --update`, which writes `check-styles.baseline`, so only new violations fail. Each entry names its rule, so the same declaration added to another rule is new. An entry that no longer matches fails the check, so the baseline shrinks as slides are reworked.
+A declaration the check flags but the slide needs, such as a marker placed along an SVG track, takes a `stylelint-disable-next-line` comment that names the rule and gives the reason after `--`. A disable without a reason, or one that no longer excuses anything, fails the check.
 
 Borders, strokes, and the size of a drawing are not checked, because they measure the drawing and not the layout.
 

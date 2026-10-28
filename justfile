@@ -39,12 +39,8 @@ check-embeds *args: build
     bun run scripts/check-embeds.ts {{ args }}
 
 # Check that slide styles take the shared layout values
-check-styles *args:
-    bun run scripts/check-styles.ts {{ args }}
-
-# Run the tests
-test *args:
-    bun test {{ args }}
+lint-styles *args:
+    bun run stylelint "src/**/slides/**/*.{svelte,css}" {{ args }}
 
 # Synchronize generated SvelteKit types
 _sync:
@@ -60,7 +56,7 @@ lint *args: _sync
 
 # The fast local gate, format checks included
 [parallel]
-check: (_fmt-oxfmt "--check") (_fmt-just "--check") typecheck lint check-styles
+check: (_fmt-oxfmt "--check") (_fmt-just "--check") typecheck lint lint-styles
 
 # Remove build output
 [confirm("Delete build/ and .svelte-kit/?")]
@@ -73,4 +69,4 @@ lock-check *args:
     bun install --frozen-lockfile --silent {{ args }}
 
 # The gate a change has to pass
-ci: lock-check check test check-embeds
+ci: lock-check check check-embeds
