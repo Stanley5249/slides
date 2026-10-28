@@ -72,7 +72,7 @@ Reveal renders a fixed stage and scales it to the window, so stage pixels remain
 
 ### Rule
 
-A slide has a title followed by one content area. Use `column` for stacked content, a `cols` variant for two columns, and an `ol` with `steps` for a process whose order matters. Use `pairs` for names beside what they name, and `chain` for parts in one line with an arrow drawn between each two that connect. Split a four-cell comparison across slides when the cells do not have an obvious reading order.
+A slide has a title followed by one content area. Use `column` for stacked content, a `cols` variant for two columns, and an `ol` with `steps` for a process whose order matters. Use `pairs` for names beside what they name. Split a four-cell comparison across slides when the cells do not have an obvious reading order.
 
 Title a deck slide with a noun phrase that names its topic, and state the claim as a sentence in the content. The template's titles are imperatives instead, because each of its slides teaches a technique.
 
