@@ -183,6 +183,14 @@ html.reveal-print .reveal .slides section:not(.stack) {
   line-height: 1.1;
 }
 
+/* The caps count Latin letters, and a CJK glyph is about two of those wide,
+   so they would break most Chinese, Japanese, or Korean titles onto a second
+   line that the content then loses. Those titles take the slide's width, and
+   `text-wrap: balance` still evens out the ones that wrap. */
+.reveal .slides :is(h1, h2):is(:lang(zh), :lang(ja), :lang(ko)) {
+  max-width: none;
+}
+
 /* A label over one side of a comparison. It sits in the content tier, so the
    face and weight say "heading" and the size stays out of the title's way. */
 .reveal .slides h3 {
