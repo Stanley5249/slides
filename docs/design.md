@@ -137,7 +137,7 @@ The layout classes and scales make most layout decisions once, for every slide. 
 
 ### Implementation
 
-A declaration the check flags but the slide needs, such as a marker placed along an SVG track, takes a `/* check-styles: allow <reason> */` comment on its own line or the line above. A deck that predates a rule records its debt with `just check-styles --update`, which writes `check-styles.baseline`, so only new violations fail. Shrink the baseline as slides are reworked.
+A declaration the check flags but the slide needs, such as a marker placed along an SVG track, takes a `/* check-styles: allow <reason> */` comment on its own line above the declaration or after it on the same line. Inline styles take no exception, so such a declaration moves into the `<style>` block. A deck that predates a rule records its debt with `just check-styles --update`, which writes `check-styles.baseline`, so only new violations fail. Each entry names its rule, so the same declaration added to another rule is new. An entry that no longer matches fails the check, so the baseline shrinks as slides are reworked.
 
 Borders, strokes, and the size of a drawing are not checked, because they measure the drawing and not the layout.
 
