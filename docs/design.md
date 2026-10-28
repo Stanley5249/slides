@@ -139,6 +139,33 @@ area leaves empty space below it instead of stretching tables or diagrams.
 A listing taller than the stage uses `CodeBlock` from `#lib`, which wraps long
 lines and scrolls inside its own area, so the listing stays on one slide.
 
+## Slide text
+
+### Rule
+
+- Nothing sits between the title and the content area. A subtitle, a source
+  path, or an API version goes in the notes or in a code comment.
+- Label each element once, where it is drawn. Leave out sublabels that restate a
+  label, role suffixes on headers, and a legend for marks that can be labeled in
+  place.
+- Caveats go in the notes: what an excerpt leaves out, a version difference, or
+  that a diagram or timeline is illustrative rather than measured. Mark an
+  omission inside code with `// ...`.
+- Break a long call between its arguments by hand, so a listing never wraps
+  inside an identifier.
+
+### Reason
+
+The room reads every word on the stage as content. A caveat footer or a second
+label adds a text layer to the slide and takes reading time from its claim,
+while the presenter can say the caveat when it matters.
+
+### Implementation
+
+The style requirements in a deck's brief take precedence over the template
+examples. Check a finished slide by counting its text runs outside the title,
+the body, and the code: each one needs a reason the visual cannot give.
+
 ## Archetypes
 
 ### Rule
@@ -209,6 +236,31 @@ treatment should make that difference clear.
 Tables use horizontal rules only. Sequence markers and labels appear only when
 they communicate order or hierarchy. Rendering failures display a visible panel
 and the complete error message instead of leaving an empty area.
+
+An interactive viewer shows its state through its pressed control and its
+drawing. It takes no title row or instruction line of its own, and at most one
+line in caption style that names what the last step changed.
+
+## Diagrams
+
+### Rule
+
+A component that recurs across slides keeps one drawing, one tool, and one
+scale. Mute or leave out the parts that play no role in the slide's operation.
+Show an official figure only at a size where its text is legible, or crop it to
+the part the slide discusses.
+
+### Reason
+
+The room recognizes a component by its shape. Redrawing it in another tool or at
+another scale makes the room read it again as something new. A figure too small
+to read is decoration, not evidence.
+
+### Implementation
+
+Choose Mermaid or a Svelte SVG component for a concept once per deck. Draw a
+reused SVG component with props that mute its idle parts instead of copying it
+per slide.
 
 ## Motion
 
