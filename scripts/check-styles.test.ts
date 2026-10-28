@@ -58,3 +58,9 @@ test("a stylesheet is all declarations", () => {
   const sheet = ".actions {\n  gap: 10px;\n}\n";
   expect(check("deck.css", sheet).map(({ line }) => line)).toEqual([2]);
 });
+
+test("a trailing comment neither hides nor excuses a declaration", () => {
+  const sheet =
+    "a {\n  gap: 10px; /* tighter */\n  gap: 9px; /* check-styles: allow drawn */\n}\n";
+  expect(check("deck.css", sheet).map(({ line }) => line)).toEqual([2]);
+});

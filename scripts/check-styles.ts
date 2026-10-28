@@ -86,7 +86,8 @@ export function check(path: string, source: string) {
         ).flat();
 
     for (const candidate of candidates) {
-      const match = declaration.exec(candidate);
+      // A trailing comment would otherwise hide the declaration from the check.
+      const match = declaration.exec(candidate.replace(/\/\*.*?\*\//g, ""));
       if (!match) continue;
       const [, property, value] = match;
       const rule = rules.find((rule) => rule.test(property, value));
