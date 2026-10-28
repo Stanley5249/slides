@@ -1,8 +1,9 @@
 import type { Handle } from "@sveltejs/kit/hooks";
+import { lang } from "#lib/deck.ts";
 import { flavor } from "#lib/theme.ts";
 
 /**
- * Writes the flavor onto `<html>` as the page is served.
+ * Writes the deck language and the flavor onto `<html>` as the page is served.
  *
  * Catppuccin declares its palette against `:root`, which is `<html>` and nothing else. A flavor
  * class on `<body>` leaves every custom property that a stylesheet resolves at `:root` on a
@@ -11,8 +12,10 @@ import { flavor } from "#lib/theme.ts";
  *
  * Injecting it here rather than hardcoding it in `app.html` keeps `src/lib/theme.ts` the single
  * place a flavor is named, so the stylesheet, the code blocks and the diagrams cannot drift apart.
+ * The language comes from the deck metadata the same way, so a deck branch never edits `app.html`.
  */
 export const handle: Handle = async ({ event, resolve }) =>
   resolve(event, {
-    transformPageChunk: ({ html }) => html.replace("%deck.flavor%", flavor),
+    transformPageChunk: ({ html }) =>
+      html.replace("%deck.lang%", lang).replace("%deck.flavor%", flavor),
   });
