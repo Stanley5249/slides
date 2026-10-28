@@ -38,6 +38,15 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run svelte-kit sync
       - run: bun run eslint --max-warnings 0
+      - run: bun run scripts/check-styles.ts
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun test
 
   build:
     runs-on: ubuntu-latest

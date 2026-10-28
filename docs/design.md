@@ -171,6 +171,44 @@ The style requirements in a deck's brief take precedence over the template
 examples. Check a finished slide by counting its text runs outside the title,
 the body, and the code: each one needs a reason the visual cannot give.
 
+## Authoring order
+
+### Rule
+
+Build a slide from its content outward:
+
+1. Write the claim, and decide what the room must see to believe it. Supporting
+   detail goes in the notes.
+2. Pick the frame or archetype, then a layout class for the content area.
+3. Write plain elements inside it: headings, paragraphs, lists, tables, code,
+   and figures.
+4. For an interactive slide, write its state and the moves between states before
+   drawing it. The drawing shows the current state and nothing else.
+5. Draw SVG only for real geometry, such as a chip floor plan or a timeline.
+   Layout classes place everything else, labels and controls included.
+
+A slide's own `<style>` takes sizes and gaps from the scales and leaves
+placement to the layout classes. `just check-styles` flags a position, font
+size, gap, or column width that a slide chooses for itself.
+
+### Reason
+
+The layout classes and scales make most layout decisions once, for every slide.
+Each value a slide picks for itself is one more decision that can disagree with
+its neighbors, and slides drawn by different people or agents drift apart that
+way.
+
+### Implementation
+
+A declaration the check flags but the slide needs, such as a marker placed along
+an SVG track, takes a `/* check-styles: allow <reason> */` comment on its own
+line or the line above. A deck that predates a rule records its debt with
+`just check-styles --update`, which writes `check-styles.baseline`, so only new
+violations fail. Shrink the baseline as slides are reworked.
+
+Borders, strokes, and the size of a drawing are not checked, because they
+measure the drawing and not the layout.
+
 ## Archetypes
 
 ### Rule
