@@ -93,6 +93,51 @@
 }
 
 /* ---------------------------------------------------------------------------
+   Pairs
+
+   Names beside what they name, such as a role beside its code or a layer
+   beside its parts. The children alternate name and value, and the name
+   column takes its widest name, so every value starts at one edge without a
+   width chosen per slide. A `dl` keeps the pairing for a screen reader.
+   Baselines line up a name with the first line of a code block beside it.
+   --------------------------------------------------------------------------- */
+
+.reveal .slides .pairs {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--deck-gap-tight) var(--deck-gap);
+  align-items: baseline;
+}
+
+.reveal .slides .pairs > dt {
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------------
+   Chain
+
+   Parts that pass something along, laid in one line with the connection
+   drawn between them. The slide places each arrow itself, because a
+   connection can be one way, both ways, or missing, and only the slide knows
+   which. Each part takes its own width, so the arrows sit at one distance
+   from the words on either side. A part may shrink to wrap its words, but an
+   arrow never does. An arrow takes the diagram line color, the one style the
+   class sets, so arrows agree across slides. Use `steps` instead when the
+   parts are stages of one process.
+   --------------------------------------------------------------------------- */
+
+.reveal .slides .chain {
+  display: flex;
+  gap: var(--deck-gap-tight);
+  align-items: center;
+}
+
+.reveal .slides .chain > svg {
+  flex: none;
+  color: var(--deck-mark);
+}
+
+/* ---------------------------------------------------------------------------
    Slot
 
    The place a picture or diagram holds before it is drawn: a dashed box in

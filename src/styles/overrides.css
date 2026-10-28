@@ -31,9 +31,12 @@
    Colors come from the roles in theme.css. See docs/design.md for both.
    --------------------------------------------------------------------------- */
 
-/* These four spacing steps were calibrated for the 1280x720 stage. Shared
-   layouts choose from the scale; table padding remains a table metric. */
+/* These spacing steps were calibrated for the 1280x720 stage. Shared layouts
+   choose from the scale; table padding remains a table metric. The snug step
+   is for the inside of one drawn part, such as a cell's padding, and never
+   separates two blocks of content. */
 :root {
+  --deck-gap-snug: 8px;
   --deck-gap-tight: 16px;
   --deck-gap: 28px;
   --deck-gap-wide: 48px;
@@ -388,6 +391,14 @@ html.reveal-print .reveal .slides section:not(.stack) {
   color: var(--deck-ink-quiet);
   font-size: var(--deck-text-label);
   text-align: center;
+}
+
+/* The same voice for a line that is not under a picture, such as the one
+   that names what the last step changed. It keeps the left edge, because it
+   belongs to the block above it, not to a figure. */
+.reveal .slides .caption {
+  color: var(--deck-ink-quiet);
+  font-size: var(--deck-text-label);
 }
 
 /* ---------------------------------------------------------------------------
