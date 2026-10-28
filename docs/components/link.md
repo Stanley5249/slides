@@ -1,13 +1,6 @@
 # Link
 
-`Link` sets a link with an optional icon before its label. The label stays in
-ink and the icon carries the link color, so the link reads as text first. With
-an icon, the label gains an underline only on hover or keyboard focus, because
-the icon already marks it. Without one, nothing else marks the link, so the
-underline stays. `Link` opens HTTP(S) addresses in another tab. The shared
-presentation layer also opens external HTTP(S) links in another tab, including
-plain anchors and linked images. Same-origin links and page anchors keep their
-normal behavior; an explicit `target` overrides the shared default.
+`Link` sets a link with an optional icon before its label. The label stays in ink and the icon carries the link color, so the link reads as text first. With an icon, the label gains an underline only on hover or keyboard focus, because the icon already marks it. Without one, nothing else marks the link, so the underline stays. `Link` opens HTTP(S) addresses in another tab. The shared presentation layer also opens external HTTP(S) links in another tab, including plain anchors and linked images. Same-origin links and page anchors keep their normal behavior; an explicit `target` overrides the shared default.
 
 ## Usage
 
@@ -26,21 +19,16 @@ normal behavior; an explicit `target` overrides the shared default.
 
 ## Writing
 
-Set a link inside the sentence, as the noun it names. Do not introduce it with a
-colon or a label such as "Link:", because the icon already says it is a link.
+Set a link inside the sentence, as the noun it names. Do not introduce it with a colon or a label such as "Link:", because the icon already says it is a link.
 
 ## Properties
 
-The `Props` type in the component carries the signature. `icon` takes any
-component with a `size` prop, which covers every Lucide icon and `GitHubMark`.
+The `Props` type in the component carries the signature. `icon` takes any component with a `size` prop, which covers every Lucide icon and `GitHubMark`.
 
 ## Icons
 
-Lucide has no brand icons, so `GitHubMark` draws the GitHub mark from
-simple-icons, which is public domain. Add another brand the same way: one
-component holding one path.
+Lucide has no brand icons, so `GitHubMark` draws the GitHub mark from simple-icons, which is public domain. Add another brand the same way: one component holding one path.
 
 ## Accessibility
 
-The icon is hidden from screen readers, so the label alone names the link.
-Keyboard focus draws the deck's focus ring around the whole link.
+The icon is hidden from screen readers, so the label alone names the link. Keyboard focus draws the deck's focus ring around the whole link.

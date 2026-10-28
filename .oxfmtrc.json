@@ -1,6 +1,5 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "proseWrap": "always",
   "printWidth": 80,
   "sortPackageJson": false,
   "sortTailwindcss": { "stylesheet": "src/styles/app.css" },

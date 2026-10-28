@@ -2,38 +2,26 @@
 
 ## Commands
 
-- Use Bun exclusively for package commands, project commands, and package
-  management.
-- Manage dependencies with `bun add` and `bun remove`. Keep `package.json` free
-  of `scripts`.
-- Define standard commands in the root `justfile`. Use `just` recipes and run
-  project binaries with `bun run <binary>`.
-- Get the user's approval before using CDP or other automation tools. After
-  approval, load the `browser` skill.
-- When browser automation is approved for a visual or interaction change,
-  capture a targeted screenshot after the relevant interaction.
+- Use Bun exclusively for package commands, project commands, and package management.
+- Manage dependencies with `bun add` and `bun remove`. Keep `package.json` free of `scripts`.
+- Define standard commands in the root `justfile`. Use `just` recipes and run project binaries with `bun run <binary>`.
+- Get the user's approval before using CDP or other automation tools. After approval, load the `browser` skill.
+- When browser automation is approved for a visual or interaction change, capture a targeted screenshot after the relevant interaction.
 
 ## Presentation
 
-- Keep Animotion and Reveal.js presentation mechanics, including their
-  navigation, presenter, animation, and slide-runtime abstractions.
-- Use Svelte 5 components and runes for reactive and interactive content, with
-  Tailwind and Catppuccin tokens for styling.
-- Keep `main` template-only. Put presentation content on local
-  `deck/<group>/<name>` branches and keep those branches local.
+- Keep Animotion and Reveal.js presentation mechanics, including their navigation, presenter, animation, and slide-runtime abstractions.
+- Use Svelte 5 components and runes for reactive and interactive content, with Tailwind and Catppuccin tokens for styling.
+- Keep `main` template-only. Put presentation content on local `deck/<group>/<name>` branches and keep those branches local.
 
 ## Dependencies
 
 - Use `@sveltejs/adapter-bun` for the standalone Bun server.
-- Prefer Bits UI for accessible interactive primitives and `lucide-svelte` for
-  interface icons.
+- Prefer Bits UI for accessible interactive primitives and `lucide-svelte` for interface icons.
 
 ## Convention
 
 - Follow the existing design system.
-- Give a slide component's classes names that the global styles do not use.
-  Reveal owns names such as `controls`, `progress`, and `slides`, and
-  `src/styles/` styles every match under `.reveal .slides`, so a shared name
-  moves or restyles the element.
+- Give a slide component's classes names that the global styles do not use. Reveal owns names such as `controls`, `progress`, and `slides`, and `src/styles/` styles every match under `.reveal .slides`, so a shared name moves or restyles the element.
 - Omit redundant defaults.
 - Write documentation, comments, and UI copy in American English.
