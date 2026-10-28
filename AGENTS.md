@@ -31,5 +31,9 @@
 ## Convention
 
 - Follow the existing design system.
+- Give a slide component's classes names that the global styles do not use.
+  Reveal owns names such as `controls`, `progress`, and `slides`, and
+  `src/styles/` styles every match under `.reveal .slides`, so a shared name
+  moves or restyles the element.
 - Omit redundant defaults.
 - Write documentation, comments, and UI copy in American English.
