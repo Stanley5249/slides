@@ -53,3 +53,8 @@ test("the baseline covers each recorded declaration once", () => {
     "position: absolute",
   ]);
 });
+
+test("a stylesheet is all declarations", () => {
+  const sheet = ".actions {\n  gap: 10px;\n}\n";
+  expect(check("deck.css", sheet).map(({ line }) => line)).toEqual([2]);
+});

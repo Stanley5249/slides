@@ -19,7 +19,7 @@
 
 import { Glob } from "bun";
 
-const sources = "src/**/slides/**/*.svelte";
+const sources = "src/**/slides/**/*.{svelte,css}";
 const baselinePath = "check-styles.baseline";
 
 // A length in px or rem, but not one in em, which follows the type, and not 0.
@@ -65,12 +65,12 @@ export type Violation = {
   advice: string;
 };
 
-// Checks the declarations of every `<style>` block and `style` attribute.
-// Line numbers count from 1 in the whole file.
+// Checks the declarations of a stylesheet, or of every `<style>` block and
+// `style` attribute in a component. Line numbers count from 1 in the file.
 export function check(path: string, source: string) {
   const lines = source.split("\n");
   const found: Violation[] = [];
-  let inStyle = false;
+  let inStyle = path.endsWith(".css");
 
   lines.forEach((line, index) => {
     if (/<style\b/.test(line)) inStyle = true;
