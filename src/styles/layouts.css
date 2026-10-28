@@ -99,10 +99,12 @@
    quiet ink, so it reads as unfinished work rather than as content. The strong
    rule draws it, because the box is the whole element and a projector loses a
    hairline. `:where` leaves the weight at the class alone, so the component
-   that draws a slot can still reshape it.
+   that draws a slot can still reshape it. The class carries the deck prefix
+   because the rule is global, and a component's own `.slot` would inherit the
+   box.
    --------------------------------------------------------------------------- */
 
-:where(.reveal .slides) .slot {
+:where(.reveal .slides) .deck-slot {
   display: grid;
   min-height: var(--deck-slot-min);
   gap: 0.5rem;

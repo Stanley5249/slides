@@ -23,7 +23,7 @@
 
 <figure class={className} class:missing>
   {#if missing}
-    <div class="slot placeholder" style:height>
+    <div class="deck-slot placeholder" style:height>
       <ImageOff size={28} strokeWidth={1.75} />
       <p>{alt}</p>
       <code class="path">static{src}</code>

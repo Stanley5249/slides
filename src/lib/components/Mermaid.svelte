@@ -119,7 +119,7 @@
     {/snippet}
   </Zoom>
 {:else if renderState.kind === "failed"}
-  <div class={`slot failed ${className}`}>
+  <div class={`deck-slot failed ${className}`}>
     <div class="head">
       <Workflow size={20} strokeWidth={2} />
       <p>Could not render this diagram</p>
@@ -152,7 +152,7 @@
         >{/each}</pre>
   </div>
 {:else}
-  <div class={`slot ${className}`}><p>Rendering diagram…</p></div>
+  <div class={`deck-slot ${className}`}><p>Rendering diagram…</p></div>
 {/if}
 
 <style>
@@ -202,7 +202,7 @@
 
   /* A diagram that is not drawn holds its place in the slot from layouts.css,
      the way a missing screenshot does. */
-  .slot {
+  .deck-slot {
     width: 100%;
   }
 
