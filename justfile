@@ -15,7 +15,7 @@ dev *args:
 
 # Build the presentation
 build *args:
-    bun run --bun vite build {{ args }}
+    bun run vite build {{ args }}
 
 # Serve the built presentation
 prod *args: build

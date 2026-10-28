@@ -1,0 +1,4 @@
+# Run package binaries under Bun even when their shebang names node, so the
+# project never falls back to a Node installed elsewhere on the machine.
+[run]
+bun = true
