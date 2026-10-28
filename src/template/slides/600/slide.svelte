@@ -5,7 +5,7 @@
 <Slide>
   <h2>Reveal a list one point at a time</h2>
 
-  <div class="row">
+  <div class="column">
     <ul>
       <li class="fragment">
         Each point waits for the presenter’s next keypress.

@@ -99,10 +99,10 @@ tell from italics, and a plated block keeps its edge beside prose.
 
 ### Rule
 
-A slide has a title followed by one content area. Use `row` for stacked content,
-a `cols` variant for two columns, and an `ol` with `steps` for a process whose
-order matters. Split a four-cell comparison across slides when the cells do not
-have an obvious reading order.
+A slide has a title followed by one content area. Use `column` for stacked
+content, a `cols` variant for two columns, and an `ol` with `steps` for a
+process whose order matters. Split a four-cell comparison across slides when the
+cells do not have an obvious reading order.
 
 Title a deck slide with a noun phrase that names its topic, and state the claim
 as a sentence in the content. The template's titles are imperatives instead,
@@ -133,8 +133,8 @@ The shared classes live in `src/styles/layouts.css`. Content hangs from the
 title at the wide gap, so every slide starts its content at the same height. A
 sparse slide, such as a figure beside a short paragraph, takes the `middle`
 class to center its content in the room under the title instead. Gaps belong to
-`row` and `cols`, not to individual children. Content that is shorter than its
-area leaves empty space below it instead of stretching tables or diagrams.
+`column` and `cols`, not to individual children. Content that is shorter than
+its area leaves empty space below it instead of stretching tables or diagrams.
 
 A listing taller than the stage uses `CodeBlock` from `#lib`, which wraps long
 lines and scrolls inside its own area, so the listing stays on one slide.

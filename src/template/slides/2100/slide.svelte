@@ -5,7 +5,7 @@
 <Slide>
   <h2>Start a deck from here</h2>
 
-  <div class="row">
+  <div class="column">
     <ul>
       <li><code>docs/design.md</code> gives each rule and its reason.</li>
       <li>

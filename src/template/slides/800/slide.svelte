@@ -1,7 +1,7 @@
 <h2>Put two options side by side</h2>
 
 <div class="cols even">
-  <div class="row">
+  <div class="column">
     <h3>Paragraph</h3>
     <p>
       Dense prose asks the audience to <em>read</em> while the speaker
@@ -9,7 +9,7 @@
     </p>
   </div>
 
-  <div class="row">
+  <div class="column">
     <h3>List</h3>
     <ul>
       <li>Short lines</li>

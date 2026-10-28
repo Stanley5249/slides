@@ -17,7 +17,7 @@ ${close}
 
 <h2>Show a block of code</h2>
 
-<div class="row">
+<div class="column">
   <p>
     The code below is a whole slide: a <code>slide.svelte</code> in a numbered
     folder under

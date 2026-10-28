@@ -23,7 +23,7 @@
   <h2>Draw diagrams in the deck's colors</h2>
 
   <div class="cols narrow-first">
-    <div class="row">
+    <div class="column">
       <p>
         The diagram uses the same color roles as the surrounding slide, through
         CSS properties the drawing reads as it paints.
@@ -41,7 +41,7 @@
 <Slide class="middle">
   <h2>Zoom into a wide diagram</h2>
 
-  <div class="row">
+  <div class="column">
     <p>
       The slide shows the whole diagram as a preview. Select it to open a larger
       view you can drag around.
@@ -60,7 +60,7 @@
   <div class="cols">
     <Mermaid code={broken} label="Open the broken diagram" />
 
-    <div class="row">
+    <div class="column">
       <p>
         A failed diagram displays its full error instead of leaving an empty
         space that could pass unnoticed.

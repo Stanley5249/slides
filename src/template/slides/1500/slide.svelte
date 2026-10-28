@@ -26,7 +26,7 @@
 
 <h2>Move items to their new order</h2>
 
-<div class="row" {@attach restart(() => show(0))}>
+<div class="column" {@attach restart(() => show(0))}>
   <div class="strip">
     {#each items as item (item)}
       <span class="tile" animate:flip={{ duration }}>{item}</span>

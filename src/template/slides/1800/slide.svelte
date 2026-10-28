@@ -13,7 +13,7 @@
   <h2>Use screenshots as evidence, not decoration</h2>
 
   <div class="cols narrow-first">
-    <div class="row">
+    <div class="column">
       <p>
         <code>Shot</code> pairs the image with alternative text and an optional caption.
         Select the image to inspect it in the same viewer as a diagram.
@@ -37,7 +37,7 @@
   <div class="cols">
     <Shot src={missing} alt="The screenshot for this slide" />
 
-    <div class="row">
+    <div class="column">
       <p>
         When an image is missing, its slot remains visible and reports the path
         that failed to load.

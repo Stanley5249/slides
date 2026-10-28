@@ -9,13 +9,13 @@
 /* ---------------------------------------------------------------------------
    Rows and columns
 
-   `row` stacks blocks. `cols` provides the three shared two-column splits.
+   `column` stacks blocks. `cols` provides the three shared two-column splits.
    Fractions adapt to the stage, and the 2.2:1 split leaves the supporting
    column about one third of the available width. A deck can define a more
    complex comparison when its content supplies a clear reading order.
    --------------------------------------------------------------------------- */
 
-.reveal .slides .row {
+.reveal .slides .column {
   display: flex;
   flex-direction: column;
   gap: var(--deck-gap);
@@ -42,7 +42,7 @@
   min-width: 0;
 }
 
-/* A table narrower than its column is centered in it. The same table in a `row`
+/* A table narrower than its column is centered in it. The same table in a `column`
    keeps the left edge, because prose above or below has already set one, while
    a column often holds nothing else to line up with.
 

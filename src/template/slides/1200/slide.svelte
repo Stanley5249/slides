@@ -6,7 +6,7 @@
 
 <p class="numeral">2</p>
 
-<div class="row">
+<div class="column">
   <h2>Code and motion</h2>
   <p>Code and shapes change on the presenter’s keypress, one step at a time.</p>
 </div>

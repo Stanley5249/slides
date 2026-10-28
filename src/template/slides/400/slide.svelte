@@ -5,7 +5,7 @@
 
 <h2>Mark a word by what it does</h2>
 
-<div class="row">
+<div class="column">
   <p>
     Bold marks the one word the speaker stresses, such as <strong>never</strong> in
     a warning.

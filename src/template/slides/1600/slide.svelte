@@ -6,7 +6,7 @@
 
 <p class="numeral">3</p>
 
-<div class="row">
+<div class="column">
   <h2>Evidence</h2>
   <p>Diagrams, screenshots, and pictures show what the words claim.</p>
 </div>
